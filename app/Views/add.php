@@ -42,11 +42,12 @@
 
                         <!-- Select Role -->
                         <div class="mb-3">
-                            <label for="selectRole" class="form-label">Select Role</label>
-                            <select class="form-select" id="selectRole" name="user_role" required>
-                            <option value="user">User</option>
-                            <option value="admin">Admin</option>
-                            </select>
+                                <label for="selectRole" class="form-label">Select Role</label>
+                                <select class="form-select" id="selectRole" name="user_role" required>
+                                <option value="user">User</option>
+                                <option value="admin">Admin</option>
+                                <option value="superadmin">Super Admin</option>
+                                </select>
                         </div>
 
                         <!-- Password -->
