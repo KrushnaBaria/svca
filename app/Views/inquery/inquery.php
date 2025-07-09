@@ -49,7 +49,7 @@
                         </select>
                     </div>
                     <div class="d-flex justify-content-center">
-                        <button type="submit" class="btn btn-primary w-25">Submit</button>
+                        <button type="submit" class="btn btn-primary col-md-4">Submit</button>
                     </div>
                 </form>
             </div>
