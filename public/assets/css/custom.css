@@ -1,0 +1,8 @@
+/* File: public/assets/css/custom.css */
+table.dataTable thead th {
+    text-align: center !important;
+}
+
+table.dataTable tbody td {
+    text-align: center !important;
+}
