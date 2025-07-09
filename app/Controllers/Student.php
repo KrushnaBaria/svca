@@ -56,6 +56,8 @@ class Student extends BaseController
             'center' => $this->request->getPost('center'),
             'dist' => $this->request->getPost('dist'),
             'address' => $this->request->getPost('address'),
+            'ref_by' => $this->request->getPost('ref_by'),
+            'adm_date' => $this->request->getPost('adm_date'),
         ];
 
         $res = $this->model->addStudent($data);

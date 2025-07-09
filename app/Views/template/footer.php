@@ -8,6 +8,8 @@
     <script src="<?php echo base_url('public/assets/libs/simplebar/dist/simplebar.js')?>"></script>
     <!-- solar icons -->
     <script src="https://cdn.jsdelivr.net/npm/iconify-icon@1.0.8/dist/iconify-icon.min.js"></script>
+    <script src="<?php echo base_url('public/assets/js/jquery-3.7.1.js')?>"></script>
+    <script src="<?php echo base_url('public/assets/js/jquery-ui.js')?>"></script>
     <script>
         window.SvcaConfig = {
             baseUrl: '<?php echo base_url(); ?>'

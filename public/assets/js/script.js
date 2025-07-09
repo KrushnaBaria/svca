@@ -170,6 +170,10 @@
                 e.target.value = value;
             });
 
+            $('#adm_date').datepicker({
+                maxDate: new Date(),
+            });
+
             $('#sbt-student').on('click', function(e){
                 e.preventDefault();
                 if($('#s_name').val() == ''){
@@ -228,6 +232,11 @@
                     $('input[name="marital_sts"]').first().focus();
                     return false;
                 }
+
+                if($('#adm_date').val() == ''){
+                    $('#adm_date').focus();
+                    return false;
+                }
                 
                 let from = $('#b_time1').val();
                 let to = $('#b_time2').val();
@@ -256,6 +265,8 @@
                         dist: $('#dist').val() ? $('#dist').val() : '',
                         center: $('#center').val() ? $('#center').val() : '',
                         address: $('#address').val() ? $('#address').val() : '',
+                        ref_by: $('#ref_by').val() ? $('#ref_by').val() : '',
+                        adm_date: $('#adm_date').val() ? $('#adm_date').val() : '',
                     },
                     success: function(res) {
                         if(res.success == 1) {
@@ -275,6 +286,7 @@
         initStudentList: function() {
             let studentTbl = new DataTable('#student-tbl', {
                 responsive: true,
+                scrollX: true,
                 searching: true,
                 lengthChange: true,
                 processing: true,
@@ -297,54 +309,61 @@
                     {
                         targets: [0],
                         orderable: false,
-                        data: function (row) {  
-                            return row.id;
+                        data: function (row, type, val, meta) {  
+                            return meta.row + 1;
                         }
                     },
                     {
                         targets: [1],
                         orderable: true,
                         data: function (row) {
-                            return row.name;
+                            return row.id;
                         }
                     },
                     {
                         targets: [2],
                         orderable: false,
                         data: function (row) {
-                            return row.center_name;
+                            return row.name;
                         }
                     },
                     {
                         targets: [3],
                         orderable: true,
                         data: function (row) {
-                            return row.pnumber;
+                            return row.center_name;
                         }
                     },
                     {
                         targets: [4],
                         orderable: true,
                         data: function (row) {
-                            return (row.apnumber && row.apnumber.length > 1) ? row.apnumber : '-';
+                            return row.pnumber;
                         }
                     },
                     {
                         targets: [5],
                         orderable: true,
                         data: function (row) {
+                            return (row.apnumber && row.apnumber.length > 1) ? row.apnumber : '-';
+                        }
+                    },
+                    {
+                        targets: [6],
+                        orderable: true,
+                        data: function (row) {
                             return row.course_name;
                         }
                     },
                     {
-                       targets: [6],
+                       targets: [7],
                         orderable: false,
                         data: function (row) {
-                            return row.dob;
+                            return row.referred_by ? row.referred_by : '-';
                         } 
                     },
                     {
-                        targets: [7],
+                        targets: [8],
                         orderable: false,
                         data: function (row) {
                             return '';
