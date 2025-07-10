@@ -36,13 +36,13 @@
                     <div class="col-md-4">
                         <div class="mb-3">
                             <label for="p_number" class="form-label">Mobile Number</label>
-                            <input type="text" class="form-control" id="p_number" placeholder="Enter Mobile Numbers" inputmode="numeric" onkeypress="return event.charCode >= 48 && event.charCode <= 57 || event.charCode == 47;">
+                            <input type="text" class="form-control" id="p_number" placeholder="Enter Mobile Numbers" inputmode="numeric" onkeypress="return event.charCode >= 48 && event.charCode <= 57 || event.charCode == 47;" maxlength="10">
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="mb-3">
                             <label for="ap_number" class="form-label">Alternative Number</label>
-                            <input type="text" class="form-control" id="ap_number" placeholder="Enter Alternative Numbers" inputmode="numeric" onkeypress="return event.charCode >= 48 && event.charCode <= 57 || event.charCode == 47;">
+                            <input type="text" class="form-control" id="ap_number" placeholder="Enter Alternative Numbers" inputmode="numeric" onkeypress="return event.charCode >= 48 && event.charCode <= 57 || event.charCode == 47;" maxlength="10">
                         </div>
                     </div>
                 </div>
@@ -135,7 +135,7 @@
                     <div class="col-md-4">
                         <div class="mb-3">
                             <label for="adhar" class="form-label">Adhar Number</label>
-                            <input type="text" class="form-control" id="adhar" placeholder="Enter Adhar Number" inputmode="numeric" onkeypress="return event.charCode >= 48 && event.charCode <= 57 || event.charCode == 47;">
+                            <input type="text" class="form-control" id="adhar" placeholder="Enter Adhar Number" inputmode="numeric" onkeypress="return event.charCode >= 48 && event.charCode <= 57 || event.charCode == 47;" maxlength="12">
                         </div>
                     </div>
                     <div class="col-md-2">
@@ -158,10 +158,22 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-md-4">
                         <div class="mb-3">
                             <label for="address" class="form-label">Address</label>
-                            <textarea class="form-control" id="address" rows="3" placeholder="Enter Address"></textarea>
+                            <textarea class="form-control" id="address" rows="1" placeholder="Enter Address"></textarea>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="mb-3">
+                            <label for="ref_by" class="form-label">Referred By</label>
+                            <input type="text" class="form-control" id="ref_by" placeholder="Enter Referred By">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="mb-3">
+                            <label for="adm_date" class="form-label">Admission Date</label>
+                            <input type="text" class="form-control" id="adm_date" inputmode="none" onkeydown="return false;">
                         </div>
                     </div>
                 </div>

@@ -19,7 +19,7 @@
                         <div class="card mb-0">
                             <div class="card-body">
                                 <a href="" class="text-nowrap logo-img text-center d-block py-3 w-100">
-                                    <img src="<?php echo base_url(); ?>assets/images/logos/favicon.svg" width="180" alt="">
+                                    <img src="<?php echo base_url(); ?>assets/images/logos/favicon.svg" width="100" alt="SVCA Logo">
                                 </a>
                                 <div>
                                     <?php if (session('error') !== null) : ?>
@@ -47,7 +47,7 @@
                                         <label for="password" class="form-label">Password</label>
                                         <input type="password" name="password" class="form-control" id="password" required>
                                     </div>
-                                    <div class="d-flex align-items-center justify-content-between mb-4">
+                                    <!-- <div class="d-flex align-items-center justify-content-between mb-4">
                                         <div class="form-check">
                                             <input class="form-check-input primary" type="checkbox" value="" id="flexCheckChecked" checked>
                                             <label class="form-check-label text-dark" for="flexCheckChecked">
@@ -55,8 +55,8 @@
                                             </label>
                                         </div>
                                         <a class="text-primary fw-bold" href="./reset.php">Forgot Password ?</a>
-                                    </div>
-                                    <input type="submit" class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2"></a>
+                                    </div> -->
+                                    <input type="submit" class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2" value="Login"/>
                                     <!-- <div class="d-flex align-items-center justify-content-center">
                                         <p class="fs-4 mb-0 fw-bold">New to URLv.in</p>
                                         <a class="text-primary fw-bold ms-2" href="<?php echo base_url('registration'); ?>">Create an account</a>

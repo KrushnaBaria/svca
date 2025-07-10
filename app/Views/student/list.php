@@ -6,21 +6,22 @@
         </div>
     </div>
     <div class="card-body">
-        <table id="student-tbl" class="" style="width:100%">
-            <thead>
+        <table id="student-tbl" class="display responsive nowrap dataTable w-100">
+            <thead class="text-dark fs-4">
                 <tr>
-                    <th>Id</th>
-                    <th>Name</th>
-                    <th>Center</th>
-                    <th>Number</th>
-                    <th>Number 2</th>
-                    <th>Course</th>
-                    <th>Date Of Birth</th>
-                    <th></th>
+                    <th><h6 class="fs-3 fw-semibold">No</h6></th>
+                    <th><h6 class="fs-3 fw-semibold">SVCA Id</h6></th>
+                    <th><h6 class="fs-3 fw-semibold">Name</h6></th>
+                    <th><h6 class="fs-3 fw-semibold">Center</h6></th>
+                    <th><h6 class="fs-3 fw-semibold">Number</h6></th>
+                    <th><h6 class="fs-3 fw-semibold">Phone</h6></th>
+                    <th><h6 class="fs-3 fw-semibold">Course</h6></th>
+                    <th><h6 class="fs-3 fw-semibold">Referred by</h6></th>
+                    <th><h6 class="fs-3 fw-semibold">Action</h6></th>
                 </tr>
             </thead>
-            <tbody></tbody>
+            <tbody>
+            </tbody>
         </table>
     </div>
-
 </div>

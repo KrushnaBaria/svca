@@ -12,6 +12,8 @@
   <link rel="shortcut icon" type="image/png" href="<?php echo base_url('public/assets/images/logos/favicon.svg'); ?>" />
   <link rel="stylesheet" href="<?php echo base_url('public/assets/css/styles.min.css');?>" />
   <link rel="stylesheet" href="<?php echo base_url('public/assets/css/dataTables.dataTables.css');?>" />
+  <link rel="stylesheet" href="<?php echo base_url('public/assets/css/custom.min.css');?>" />
+  <link rel="stylesheet" href="<?php echo base_url('public/assets/css/jquery-ui.css');?>" />
 </head>
 <body>
 	<?php include_once(APPPATH . 'Views/template/sidebar.php'); ?>
