@@ -2,8 +2,10 @@
 <div class="row">
     <div class="col-lg-3">
         <div class="card">
+            <div class="card-header text-bg-primary">
+                <h4 class="mb-0 text-white">Add Center</h4>
+            </div>
             <div class="card-body">
-                <h4 class="card-title mb-3">Add Center</h4>
                 <form>
                     <div class="col-md-12">
                         <div class="mb-3">
@@ -41,16 +43,24 @@
 <div class="row">
     <div class="col-lg-3">
         <div class="card">
+            <div class="card-header text-bg-primary">
+                <h4 class="mb-0 text-white">Add Course</h4>
+            </div>
             <div class="card-body">
-                <h4 class="card-title mb-3">Add Course</h4>
                 <form>
                     <div class="col-md-12">
                         <div class="mb-3">
+                            <label for="course_name" class="form-label">Course Name</label>
                             <input type="text" class="form-control" id="course_name" placeholder="Enter Course Name">
+                        </div>
+                        <div class="mb-3">
+                            <label for="course_price" class="form-label">Course Price</label>
+                            <input type="text" class="form-control" id="course_price" placeholder="Enter Price">
                         </div>
                     </div>
                     <div class="col-md-12">
                         <div class="mb-3 text-center">
+                            <input type="hidden" id="course_id" value="">
                             <button class="btn btn-primary" id="sbt-course">Submit</button>
                         </div>
                     </div>
@@ -67,6 +77,7 @@
                         <tr>
                             <th>Id</th>
                             <th>Course</th>
+                            <th>Price</th>
                             <th>Action</th>
                         </tr>
                     </thead>

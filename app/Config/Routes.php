@@ -40,4 +40,5 @@ $routes->group('settings', function ($routes) {
     $routes->post('getCenters', 'Settings::getCenters');
     $routes->post('add-course', 'Settings::addCourse');
     $routes->post('getCourses', 'Settings::getCourses');
+    $routes->post('update-course', 'Settings::updateCouse');
 });

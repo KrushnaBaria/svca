@@ -16,11 +16,21 @@ class Course extends Model
 
     public function addCourse($data)
     {
-        $query = "INSERT INTO `{$this->table}` (course) VALUES ('" . $this->db->escapeString($data['course']) . "')";
+        $query = "INSERT INTO `{$this->table}` (id, course, price, updated_by, updated_date) VALUES ('', '" . $data['course'] . "', '". $data['price'] ."', '". auth()->user()->email ."', NOW())";
         
         if ($this->db->query($query)) {
             return true;
         } else {
+            return false;
+        }
+    }
+
+    public function updateCourse($data)
+    {
+        $query = "UPDATE `{$this->table}` SET course = '" . $data['course'] . "', price = " . $data['price'] . ",  updated_by = '" . auth()->user()->email . "', updated_date = NOW() WHERE id = " . $data['id'];
+        if($this->db->query($query)){
+            return true;
+        }else{
             return false;
         }
     }

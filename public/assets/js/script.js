@@ -87,6 +87,9 @@
             let coursetbl = $('#course-tbl');
             let courseTbl = new DataTable('#course-tbl', {
                 responsive: true,
+                select: {
+                    style: 'single',
+                },
                 searching: typeof coursetbl.data('dt-searching') === 'undefined' ? true : coursetbl.data('dt-searching'),
                 lengthChange: typeof coursetbl.data('dt-lengthchange') === 'undefined' ? true : coursetbl.data('dt-lengthchange'),
                 processing: true,
@@ -122,12 +125,31 @@
                     },
                     {
                         targets: [2],
+                        orderable: true,
+                        data: function (row) {
+                            return row.price;
+                        }
+                    },
+                    {
+                        targets: [3],
                         orderable: false,
                         data: function (row) {
                             return '<button class="btn btn-danger btn-sm delete-center" data-id="' + row.id + '">Delete</button>';
                         }
                     }
                 ],
+            }).on('select', function(e, dt, type, indexes) {
+                let data = courseTbl.rows(indexes).data().toArray();
+                if(data.length > 0) {
+                    $("#course_name").val(data[0].course);
+                    $("#course_price").val(data[0].price);
+                    $("#course_id").val(data[0].id);
+                    $("#sbt-course").text("Update");
+                }
+            }).on('deselect', function(e, dt, type, indexes){
+                $("#course_name").val("");
+                $("#course_price").val("");
+                $("#sbt-course").text("Submit");
             });
 
             $("#sbt-course").on("click", function(e){
@@ -137,26 +159,59 @@
                     return;
                 }
 
-                $.ajax({
-                    url: conf.baseUrl + "/settings/add-course",
-                    type: "POST",
-                    dataType: "json",
-                    data: {
-                        course_name: $("#course_name").val()
-                    },
-                    success: function(res) {
-                        if(res.success == 1) {
-                            $("#course_name").val(""); // Clear the input field
-                            alert("Course Added Successfully.");
-                            courseTbl.ajax.reload(); // Reload the table data
-                        } else {
-                            alert("Error updating course");
+                if($("#course_price").val() === ""){
+                    alert("Plaese enter a course price.");
+                    return;
+                }
+
+                if($("#course_id").val()){
+                    $.ajax({
+                        url: conf.baseUrl + "/settings/update-course",
+                        type: "POST",
+                        dataType: "json",
+                        data: {
+                            id: $("#course_id").val(),
+                            course_name: $("#course_name").val(),
+                            course_price: $("#course_price").val()
+                        },
+                        success: function(res) {
+                            if(res.success == 1) {
+                                $("#course_name").val(""); // Clear the input field
+                                alert("Course Updated Successfully.");
+                                courseTbl.ajax.reload(); // Reload the table data
+                            } else {
+                                alert("Error updating course");
+                            }
+                        },
+                        error: function() {
+                            alert("An error occurred while updating the course.");
                         }
-                    },
-                    error: function() {
-                        alert("An error occurred while updating the course.");
-                    }
-                });
+                    });
+                }else{
+                    $.ajax({
+                        url: conf.baseUrl + "/settings/add-course",
+                        type: "POST",
+                        dataType: "json",
+                        data: {
+                            course_name: $("#course_name").val(),
+                            course_price: $("#course_price").val()
+                        },
+                        success: function(res) {
+                            if(res.success == 1) {
+                                $("#course_name").val(""); // Clear the input field
+                                alert("Course Added Successfully.");
+                                courseTbl.ajax.reload(); // Reload the table data
+                            } else {
+                                alert("Error updating course");
+                            }
+                        },
+                        error: function() {
+                            alert("An error occurred while updating the course.");
+                        }
+                    });
+                }
+
+                
             });
         },
 

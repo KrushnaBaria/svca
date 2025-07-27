@@ -58,7 +58,8 @@ class Settings extends BaseController
     public function addCourse()
     {
         $data = [
-            'course' => $this->request->getPost('course_name')
+            'course' => $this->request->getPost('course_name'),
+            'price' => $this->request->getPost('course_price')
         ];
 
         $res = $this->courseModel->addCourse($data);
@@ -78,6 +79,21 @@ class Settings extends BaseController
         $courses = $this->courseModel->getCourses($data);
         if(!empty($courses)){
             return json_encode($courses);
+        }
+    }
+
+    public function updateCouse()
+    {
+        $data = [
+            'id' => $this->request->getPost('id'),
+            'course' => $this->request->getPost('course_name'),
+            'price' => $this->request->getPost('course_price')
+        ];
+
+        $res = $this->courseModel->updateCourse($data);
+
+        if($res){
+            return json_encode(['success' => 1]);
         }
     }
 }

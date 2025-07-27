@@ -1,3 +1,10 @@
 [9/7/2025]
 ALTER TABLE `students` ADD `referred_by` VARCHAR(255) NOT NULL AFTER `center`;
 ALTER TABLE `students` CHANGE `admi_date` `admi_date` VARCHAR(255) NOT NULL;
+
+[26/07/2025]
+ALTER TABLE `courses` ADD `price` INT NOT NULL AFTER `course`;
+
+[27/07/2025]
+ALTER TABLE `courses` ADD `updated_by` VARCHAR(255) NOT NULL AFTER `price`;
+ALTER TABLE `courses` ADD `updated_date` TIMESTAMP NOT NULL AFTER `updated_by`;
