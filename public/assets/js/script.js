@@ -497,7 +497,7 @@
                         targets: [8],
                         orderable: false,
                         data: function (row) {
-                            return '';
+                            return '<a class="text-primary btn" href="'+ conf.baseUrl +'payment/'+ row.id +'"><i class="ti ti-currency-dollar fs-6"></i></i></a>';
                         }
                     }
                 ],
@@ -523,6 +523,55 @@
                         }
                     });
                 }
+            });
+        },
+
+        initAddPayment: function(){
+        
+            let payhistorytbl = $('#pay-historytbl');
+            let payhistoryTbl = new DataTable('#pay-historytbl', {
+                responsive: true,
+                searching: typeof payhistorytbl.data('dt-searching') === 'undefined' ? true : payhistorytbl.data('dt-searching'),
+                lengthChange: typeof payhistorytbl.data('dt-lengthchange') === 'undefined' ? true : payhistorytbl.data('dt-lengthchange'),
+                processing: true,
+                serverSide: true,
+                bSortable: true,
+                bFilter: true,
+                pagingType: "full_numbers",
+                ajax: {
+                    url: conf.baseUrl + "/payment/get-payhistory",
+                    type: 'post',
+                },
+                lengthMenu: [
+                    [5, 10, 20, -1],
+                    [5, 10, 20, "All"]
+                ],
+                pageLength: (typeof payhistorytbl.data('dt-pagelength') === 'undefined' || payhistorytbl.data('dt-pagelength') === '-1') ? 5 : payhistorytbl.data('dt-pagelength'),
+                paging: true,
+                ordering: false,
+                columnDefs: [
+                    {
+                        targets: [0],
+                        orderable: false,
+                        data: function (row) {  
+                            return row.id;
+                        }
+                    },
+                    {
+                        targets: [1],
+                        orderable: true,
+                        data: function (row) {
+                            return row.name;
+                        }
+                    },
+                    {
+                        targets: [2],
+                        orderable: false,
+                        data: function (row) {
+                            return '<button class="btn btn-danger btn-sm delete-center" data-id="' + row.id + '">Delete</button>';
+                        }
+                    }
+                ],
             });
         },
 

@@ -44,3 +44,8 @@ $routes->group('settings', function ($routes) {
     $routes->post('add-district', 'Settings::addDidtrict');
     $routes->post('get-districts', 'Settings::getDistricts');
 });
+
+$routes->group('payment', function ($routes){
+    $routes->get('(:num)', 'Payment::index/$1');
+    $routes->get('get-payhistory', 'Payment::getPayHistory');
+});
