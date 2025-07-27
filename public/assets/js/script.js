@@ -302,6 +302,7 @@
 
             $('#adm_date').datepicker({
                 maxDate: new Date(),
+                dateFormat: "dd/mm/yy"
             });
 
             $('#sbt-student').on('click', function(e){
