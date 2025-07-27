@@ -12,7 +12,7 @@ class DistrictModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = [];
+    protected $allowedFields    = ['id', 'name', 'updated_by', 'updated_date'];
 
     public function addDistrict($data)
     {

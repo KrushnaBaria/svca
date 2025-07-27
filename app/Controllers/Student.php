@@ -8,31 +8,31 @@ use CodeIgniter\HTTP\RequestInterface;
 use Psr\Log\LoggerInterface;
 use App\Models\Center;
 use App\Models\Course;
-use APP\Models\StudentModel;
+use App\Models\StudentModel;
+use App\Models\DistrictModel;
 
 class Student extends BaseController
 {
     protected $model;
     protected $centerModel;
     protected $courseModel;
-
-    public function __construct()
-    {
-        $this->model = model(\App\Models\StudentModel::class);
-        $this->centerModel = model(\App\Models\Center::class);
-        $this->courseModel = model(\App\Models\Course::class);
-    }
+    protected $districtModel;
 
     public function initController(RequestInterface $request, ResponseInterface $response, LoggerInterface $logger)
     {
         // Do Not Edit This Line
         parent::initController($request, $response, $logger);
+        $this->model = model(\App\Models\StudentModel::class);
+        $this->centerModel = model(\App\Models\Center::class);
+        $this->courseModel = model(\App\Models\Course::class);
+        $this->districtModel = model(DistrictModel::class);
     }
 
     public function index()
     {
         $data['centers'] = $this->centerModel->findAll();
         $data['courses'] = $this->courseModel->findAll();
+        $data['districts'] = $this->districtModel->findAll();
         return view('template/header', ['page_title' => 'Student']) . view('student/add', $data) . view('template/footer', ['app_init' => 'initAddStudent']);
     }
 

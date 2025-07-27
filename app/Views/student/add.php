@@ -142,7 +142,9 @@
                         <div class="mb-3">
                             <label for="dist" class="form-label">District</label>
                             <select class="form-select" name="dist" id="dist">
-                                <option value="1">Panchmahal</option>
+                                <?php foreach($districts as $district){ ?>
+                                    <option value="<?php echo $district['id'] ?>"> <?php echo $district['name'] ?> </option>
+                               <?php  } ?>
                             </select>
                         </div>
                     </div>
