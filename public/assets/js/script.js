@@ -213,6 +213,81 @@
 
                 
             });
+
+            let districttbl = $('#district-tbl');
+            let districtTbl = new DataTable('#district-tbl', {
+                responsive: true,
+                searching: typeof districttbl.data('dt-searching') === 'undefined' ? true : districttbl.data('dt-searching'),
+                lengthChange: typeof districttbl.data('dt-lengthchange') === 'undefined' ? true : districttbl.data('dt-lengthchange'),
+                processing: true,
+                serverSide: true,
+                bSortable: true,
+                bFilter: true,
+                pagingType: "full_numbers",
+                ajax: {
+                    url: conf.baseUrl + "/settings/get-districts",
+                    type: 'post',
+                },
+                lengthMenu: [
+                    [5, 10, 20, -1],
+                    [5, 10, 20, "All"]
+                ],
+                pageLength: (typeof districttbl.data('dt-pagelength') === 'undefined' || districttbl.data('dt-pagelength') === '-1') ? 5 : districttbl.data('dt-pagelength'),
+                paging: true,
+                ordering: false,
+                columnDefs: [
+                    {
+                        targets: [0],
+                        orderable: false,
+                        data: function (row) {  
+                            return row.id;
+                        }
+                    },
+                    {
+                        targets: [1],
+                        orderable: true,
+                        data: function (row) {
+                            return row.name;
+                        }
+                    },
+                    {
+                        targets: [2],
+                        orderable: false,
+                        data: function (row) {
+                            return '<button class="btn btn-danger btn-sm delete-center" data-id="' + row.id + '">Delete</button>';
+                        }
+                    }
+                ],
+            });
+
+            $("#sbt-district").on("click", function(e){
+                e.preventDefault();
+                if($("#district_name").val() === ""){
+                    alert("Please enter a district name.");
+                    return;
+                }
+
+                $.ajax({
+                    url: conf.baseUrl + "/settings/add-district",
+                    type: "POST",
+                    dataType: "json",
+                    data: {
+                        dist_name: $("#district_name").val()
+                    },
+                    success: function(res) {
+                        if(res.success == 1) {
+                            $("#district_name").val(""); // Clear the input field
+                            alert("District Added Successfully.");
+                            districtTbl.ajax.reload(); // Reload the table data
+                        } else {
+                            alert("Error updating District");
+                        }
+                    },
+                    error: function() {
+                        alert("An error occurred while updating the District.");
+                    }
+                });
+            });
         },
 
         initAddStudent: function(){

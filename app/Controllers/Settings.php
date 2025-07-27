@@ -8,11 +8,13 @@ use CodeIgniter\HTTP\RequestInterface;
 use Psr\Log\LoggerInterface;
 use App\Models\Center;
 use App\Models\Course;
+use App\Models\DistrictModel;
 
 class Settings extends BaseController
 {
     protected $centerModel;
     protected $courseModel;
+    protected $districtModel;
 
     public function initController(RequestInterface $request, ResponseInterface $response, LoggerInterface $logger)
     {
@@ -20,6 +22,7 @@ class Settings extends BaseController
         parent::initController($request, $response, $logger);
         $this->centerModel = model(Center::class);
         $this->courseModel = model(Course::class);
+        $this->districtModel = model(DistrictModel::class);
     }
 
     public function index()
@@ -94,6 +97,33 @@ class Settings extends BaseController
 
         if($res){
             return json_encode(['success' => 1]);
+        }
+    }
+
+    public function addDidtrict()
+    {
+        $data = [
+            'district' => $this->request->getPost('dist_name')
+        ];
+
+        $res = $this->districtModel->addDistrict($data);
+        if($res){
+            return json_encode(['success' => 1]);
+        }else{
+            return json_encode(['success' => 0, 'message' => 'Failed to add district']);
+        }
+    }
+
+    public function getDistricts()
+    {
+        $data = [
+            'start' => $this->request->getPost('start'),
+            'end' => $this->request->getPost('length')
+        ];
+
+        $districts = $this->districtModel->getDistricts($data);
+        if(!empty($districts)){
+            return (json_encode($districts));
         }
     }
 }

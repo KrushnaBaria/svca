@@ -87,3 +87,45 @@
         </div>
     </div>
 </div>
+
+<div class="row">
+    <div class="col-lg-3">
+        <div class="card">
+            <div class="card-header text-bg-primary">
+                <h4 class="mb-0 text-white">Add District</h4>
+            </div>
+            <div class="card-body">
+                <form>
+                    <div class="col-md-12">
+                        <div class="mb-3">
+                            <label for="district_name" class="form-label">District Name</label>
+                            <input type="text" class="form-control" id="district_name" placeholder="Enter District Name">
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="mb-3 text-center">
+                            <button class="btn btn-primary" id="sbt-district">Submit</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-9">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title mb-3">Districts</h4>
+                <table id="district-tbl" class="display responsive nowrap" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Name</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

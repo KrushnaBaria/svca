@@ -41,4 +41,6 @@ $routes->group('settings', function ($routes) {
     $routes->post('add-course', 'Settings::addCourse');
     $routes->post('getCourses', 'Settings::getCourses');
     $routes->post('update-course', 'Settings::updateCouse');
+    $routes->post('add-district', 'Settings::addDidtrict');
+    $routes->post('get-districts', 'Settings::getDistricts');
 });
