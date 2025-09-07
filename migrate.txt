@@ -8,5 +8,5 @@ ALTER TABLE `courses` ADD `price` INT NOT NULL AFTER `course`;
 [27/07/2025]
 ALTER TABLE `courses` ADD `updated_by` VARCHAR(255) NOT NULL AFTER `price`;
 ALTER TABLE `courses` ADD `updated_date` TIMESTAMP NOT NULL AFTER `updated_by`;
-CREATE TABLE `svca`.`districts` (`id` INT NOT NULL AUTO_INCREMENT , `name` VARCHAR(255) NOT NULL , `updated_by` VARCHAR(255) NOT NULL , `updated_date` TIMESTAMP NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
-CREATE TABLE `svca`.`payment` (`id` INT NOT NULL AUTO_INCREMENT , `stu_id` INT NOT NULL , `amount` INT NOT NULL , `updated_by` VARCHAR(255) NOT NULL , `updated_date` TIMESTAMP NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+CREATE TABLE `svca`.`districts` (`id` INT NOT NULL AUTO_INCREMENT , `name` VARCHAR(255) NOT NULL , `updated_by` VARCHAR(255) NOT NULL , `updated_date` TIMESTAMP NOT NULL , PRIMARY KEY (`id`));
+CREATE TABLE `svca`.`payment` (`id` INT NOT NULL AUTO_INCREMENT , `stu_id` INT NOT NULL , `amount` INT NOT NULL , `updated_by` VARCHAR(255) NOT NULL , `updated_date` TIMESTAMP NOT NULL , PRIMARY KEY (`id`));
