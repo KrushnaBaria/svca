@@ -6,7 +6,7 @@
         </div>
     </div>
     <div class="card-body">
-        <table id="student-tbl" class="display responsive nowrap dataTable w-100">
+        <table id="student-tbl" class="table table-striped" style="width:100%">
             <thead class="text-dark fs-4">
                 <tr>
                     <th><h6 class="fs-3 fw-semibold">No</h6></th>

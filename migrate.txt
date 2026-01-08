@@ -13,3 +13,6 @@ CREATE TABLE `svca`.`payment` (`id` INT NOT NULL AUTO_INCREMENT , `stu_id` INT N
 
 [04/01/2026]
 ALTER TABLE `users` ADD `first_name` VARCHAR NOT NULL AFTER `username`, ADD `last_name` VARCHAR NOT NULL AFTER `first_name`;
+
+[08/01/2026]
+ALTER TABLE `students` CHANGE `admi_date` `admi_date` DATE NOT NULL;

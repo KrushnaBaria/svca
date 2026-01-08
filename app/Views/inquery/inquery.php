@@ -9,11 +9,11 @@
                 <form action="">
                     <div class="mb-3">
                         <label class="form-label">Student Name</label>
-                        <input type="text" id="name" class="form-control" placeholder="Enter Student Name">
+                        <input type="text" id="s_name" class="form-control" placeholder="Enter Student Name">
                     </div>
                     <div class="mb-3">
                         <label for="p_number" class="form-label">Mobile Number</label>
-                        <input type="text" class="form-control" id="p_number" placeholder="Enter Mobile Numbers" inputmode="numeric" onkeypress="return event.charCode >= 48 && event.charCode <= 57 || event.charCode == 47;">
+                        <input type="text" class="form-control" id="p_number" placeholder="Enter Mobile Numbers" inputmode="numeric" onkeypress="return event.charCode >= 48 && event.charCode <= 57 || event.charCode == 47;" maxlength="10">
                     </div>
                     <div class="row">
                         <div class="col-md-6">
@@ -49,7 +49,8 @@
                         </select>
                     </div>
                     <div class="d-flex justify-content-center">
-                        <button type="submit" class="btn btn-primary col-md-4">Submit</button>
+                        <input type="hidden" id="inqury_id" value="">
+                        <button class="btn btn-primary col-md-4" id="smt-inqury">Submit</button>
                     </div>
                 </form>
             </div>
@@ -58,10 +59,11 @@
     <div class="col-md-8">
         <div class="card">
             <div class="card-header">
-                <table>
+                <table id="inqury-tbl" class="table table-striped" style="width:100%">
                     <thead>
+                        <th>No</th>
                         <th>Name</th>
-                        <th>Mobile Number</th>
+                        <th>M Number</th>
                         <th>Course</th>
                         <th>Center</th>
                     </thead>

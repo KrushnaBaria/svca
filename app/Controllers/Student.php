@@ -38,6 +38,7 @@ class Student extends BaseController
 
     public function add()
     {
+        $stu_id = $this->request->getPost('studentId');
         $data = [
             's_name' => $this->request->getPost('s_name'),
             'f_name' => $this->request->getPost('f_name'),
@@ -59,13 +60,37 @@ class Student extends BaseController
             'ref_by' => $this->request->getPost('ref_by'),
             'adm_date' => $this->request->getPost('adm_date') ? date('Y-m-d', strtotime($this->request->getPost('adm_date'))) : '',
         ];
-
-        $res = $this->model->addStudent($data);
-        if ($res) {
-            return json_encode(['success' => 1]);
-        } else {
-            return json_encode(['success' => 0, 'message' => 'Failed to add student']);
+        
+        if($stu_id){
+            $res = $this->model->updateStudent($stu_id, $data);
+            if ($res) {
+                return json_encode(['success' => 1]);
+            } else {
+                return json_encode(['success' => 0, 'message' => 'Failed to add student']);
+            }
+        }else{
+            $res = $this->model->addStudent($data);
+            if ($res) {
+                return json_encode(['success' => 1]);
+            } else {
+                return json_encode(['success' => 0, 'message' => 'Failed to add student']);
+            }
         }
+    }
+
+    public function edit($id)
+    {
+        $student = $this->model->find($id);
+        if (!$student) {
+            throw new \CodeIgniter\Exceptions\PageNotFoundException('Student not found');
+        }
+
+        $data['student'] = $student;
+        $data['centers'] = $this->centerModel->findAll();
+        $data['courses'] = $this->courseModel->findAll();
+        $data['districts'] = $this->districtModel->findAll();
+
+        return view('template/header', ['page_title' => 'Edit Student']) . view('student/edit', $data) . view('template/footer', ['app_init' => 'initEditStudent']);
     }
 
     public function list()

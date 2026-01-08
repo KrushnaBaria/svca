@@ -401,14 +401,140 @@
                     },
                     success: function(res) {
                         if(res.success == 1) {
-                            alert("Student Added Successfully.");
-                            //window.location.href = conf.baseUrl + "/student/list";
+                            window.location.href = conf.baseUrl + "/student/list";
                         } else {
                             alert("Error adding student");
                         }
                     },
                     error: function() {
                         alert("An error occurred while adding the student.");
+                    }
+                });
+            });
+        },
+
+        initEditStudent: function(){
+
+            $('#adm_date').datepicker({
+                maxDate: new Date(),
+                dateFormat: "dd/mm/yy", 
+            }).datepicker('setDate', $('#adm_date_db').val() ? new Date($('#adm_date_db').val()) : '');
+
+            $('#update-stu').on('click', function(e){
+                e.preventDefault();
+                if($('#s_name').val() == ''){
+                    $('#s_name').focus();
+                    return false;
+                }
+
+                if($('#f_name').val() == ''){
+                    $('#f_name').focus();
+                    return false;
+                }
+
+                if($('#dob').val() == ''){
+                    $('#dob').focus();
+                    return false;
+                }
+
+                if($('#dob').val() == ''){
+                    $('#dob').focus();
+                    return false;
+                }
+
+                if($('#p_number').val() == ''){
+                    $('#p_number').focus();
+                    return false;
+                }
+
+                if($('#per').val() == ''){
+                    $('#per').focus();
+                    return false;
+                }
+
+                if($('#b_time1').val() == ''){
+                    $('#b_time1').focus();
+                    return false;
+                }
+
+                if($('#b_time2').val() == ''){
+                    $('#b_time2').focus();
+                    return false;
+                }
+
+                if($('#adhar').val() == ''){
+                    $('#adhar').focus();
+                    return false;
+                }
+
+                let gender = $('input[name="gender"]:checked').val();
+                if (!gender) {
+                    $('input[name="gender"]').first().focus();
+                    return false;
+                }
+
+                let m_sts = $('input[name="marital_sts"]:checked').val();
+                if (!m_sts) {
+                    $('input[name="marital_sts"]').first().focus();
+                    return false;
+                }
+
+                if($('#adm_date').val() == ''){
+                    $('#adm_date').focus();
+                    return false;
+                }
+
+                if($('#student_id').val() == ''){
+                    alert('Something Wants To Wrong Please Reload This Page');
+                    return false;
+                }
+
+                if($('#remark').val() == ''){
+                    $('#remark').focus();
+                    return false;
+                }
+                
+                let from = $('#b_time1').val();
+                let to = $('#b_time2').val();
+                let b_time = from + ' - ' + to;
+
+                //eturn false;
+                $.ajax({
+                    url: conf.baseUrl + "student/add",
+                    type: "POST",
+                    dataType: "json",
+                    data: {
+                        studentId: $('#student_id').val(),
+                        s_name: $('#s_name').val(),
+                        f_name: $('#f_name').val(),
+                        m_name: $('#m_name').val() ? $('#m_name').val() : '',
+                        p_number: $('#p_number').val() ? $('#p_number').val() : '',
+                        ap_number: $('#ap_number').val() ? $('#ap_number').val() : '',
+                        dob: $('#dob').val(),
+                        gender: gender,
+                        marital_sts: m_sts,
+                        lst_qulifi: $('#lst_qulifi').val() ? $('#lst_qulifi').val() : '',
+                        per: $('#per').val() ? $('#per').val() : '',
+                        course: $('#course').val() ? $('#course').val() : '',
+                        cast: $('#cast').val() ? $('#cast').val() : '',
+                        b_time: b_time ? b_time : '',
+                        adhar: $('#adhar').val() ? $('#adhar').val() : '',
+                        dist: $('#dist').val() ? $('#dist').val() : '',
+                        center: $('#center').val() ? $('#center').val() : '',
+                        address: $('#address').val() ? $('#address').val() : '',
+                        ref_by: $('#ref_by').val() ? $('#ref_by').val() : '',
+                        adm_date: $('#adm_date').val() ? $('#adm_date').val() : '',
+                        remark: $('#remark').val() ? $('#remark').val() : '' 
+                    },
+                    success: function(res) {
+                        if(res.success == 1) {
+                            window.location.href = conf.baseUrl + "/student/list";
+                        } else {
+                            alert("Error updating student");
+                        }
+                    },
+                    error: function() {
+                        alert("An error occurred while updating the student.");
                     }
                 });
             });
@@ -497,7 +623,7 @@
                         targets: [8],
                         orderable: false,
                         data: function (row) {
-                            return '<a class="text-primary btn" href="'+ conf.baseUrl +'payment/'+ row.id +'"><i class="ti ti-currency-dollar fs-6"></i></i></a>';
+                            return '<a class="text-primary" href="' + conf.baseUrl + 'student/edit/' + row.id + '"><i class="ti ti-edit fs-6"></i></a> <a class="text-primary" href="' + conf.baseUrl + 'payment/' + row.id + '"><i class="ti ti-currency-dollar fs-6"></i></a>';
                         }
                     }
                 ],
@@ -523,6 +649,159 @@
                         }
                     });
                 }
+            });
+        },
+
+        initInquery: function() {
+            $('#smt-inqury').on('click', function(e){
+                e.preventDefault();
+                
+                if($('#s_name').val() == ''){
+                    $('#s_name').focus();
+                    return false;
+                }
+
+                if($('#p_number').val() == ''){
+                    $('#p_number').focus();
+                    return false;
+                }
+
+                if($('#inqury_id').val()){
+                    $.ajax({
+                        url: conf.baseUrl + "/inquery/add",
+                        type: "POST",
+                        dataType: "json",
+                        data: { 
+                            id: $('#inqury_id').val(),
+                            s_name: $('#s_name').val(),
+                            p_number: $('#p_number').val(),
+                            qulification: $('#lst_qulifi').val(),
+                            course: $('#course').val(),
+                            center: $('#center').val()
+                        },
+                        success: function(res) {
+                            if (res.success == 1) {
+                                $('#s_name, #p_number, #inqury_id').val('');
+                                inquiryTbl.ajax.reload();
+                            } else {
+                                alert(res.message || "Error updating inquiry");
+                            }
+                        },
+                        error: function() {
+                            alert("An error occurred while updating the inquiry.");
+                        }
+                    });
+                }else{
+                    $.ajax({
+                        url: conf.baseUrl + "/inquery/add",
+                        type: "POST",
+                        dataType: "json",
+                        data: {
+                            s_name: $('#s_name').val(),
+                            p_number: $('#p_number').val(),
+                            qulification: $('#lst_qulifi').val(),
+                            course: $('#course').val(),
+                            center: $('#center').val(),
+                            //ref_by: $('#ref_by').val() ? $('#ref_by').val() : '',
+                            //remark: $('#remark').val() ? $('#remark').val() : ''
+                        },
+                        success: function(res) {
+                            if (res.success == 1) {
+                                $('#s_name, #p_number').val('');
+                                inquiryTbl.ajax.reload();
+                            } else {
+                                alert(res.message || "Error saving inquiry");
+                            }
+                        },
+                        error: function() {
+                            alert("An error occurred while saving the inquiry.");
+                        }
+                    });
+                }
+            });
+
+            let inquiryTbl = new DataTable('#inqury-tbl', {
+                responsive: true,
+                select: {
+                    style: 'single',
+                },
+                scrollX: true,
+                searching: true,
+                lengthChange: true,
+                processing: true,
+                serverSide: true,
+                bSortable: true,
+                bFilter: true,
+                pagingType: "full_numbers",
+                ajax: {
+                    url: conf.baseUrl + "/inquery/list",
+                    type: 'post',
+                },
+                lengthMenu: [
+                    [5, 10, 20, -1],
+                    [5, 10, 20, "All"]
+                ],
+                pageLength: 5,
+                paging: true,
+                ordering: false,
+                columnDefs: [
+                    {
+                        targets: [0],
+                        orderable: false,
+                        data: function (row, type, val, meta) {  
+                            return meta.row + 1;
+                        }
+                    },
+                    {
+                        targets: [1],
+                        orderable: true,
+                        data: function (row) {
+                            console.log(row);
+                            return row.name;
+                        }
+                    },
+                    {
+                        targets: [2],
+                        orderable: false,
+                        data: function (row) {
+                            return row.pnumber;
+                        }
+                    },
+                    {
+                        targets: [3],
+                        orderable: true,
+                        data: function (row) {
+                            return row.course_name;
+                        }
+                    },
+                    {
+                        targets: [4],
+                        orderable: true,
+                        data: function (row) {
+                            return row.center_name;
+                        }
+                    }
+                ],
+            }).on('select', function(e, dt, type, indexes) {
+                let data = inquiryTbl.rows(indexes).data().toArray();
+                if(data.length > 0) {
+                    console.log(data);
+                    $('#s_name').val(data[0].name);
+                    $('#p_number').val(data[0].pnumber);
+                    $('#lst_qulifi').val(data[0].lqualifi).trigger('change');
+                    $('#course').val(data[0].course).trigger('change');
+                    $('#center').val(data[0].center).trigger('change');
+                    $('#inqury_id').val(data[0].id);
+                    $('#smt-inqury').text('Update');
+                }
+            }).on('deselect', function(e, dt, type, indexes){
+                $('#s_name').val('');
+                $('#p_number').val('');
+                // $('#lst_qulifi').val('').trigger('change');
+                // $('#course').val('').trigger('change');
+                // $('#center').val('').trigger('change');
+                $('#inqury_id').val('');
+                $('#smt-inqury').text('Submit');
             });
         },
 

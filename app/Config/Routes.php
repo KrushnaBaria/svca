@@ -27,11 +27,14 @@ $routes->group('student', function ($routes) {
     $routes->get('/', 'Student::index');
     $routes->post('add', 'Student::add');
     $routes->get('list', 'Student::list');
+    $routes->get('edit/(:num)', 'Student::edit/$1');
     $routes->post('getStudents', 'Student::getStudents');
 });
 
 $routes->group('inquery', function ($routes) {
     $routes->get('/', 'Inquery::index');
+    $routes->post('add', 'Inquery::add');
+    $routes->post('list', 'Inquery::list');
 });
 
 $routes->group('settings', function ($routes) {
