@@ -623,7 +623,9 @@
                         targets: [8],
                         orderable: false,
                         data: function (row) {
-                            return '<a class="text-primary" href="' + conf.baseUrl + 'student/edit/' + row.id + '"><i class="ti ti-edit fs-6"></i></a> <a class="text-primary" href="' + conf.baseUrl + 'payment/' + row.id + '"><i class="ti ti-currency-dollar fs-6"></i></a>';
+                            return '<a class="text-primary" href="' + conf.baseUrl + 'student/view/' + row.id + '"><i class="ti ti-eye fs-6"></i></a> '
+                                + '<a class="text-secondary" href="' + conf.baseUrl + 'payment/' + row.id + '"><i class="ti ti-coin-rupee fs-6"></i></a> '
+                                + '<a class="text-primary" href="' + conf.baseUrl + 'student/edit/' + row.id + '"><i class="ti ti-edit fs-6"></i></a>';
                         }
                     }
                 ],

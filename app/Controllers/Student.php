@@ -93,6 +93,21 @@ class Student extends BaseController
         return view('template/header', ['page_title' => 'Edit Student']) . view('student/edit', $data) . view('template/footer', ['app_init' => 'initEditStudent']);
     }
 
+    public function view($id)
+    {
+        $student = $this->model->find($id);
+        if (!$student) {
+            throw new \CodeIgniter\Exceptions\PageNotFoundException('Student not found');
+        }
+
+        $data['student'] = $student;
+        $data['centers'] = $this->centerModel->findAll();
+        $data['courses'] = $this->courseModel->findAll();
+        $data['districts'] = $this->districtModel->findAll();
+
+        return view('template/header', ['page_title' => 'View Student']) . view('student/view', $data) . view('template/footer', ['app_init' => 'initViewStudent']);
+    }
+
     public function list()
     {
         //$data['students'] = $this->model->getStudents();

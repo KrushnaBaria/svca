@@ -28,6 +28,7 @@ $routes->group('student', function ($routes) {
     $routes->post('add', 'Student::add');
     $routes->get('list', 'Student::list');
     $routes->get('edit/(:num)', 'Student::edit/$1');
+    $routes->get('view/(:num)', 'Student::view/$1');
     $routes->post('getStudents', 'Student::getStudents');
 });
 
