@@ -12,8 +12,11 @@ CREATE TABLE `svca`.`districts` (`id` INT NOT NULL AUTO_INCREMENT , `name` VARCH
 CREATE TABLE `svca`.`payment` (`id` INT NOT NULL AUTO_INCREMENT , `stu_id` INT NOT NULL , `amount` INT NOT NULL , `updated_by` VARCHAR(255) NOT NULL , `updated_date` TIMESTAMP NOT NULL , PRIMARY KEY (`id`));
 
 [04/01/2026]
-ALTER TABLE `users` ADD `first_name` VARCHAR NOT NULL AFTER `username`, ADD `last_name` VARCHAR NOT NULL AFTER `first_name`;
+-----ALTER TABLE `users` ADD `first_name` VARCHAR NOT NULL AFTER `username`, ADD `last_name` VARCHAR NOT NULL AFTER `first_name`;
 
 [08/01/2026]
 ALTER TABLE `students` CHANGE `admi_date` `admi_date` DATE NOT NULL;
 CREATE TABLE `svca`.`expenses` (`id` INT(11) NOT NULL AUTO_INCREMENT , `exp` VARCHAR(255) NOT NULL , `center` INT(11) NOT NULL , `amount` INT(11) NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+
+[11/01/2026]
+ALTER TABLE `payment` ADD `add_date` DATETIME NOT NULL AFTER `amount`;

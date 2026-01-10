@@ -821,6 +821,9 @@
                 pagingType: "full_numbers",
                 ajax: {
                     url: conf.baseUrl + "/payment/get-payhistory",
+                    data: function (d) {
+                        d.student_id = $('#stu_id').val();
+                    },
                     type: 'post',
                 },
                 lengthMenu: [
@@ -842,17 +845,47 @@
                         targets: [1],
                         orderable: true,
                         data: function (row) {
-                            return row.name;
+                            return row.amount;
                         }
                     },
                     {
                         targets: [2],
                         orderable: false,
                         data: function (row) {
-                            return '<button class="btn btn-danger btn-sm delete-center" data-id="' + row.id + '">Delete</button>';
+                            return row.add_date;
                         }
                     }
                 ],
+            });
+
+            $('#paymentModal').on('click', '#acceptPayment', function(e){
+                e.preventDefault();
+                if($('#paymentAmount').val() == ''){
+                    $('#paymentAmount').focus();
+                    return false;
+                }
+                
+                $.ajax({
+                    url: conf.baseUrl + "/payment/add",
+                    type: "POST",
+                    dataType: "json",
+                    data: {
+                        amount: $('#paymentAmount').val(),
+                        student_id: $('#stu_id').val(),
+                    },
+                    success: function(res) {
+                        if(res.success == 1) {
+                            $('#paymentAmount').val('');
+                            payhistoryTbl.ajax.reload();
+                            $('#paymentModal').modal('hide');
+                        } else {
+                            alert("Error accepting payment");
+                        }
+                    },
+                    error: function() {
+                        alert("An error occurred while accepting the payment.");
+                    }
+                });
             });
         },
 

@@ -6,41 +6,21 @@ use CodeIgniter\Model;
 
 class PaymentModel extends Model
 {
-    protected $table            = 'payments';
+    protected $table            = 'payment';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = [];
+    protected $allowedFields    = ['stu_id', 'amount', 'add_date', 'updated_by', 'updated_date'];
 
-    protected bool $allowEmptyInserts = false;
-    protected bool $updateOnlyChanged = true;
-
-    protected array $casts = [];
-    protected array $castHandlers = [];
-
-    // Dates
-    protected $useTimestamps = false;
-    protected $dateFormat    = 'datetime';
-    protected $createdField  = 'created_at';
-    protected $updatedField  = 'updated_at';
-    protected $deletedField  = 'deleted_at';
-
-    // Validation
-    protected $validationRules      = [];
-    protected $validationMessages   = [];
-    protected $skipValidation       = false;
-    protected $cleanValidationRules = true;
-
-    // Callbacks
-    protected $allowCallbacks = true;
-    protected $beforeInsert   = [];
-    protected $afterInsert    = [];
-    protected $beforeUpdate   = [];
-    protected $afterUpdate    = [];
-    protected $beforeFind     = [];
-    protected $afterFind      = [];
-    protected $beforeDelete   = [];
-    protected $afterDelete    = [];
+    public function getPayHistory($data)
+    {
+        $query = "SELECT * FROM payment WHERE stu_id = " . $data['student_id'];
+        $query .= " ORDER BY id ASC LIMIT " . $data['start'] . ", " . $data['end'];
+        
+        $result['recordsTotal'] = $result['recordsFiltered'] = $this->db->query($query)->getNumRows();
+        $result['data'] = $this->db->query($query)->getResultArray();
+        return $result;
+    }
 }
