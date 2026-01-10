@@ -21,6 +21,8 @@ $routes->group('dashboard', function ($routes) {
 
 $routes->group('expense', function ($routes) {
     $routes->get('/', 'Expense::index');
+    $routes->post('add', 'Expense::add');
+    $routes->post('list', 'Expense::list');
 });
 
 $routes->group('student', function ($routes) {

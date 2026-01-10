@@ -856,6 +856,104 @@
             });
         },
 
+        initExpense: function(){
+
+            let expensetbl = $('#expense-tbl');
+            let expenseTbl = new DataTable('#expense-tbl', {
+                responsive: true,
+                searching: typeof expensetbl.data('dt-searching') === 'undefined' ? true : expensetbl.data('dt-searching'),
+                lengthChange: typeof expensetbl.data('dt-lengthchange') === 'undefined' ? true : expensetbl.data('dt-lengthchange'),
+                processing: true,
+                serverSide: true,
+                bSortable: true,
+                bFilter: true,
+                pagingType: "full_numbers",
+                ajax: {
+                    url: conf.baseUrl + "/expense/list",
+                    type: 'post',
+                },
+                lengthMenu: [
+                    [5, 10, 20, -1],
+                    [5, 10, 20, "All"]
+                ],
+                pageLength: (typeof expensetbl.data('dt-pagelength') === 'undefined' || expensetbl.data('dt-pagelength') === '-1') ? 5 : expensetbl.data('dt-pagelength'),
+                paging: true,
+                ordering: false,
+                columnDefs: [
+                    {
+                        targets: [0],
+                        orderable: false,
+                        data: function (row, type, val, meta) {  
+                            return meta.row + 1;
+                        }
+                    },
+                    {
+                        targets: [1],
+                        orderable: true,
+                        data: function (row) {
+                            return row.exp;
+                        }
+                    },
+                    {
+                        targets: [2],
+                        orderable: false,
+                        data: function (row) {
+                            return row.center_name;
+                        }
+                    },
+                    {
+                        targets: [3],
+                        orderable: false,
+                        data: function (row) {
+                            return row.amount;
+                        }
+                    },
+                ],
+            });
+
+            $('#sbt-expence').on('click', function(e){
+                e.preventDefault();
+                if($('#exp').val() == ''){
+                    $('#exp').focus();
+                    return false;
+                }
+                
+                if($('#center').val() == ''){
+                    $('#center').focus();
+                    return false;
+                }
+                
+                if($('#amount').val() == ''){
+                    $('#amount').focus();
+                    return false;
+                }
+            
+                $.ajax({
+                    url: conf.baseUrl + "/expense/add",
+                    type: "POST",
+                    dataType: "json",
+                    data: {
+                        exp: $('#exp').val(),
+                        center: $('#center').val(),
+                        amount: $('#amount').val(),
+                    },
+                    success: function(res) {
+                        if(res.success == 1) {
+                            $('#exp').val('');
+                            $('#center').val('');
+                            $('#amount').val('');
+                            expenseTbl.ajax.reload();
+                        } else {
+                            alert("Error adding expense");
+                        }
+                    },
+                    error: function() {
+                        alert("An error occurred while adding the expense.");
+                    }
+                });
+            });
+        },
+
         init: function(calltoinit) {
             if(typeof this[calltoinit] === "function"){
                 this[calltoinit]();

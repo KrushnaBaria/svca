@@ -16,3 +16,4 @@ ALTER TABLE `users` ADD `first_name` VARCHAR NOT NULL AFTER `username`, ADD `las
 
 [08/01/2026]
 ALTER TABLE `students` CHANGE `admi_date` `admi_date` DATE NOT NULL;
+CREATE TABLE `svca`.`expenses` (`id` INT(11) NOT NULL AUTO_INCREMENT , `exp` VARCHAR(255) NOT NULL , `center` INT(11) NOT NULL , `amount` INT(11) NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
