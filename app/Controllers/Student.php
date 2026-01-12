@@ -6,8 +6,8 @@ use App\Controllers\BaseController;
 use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\HTTP\RequestInterface;
 use Psr\Log\LoggerInterface;
-use App\Models\Center;
-use App\Models\Course;
+use App\Models\CenterModel;
+use App\Models\CourseModel;
 use App\Models\StudentModel;
 use App\Models\DistrictModel;
 
@@ -23,8 +23,8 @@ class Student extends BaseController
         // Do Not Edit This Line
         parent::initController($request, $response, $logger);
         $this->model = model(\App\Models\StudentModel::class);
-        $this->centerModel = model(\App\Models\Center::class);
-        $this->courseModel = model(\App\Models\Course::class);
+        $this->centerModel = model(\App\Models\CenterModel::class);
+        $this->courseModel = model(\App\Models\CourseModel::class);
         $this->districtModel = model(DistrictModel::class);
     }
 
@@ -52,6 +52,7 @@ class Student extends BaseController
             'lst_qulifi' => $this->request->getPost('lst_qulifi'),
             'per' => $this->request->getPost('per'),
             'course' => $this->request->getPost('course'),
+            'fees' => $this->request->getPost('course_amt'),
             'b_time' => $this->request->getPost('b_time'),
             'adhar' => $this->request->getPost('adhar'),
             'center' => $this->request->getPost('center'),
@@ -59,6 +60,8 @@ class Student extends BaseController
             'address' => $this->request->getPost('address'),
             'ref_by' => $this->request->getPost('ref_by'),
             'adm_date' => $this->request->getPost('adm_date') ? date('Y-m-d', strtotime($this->request->getPost('adm_date'))) : '',
+            'updated_by' => auth()->user()->email,
+            'discount' => $this->request->getPost('discount') ? $this->request->getPost('discount') : 0,
         ];
         
         if($stu_id){

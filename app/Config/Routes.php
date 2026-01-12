@@ -51,6 +51,13 @@ $routes->group('settings', function ($routes) {
     $routes->post('get-districts', 'Settings::getDistricts');
 });
 
+$routes->group('course', function ($routes) {
+    //$routes->get('/', 'Course::index');
+    //$routes->post('add', 'Course::add');
+    //$routes->post('list', 'Course::list');
+    $routes->post('get-course-fee', 'Course::getCourseFee');
+});
+
 $routes->group('payment', function ($routes){
     $routes->get('(:num)', 'Payment::index/$1');
     $routes->post('add', 'Payment::add');

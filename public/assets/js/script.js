@@ -290,7 +290,38 @@
             });
         },
 
+        getCourseAmt: function(courseId){
+            $.ajax({
+                url: conf.baseUrl + "/course/get-course-fee",
+                type: "POST",
+                dataType: "json",
+                data: {
+                    course_id: courseId
+                },
+                success: function(res) {
+                    if(res.success == 1) {
+                        $('.course-fee').val(res.fee);
+                    } else {
+                        alert("Error fetching course fee");
+                    }
+                },
+                error: function() {
+                    alert("An error occurred while fetching the course fee.");
+                }
+            });
+        },
+
         initAddStudent: function(){
+            let SVCAobj = this;
+
+            setTimeout(function(){
+                $('#course').trigger('change');
+            }, 300);
+
+            $('#course').on('change', function() {
+                SVCAobj.getCourseAmt($(this).val());
+            });
+
             document.getElementById('dob').addEventListener('input', function(e) {
                 let value = e.target.value.replace(/\D/g, '').slice(0,8);
                 if (value.length >= 5)
@@ -368,6 +399,11 @@
                     $('#adm_date').focus();
                     return false;
                 }
+
+                if($('#c-amount').val() == ''){
+                    alert('Something Wants To Wrong Please Reload This Page');
+                    return false;
+                }
                 
                 let from = $('#b_time1').val();
                 let to = $('#b_time2').val();
@@ -390,6 +426,8 @@
                         lst_qulifi: $('#lst_qulifi').val() ? $('#lst_qulifi').val() : '',
                         per: $('#per').val() ? $('#per').val() : '',
                         course: $('#course').val() ? $('#course').val() : '',
+                        course_amt: $('#c-amount').val() ? $('#c-amount').val() : '',
+                        discount: $('#discount').val() ? $('#discount').val() : '',
                         cast: $('#cast').val() ? $('#cast').val() : '',
                         b_time: b_time ? b_time : '',
                         adhar: $('#adhar').val() ? $('#adhar').val() : '',

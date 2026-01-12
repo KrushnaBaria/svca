@@ -4,7 +4,7 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class Center extends Model
+class CenterModel extends Model
 {
     protected $table            = 'centers';
     protected $primaryKey       = 'id';

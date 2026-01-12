@@ -162,12 +162,6 @@
                 <div class="row">
                     <div class="col-md-4">
                         <div class="mb-3">
-                            <label for="address" class="form-label">Address</label>
-                            <textarea class="form-control" id="address" rows="1" placeholder="Enter Address"></textarea>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="mb-3">
                             <label for="ref_by" class="form-label">Referred By</label>
                             <input type="text" class="form-control" id="ref_by" placeholder="Enter Referred By">
                         </div>
@@ -178,10 +172,34 @@
                             <input type="text" class="form-control" id="adm_date" inputmode="none" onkeydown="return false;">
                         </div>
                     </div>
+                    <div class="col-md-2">
+                        <div class="mb-3">
+                            <label for="amount" class="form-label">Amount</label>
+                            <input type="text" id="amount" class="form-control course-fee disabled" readonly>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="mb-3">
+                            <label for="discount" class="form-label">Discount</label>
+                            <div class="input-group">
+                                <input type="number" class="form-control" id="discount" min="0" max="100">
+                                <span class="input-group-text">%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="mb-12">
+                            <label for="address" class="form-label">Address</label>
+                            <textarea class="form-control" id="address" rows="3" placeholder="Enter Address"></textarea>
+                        </div>
+                    </div>
                 </div>
                 <div class="row">
                     <div class="col-md-12 text-center">
-                        <button type="submit" class="btn btn-primary" id="sbt-student">Submit</button>
+                        <input type="hidden" id="c-amount" class="course-fee" value="">
+                        <button type="submit" class="btn btn-primary mt-2" id="sbt-student">Submit</button>
                     </div>
                 </div>
             </form>

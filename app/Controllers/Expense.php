@@ -7,7 +7,7 @@ use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\HTTP\RequestInterface;
 use Psr\Log\LoggerInterface;
 use App\Models\ExpenseModel;
-use App\Models\Center;
+use App\Models\CenterModel;
 
 class Expense extends BaseController
 {
@@ -19,7 +19,7 @@ class Expense extends BaseController
         // Do Not Edit This Line
         parent::initController($request, $response, $logger);
         $this->model = model(ExpenseModel::class);
-        $this->centerModel = model(Center::class);
+        $this->centerModel = model(CenterModel::class);
     }
 
     public function index()

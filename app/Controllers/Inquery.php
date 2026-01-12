@@ -6,8 +6,8 @@ use App\Controllers\BaseController;
 use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\HTTP\RequestInterface;
 use Psr\Log\LoggerInterface;
-use App\Models\Center;
-use App\Models\Course;
+use App\Models\CenterModel;
+use App\Models\CourseModel;
 use App\Models\StudentModel;
 
 class Inquery extends BaseController
@@ -16,8 +16,8 @@ class Inquery extends BaseController
     {
         // Do Not Edit This Line
         parent::initController($request, $response, $logger);
-        $this->centerModel = model(Center::class);
-        $this->courseModel = model(Course::class);
+        $this->centerModel = model(CenterModel::class);
+        $this->courseModel = model(CourseModel::class);
         $this->studentModel = model(StudentModel::class);
     }
 
