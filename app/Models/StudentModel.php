@@ -29,7 +29,7 @@ class StudentModel extends Model
             $student_id = $this->db->insertID();
             if($data['discount']){
                 $amt = $data['fees'] * ($data['discount'] / 100);
-                $pay_query = "INSERT INTO payment (id, stu_id, amount, add_date, updated_by, updated_date) VALUES (NULL, " . intval($student_id) . ", " . floatval($amt) . ", '" . date('Y-m-d H:i:s') . "', '" . $data['updated_by'] . "', '" . date('Y-m-d H:i:s') . "')";
+                $pay_query = "INSERT INTO payment (id, stu_id, amount, add_date, updated_by, updated_date) VALUES (NULL, " . intval($student_id) . ", " . floatval($amt) . ", '" . date('Y-m-d H:i:s') . "', 'AUTO', '" . date('Y-m-d H:i:s') . "')";
                 if ($this->db->query($pay_query)) {
                     return true;
                 } else {
@@ -51,12 +51,25 @@ class StudentModel extends Model
         $adm_date = \DateTime::createFromFormat('Y-d-m', $data['adm_date']);
         $adm_dateFormatted = $adm_date ? $adm_date->format('Y-m-d') : null;
 
+        $query1 = "SELECT status FROM students WHERE id = " . intval($id);
+        $result = $this->db->query($query1)->getRowArray();
+        if($result['status'] == 0 && $data['discount']){
+            $amt = $data['fees'] * ($data['discount'] / 100);
+            $pay_query = "INSERT INTO payment (id, stu_id, amount, add_date, updated_by, updated_date) VALUES (NULL, " . intval($student_id) . ", " . floatval($amt) . ", '" . date('Y-m-d H:i:s') . "', 'AUTO', '" . date('Y-m-d H:i:s') . "')";
+            if ($this->db->query($pay_query)) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
         $query = "UPDATE students SET 
             name = '" . $data['s_name'] . "',
             fname = '" . $data['f_name'] . "',
             mname = '" . $data['m_name'] . "',
             dob = '" . $dobFormatted . "',
             gender = '" . $data['gender'] . "',
+            marital_sts = '" . $data['marital_sts'] . "',
             cast = '" . $data['cast'] . "',
             course = '" . $data['course'] . "',
             lqualifi = '" . $data['lst_qulifi'] . "',
@@ -70,6 +83,8 @@ class StudentModel extends Model
             address = '" . $data['address'] . "',
             center = '" . $data['center'] . "',
             referred_by = '" . $data['ref_by'] . "',
+            updated_by = '" . $data['updated_by'] . "',
+            updated_date = NOW(),
             status = 1
             WHERE id = " . intval($id);
         if ($this->db->query($query)) {
@@ -101,18 +116,9 @@ class StudentModel extends Model
         $result['data'] = $this->db->query($query)->getResultArray();
         return $result;
     }
-    // {
-    //     $query = "SELECT st.*, courses.course AS course_name, centers.center AS center_name FROM students AS st
-    //         LEFT JOIN centers ON st.center = centers.id
-    //         LEFT JOIN courses ON st.course = courses.id
-    //         -- LEFT JOIN districts ON students.district = districts.id
-    //         WHERE status = 1 ORDER BY st.id DESC"; ;
-    //     $result = $this->db->query($query)->getResultArray();
-    //     return $result;
-    // }
 
     public function add_Inquiry($data){
-        $query = "INSERT INTO students (id, name, fname, mname, dob, gender, cast, course, lqualifi, per, pnumber, apnumber, adhar, admi_date, batch_time, district, address, center, referred_by, status) VALUES (NULL, '" . $data['s_name'] . "', '', '', '', '', '', '" . $data['course'] . "', '" . $data['lst_qulifi'] . "', '', '" . $data['p_number'] . "', '', '', '', '', '', '', '" . $data['center'] . "', '', 0)";
+        $query = "INSERT INTO students (id, name, fname, mname, dob, gender, cast, course, lqualifi, per, pnumber, apnumber, adhar, admi_date, batch_time, district, address, center, fees, referred_by, add_date, updated_by, updated_date, del_sts, status) VALUES (NULL, '" . $data['s_name'] . "', '', '', '', '', '', '" . $data['course'] . "', '" . $data['lst_qulifi'] . "', '', '" . $data['p_number'] . "', '', '', '', '', '', '', '" . $data['center'] . "', 0, '', NOW(), '". auth()->user()->email ."', NOW(), 0, 0)";
          if ($this->db->query($query)) {
             return true;
         } else {
@@ -121,7 +127,7 @@ class StudentModel extends Model
     }
 
     public function update_Inquiry($id, $data){
-        $query = "UPDATE students SET name='" . $data['s_name'] . "', pnumber=" . $data['p_number'] . ", lqualifi='" . $data['lst_qulifi'] . "', course=" . $data['course'] . ", center=" . $data['center'] . " WHERE id=" . $id;
+        $query = "UPDATE students SET name='" . $data['s_name'] . "', pnumber=" . $data['p_number'] . ", lqualifi='" . $data['lst_qulifi'] . "', course=" . $data['course'] . ", center=" . $data['center'] . ", updated_date = NOW(), updated_by = '" . auth()->user()->email . "' WHERE id=" . $id;
         if ($this->db->query($query)) {
             return true;
         } else {

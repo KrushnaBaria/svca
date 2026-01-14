@@ -66,11 +66,11 @@
                             <label for="marital_sts" class="form-label">Marital Status</label>
                             <div class="d-flex align-items-center">
                                 <div class="form-check me-3">
-                                    <input type="radio" id="single" name="marital_sts" value="S" class="form-check-input" <?php echo ($student['marital_status'] ?? '') === 'S' ? 'checked' : '' ?>>
+                                    <input type="radio" id="single" name="marital_sts" value="S" class="form-check-input" <?php echo ($student['marital_sts'] ?? '') === 'S' ? 'checked' : '' ?>>
                                     <label class="form-check-label" for="single">Single</label>
                                 </div>
                                 <div class="form-check">
-                                    <input type="radio" id="married" name="marital_sts" value="M" class="form-check-input" <?php echo ($student['marital_status'] ?? '') === 'M' ? 'checked' : '' ?>>
+                                    <input type="radio" id="married" name="marital_sts" value="M" class="form-check-input" <?php echo ($student['marital_sts'] ?? '') === 'M' ? 'checked' : '' ?>>
                                     <label class="form-check-label" for="married">Married</label>
                                 </div>
                             </div>
