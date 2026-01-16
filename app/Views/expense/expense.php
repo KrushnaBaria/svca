@@ -48,7 +48,9 @@
                             <th>Description</th>
                             <th>Center</th>
                             <th>Amount</th>
-                            <!-- <th>Date</th> -->
+                            <th>Added Date</th>
+                            <th>Updated By</th>
+                            <th>Updated Date</th>
                         </tr>
                     </thead>
                     <tbody>

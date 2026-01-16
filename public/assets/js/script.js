@@ -1051,6 +1051,25 @@
                             return row.amount;
                         }
                     },
+                    {
+                        targets: [4],
+                        orderable: false,
+                        data: function (row) {
+                            return row.add_date;
+                        }
+                    },{
+                        targets: [5],
+                        orderable: false,
+                        data: function (row) {
+                            return row.updated_by;
+                        }
+                    },{
+                        targets: [6],
+                        orderable: false,
+                        data: function (row) {
+                            return row.updated_date;
+                        }
+                    }
                 ],
             });
 

@@ -16,7 +16,7 @@ class ExpenseModel extends Model
 
     public function add($data)
     {
-        $query = "INSERT INTO expenses (id, exp, center, amount) VALUES (NULL, '" . $data['description'] . "', '" . $data['center_id'] . "', '" . $data['amount'] . "')";
+        $query = "INSERT INTO expenses (id, exp, center, amount, add_date, updated_by, updated_date) VALUES (NULL, '" . $data['description'] . "', '" . $data['center_id'] . "', '" . $data['amount'] . "', NOW(), '" . auth()->user()->email . "', NOW())";
          if($this->db->query($query)){
             return true;
         } else {
@@ -30,7 +30,7 @@ class ExpenseModel extends Model
         $end = $data['end'];
         $search = $data['search'];
 
-        $query = "SELECT e.id, e.exp, c.center, e.amount, c.center AS center_name
+        $query = "SELECT e.*, c.center AS center_name
                   FROM expenses e 
                   JOIN centers c ON e.center = c.id ";
 

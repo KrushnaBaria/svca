@@ -32,3 +32,6 @@ ALTER TABLE `students` CHANGE `pnumber` `pnumber` VARCHAR(15) NOT NULL;
 ALTER TABLE `students` CHANGE `apnumber` `apnumber` VARCHAR(15) NOT NULL;
 ALTER TABLE `students` CHANGE `adhar` `adhar` VARCHAR(12) NOT NULL;
 ALTER TABLE `payment` ADD `remark` VARCHAR(255) NOT NULL AFTER `amount`;
+
+[17/01/2026]
+ALTER TABLE `expenses` ADD `add_date` DATETIME NOT NULL AFTER `amount`, ADD `updated_by` VARCHAR(255) NOT NULL AFTER `add_date`, ADD `updated_date` DATETIME NOT NULL AFTER `updated_by`;
