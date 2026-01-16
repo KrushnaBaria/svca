@@ -59,7 +59,7 @@ class Student extends BaseController
             'dist' => $this->request->getPost('dist'),
             'address' => $this->request->getPost('address'),
             'ref_by' => $this->request->getPost('ref_by'),
-            'adm_date' => $this->request->getPost('adm_date') ? date('Y-m-d', strtotime($this->request->getPost('adm_date'))) : '',
+            'adm_date' => $this->request->getPost('adm_date'),
             'updated_by' => auth()->user()->email,
             'discount' => $this->request->getPost('discount') ? $this->request->getPost('discount') : 0,
         ];

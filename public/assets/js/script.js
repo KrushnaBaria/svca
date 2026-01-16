@@ -452,6 +452,24 @@
         },
 
         initEditStudent: function(){
+            let SVCAobj = this;
+
+            setTimeout(function(){
+                $('#course').trigger('change');
+            }, 300);
+
+            $('#course').on('change', function() {
+                SVCAobj.getCourseAmt($(this).val());
+            });
+
+            document.getElementById('dob').addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\D/g, '').slice(0,8);
+                if (value.length >= 5)
+                    value = value.replace(/(\d{2})(\d{2})(\d{1,4})/, '$1/$2/$3');
+                else if (value.length >= 3)
+                    value = value.replace(/(\d{2})(\d{1,2})/, '$1/$2');
+                e.target.value = value;
+            });
 
             $('#adm_date').datepicker({
                 maxDate: new Date(),
@@ -527,8 +545,13 @@
                     return false;
                 }
 
-                if($('#remark').val() == ''){
+                if($('#remark').val() == '' && $('#status').val() == '1'){
                     $('#remark').focus();
+                    return false;
+                }
+
+                if($('#c-amount').val() == ''){
+                    alert('Something Wants To Wrong Please Reload This Page');
                     return false;
                 }
                 
@@ -554,6 +577,8 @@
                         lst_qulifi: $('#lst_qulifi').val() ? $('#lst_qulifi').val() : '',
                         per: $('#per').val() ? $('#per').val() : '',
                         course: $('#course').val() ? $('#course').val() : '',
+                        course_amt: $('#c-amount').val() ? $('#c-amount').val() : '',
+                        discount: $('#discount').val() ? $('#discount').val() : '',
                         cast: $('#cast').val() ? $('#cast').val() : '',
                         b_time: b_time ? b_time : '',
                         adhar: $('#adhar').val() ? $('#adhar').val() : '',
@@ -661,24 +686,26 @@
                         targets: [8],
                         orderable: false,
                         data: function (row) {
-                            return '<a class="text-primary" href="' + conf.baseUrl + 'student/view/' + row.id + '"><i class="ti ti-eye fs-6"></i></a> '
-                                + '<a class="text-secondary" href="' + conf.baseUrl + 'payment/' + row.id + '"><i class="ti ti-coin-rupee fs-6"></i></a> '
-                                + '<a class="text-primary" href="' + conf.baseUrl + 'student/edit/' + row.id + '"><i class="ti ti-edit fs-6"></i></a>';
+                            return '<a class="text-primary p-0 ms-1" href="' + conf.baseUrl + 'student/view/' + row.id + '" title="View Details"><i class="ti ti-eye fs-6"></i></a> '
+                                + '<a class="text-secondary p-0 ms-1" href="' + conf.baseUrl + 'payment/' + row.id + '" title="Add Payment"><i class="ti ti-coin-rupee fs-6"></i></a> '
+                                + '<a class="text-primary p-0 ms-1" href="' + conf.baseUrl + 'student/edit/' + row.id + '" title="Edit"><i class="ti ti-edit fs-6"></i></a>'
+                                + '<a class="text-danger delete-student p-0 ms-1" href="javascript:void(0)" data-id="' + row.id + '" title="Delete"><i class="ti ti-trash fs-6"></i></a>';
                         }
                     }
                 ],
             });
 
             $('#student-tbl').on('click', '.delete-student', function() {
-                let studentId = $(this).data('id');
-                
                 if(confirm("Are you sure you want to delete this student?")) {
                     $.ajax({
-                        url: conf.baseUrl + "/student/delete/" + studentId,
+                        url: conf.baseUrl + "/student/update-del-sts",
                         type: "POST",
+                        dataType: "json",
+                        data: {
+                            id: $(this).data('id')
+                        },
                         success: function(res) {
                             if(res.success == 1) {
-                                alert("Student deleted successfully.");
                                 studentTbl.ajax.reload();
                             } else {
                                 alert("Error deleting student");
@@ -764,6 +791,7 @@
                 responsive: true,
                 select: {
                     style: 'single',
+                    selector: 'td:not(:last-child)' // disable selection on button column
                 },
                 scrollX: true,
                 searching: true,
@@ -796,7 +824,6 @@
                         targets: [1],
                         orderable: true,
                         data: function (row) {
-                            console.log(row);
                             return row.name;
                         }
                     },
@@ -820,12 +847,19 @@
                         data: function (row) {
                             return row.center_name;
                         }
+                    },
+                    {
+                        targets: [5],
+                        orderable: false,
+                        data: function (row) {
+                            return '<a href="' + conf.baseUrl + '/student/edit/' + row.id + '" class="admit-stu btn btn-primary" data-id="' + row.id + '">Admit</a>'
+                        + '<button class="btn btn-danger delete-inquiry ms-1" data-id="' + row.id + '"><i class="ti ti-trash fs-6"></i></button>';  
+                        }
                     }
                 ],
             }).on('select', function(e, dt, type, indexes) {
                 let data = inquiryTbl.rows(indexes).data().toArray();
                 if(data.length > 0) {
-                    console.log(data);
                     $('#s_name').val(data[0].name);
                     $('#p_number').val(data[0].pnumber);
                     $('#lst_qulifi').val(data[0].lqualifi).trigger('change');
@@ -842,6 +876,28 @@
                 // $('#center').val('').trigger('change');
                 $('#inqury_id').val('');
                 $('#smt-inqury').text('Submit');
+            });
+
+            $(document).on('click', '.delete-inquiry', function(e) {
+                e.stopPropagation(); // Prevent row selection
+                var res = confirm("Are you sure you want to delete this inquiry?");
+                if(res){
+                    $.ajax({
+                        url: conf.baseUrl + "/inquery/update-del-sts",
+                        type: "POST",
+                        data: {
+                            id: $(this).data('id')
+                        },
+                        dataType: "json",
+                        success: function(res) {
+                            if(res.success == 1) {
+                                inquiryTbl.ajax.reload();
+                            }else {
+                                alert("Error admitting student");
+                            }
+                        }
+                    });
+                }
             });
         },
 
@@ -890,6 +946,13 @@
                         targets: [2],
                         orderable: false,
                         data: function (row) {
+                            return row.remark ? row.remark : '-';
+                        }
+                    },
+                    {
+                        targets: [3],
+                        orderable: false,
+                        data: function (row) {
                             return row.add_date;
                         }
                     }
@@ -909,11 +972,13 @@
                     dataType: "json",
                     data: {
                         amount: $('#paymentAmount').val(),
+                        remark: $('#remark').val(),
                         student_id: $('#stu_id').val(),
                     },
                     success: function(res) {
                         if(res.success == 1) {
                             $('#paymentAmount').val('');
+                            $('#remark').val('');
                             payhistoryTbl.ajax.reload();
                             $('#paymentModal').modal('hide');
                         } else {

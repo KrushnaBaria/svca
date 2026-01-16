@@ -66,6 +66,7 @@
                         <th>M Number</th>
                         <th>Course</th>
                         <th>Center</th>
+                        <th>Action</th>
                     </thead>
                     <tbody></tbody>
                 </table>

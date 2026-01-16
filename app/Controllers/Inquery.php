@@ -72,4 +72,38 @@ class Inquery extends BaseController
             return json_encode(['success' => 0, 'message' => 'No students found']);
         }
     }
+
+    public function admit()
+    {
+        $id = $this->request->getPost('id');
+
+        $data = [
+            'status' => 1,
+            'updated_date' => date('Y-m-d H:i:s'),
+            'updated_by' => auth()->user()->email
+        ];
+
+        if ($this->studentModel->update($id, $data)) {
+            return json_encode(['success' => 1]);
+        } else {
+            return json_encode(['success' => 0, 'message' => 'Failed to admit student.']);
+        }
+    }
+
+    public function update_delete_sts()
+    {
+        $id = $this->request->getPost('id');
+
+        $data = [
+            'del_sts' => 1,
+            'updated_date' => date('Y-m-d H:i:s'),
+            'updated_by' => auth()->user()->email
+        ];
+
+        if ($this->studentModel->update($id, $data)) {
+            return json_encode(['success' => 1]);
+        } else {
+            return json_encode(['success' => 0, 'message' => 'Failed to delete inquiry.']);
+        }
+    }
 }

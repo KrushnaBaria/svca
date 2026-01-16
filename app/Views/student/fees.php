@@ -19,6 +19,7 @@
                 <thead>
                     <th>Id</th>
                     <th>Amount</th>
+                    <th>Remark</th>
                     <th>Date</th>
                 </thead>
                 <tbody></tbody>
@@ -37,8 +38,10 @@
         <form id="paymentForm">
             <div class="modal-body">
                 <div class="form-group">
-                    <label for="paymentAmount">Payment Amount</label>
+                    <label for="paymentAmount" class="form-label">Payment Amount</label>
                     <input type="number" class="form-control" id="paymentAmount" name="paymentAmount" required>
+                    <label for="remark" class="form-label">Remark</label>
+                    <textarea type="text" class="form-control" id="remark" name="remark"></textarea>
                 </div>
             </div>
         </form>

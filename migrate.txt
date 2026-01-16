@@ -26,3 +26,9 @@ ALTER TABLE `students` ADD `marital_sts` VARCHAR(50) NOT NULL AFTER `gender`;
 
 [12/01/2026]
 ALTER TABLE `students` ADD `marital_sts` VARCHAR(10) NOT NULL AFTER `gender`;
+
+[16/01/2026]
+ALTER TABLE `students` CHANGE `pnumber` `pnumber` VARCHAR(15) NOT NULL;
+ALTER TABLE `students` CHANGE `apnumber` `apnumber` VARCHAR(15) NOT NULL;
+ALTER TABLE `students` CHANGE `adhar` `adhar` VARCHAR(12) NOT NULL;
+ALTER TABLE `payment` ADD `remark` VARCHAR(255) NOT NULL AFTER `amount`;

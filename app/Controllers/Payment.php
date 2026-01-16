@@ -30,10 +30,11 @@ class Payment extends BaseController
 
     public function add()
     {
-        $postData = $this->request->getPost();
+        $Data = $this->request->getPost();
         $res = $this->model->save([
-            'stu_id' => $postData['student_id'],
-            'amount' => $postData['amount'],
+            'stu_id' => $Data['student_id'],
+            'amount' => $Data['amount'],
+            'remark' => $Data['remark'] ?? '',
             'add_date' => date('Y-m-d H:i:s'),
             'updated_by' => auth()->user()->email,
             'updated_date' => date('Y-m-d H:i:s'),

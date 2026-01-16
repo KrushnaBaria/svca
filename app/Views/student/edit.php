@@ -29,7 +29,7 @@
                     <div class="col-md-4">
                         <div class="mb-3">
                             <label for="dob" class="form-label">Date of Birth</label>
-                            <input type="text" class="form-control" id="dob" placeholder="DD/MM/YYYY" maxlength="10" pattern="\d{2}/\d{2}/\d{4}" inputmode="numeric" onkeypress="return event.charCode >= 48 && event.charCode <= 57 || event.charCode == 47;" value="<?php echo isset($student['dob']) ? date('d/m/Y', strtotime($student['dob'])) : '' ?>">
+                            <input type="text" class="form-control" id="dob" placeholder="DD/MM/YYYY" maxlength="10" pattern="\d{2}/\d{2}/\d{4}" inputmode="numeric" onkeypress="return event.charCode >= 48 && event.charCode <= 57 || event.charCode == 47;" value="<?php echo (isset($student['dob']) && $student['dob'] != '0000-00-00') ? date('d/m/Y', strtotime($student['dob'])) : '' ?>">
                         </div>
                     </div>
                     <div class="col-md-4">
@@ -101,7 +101,7 @@
                     <div class="col-md-2">
                         <div class="mb-3">
                             <label for="course" class="form-label">Course</label>
-                            <select class="form-select" name="course" id="course">
+                            <select class="form-select" name="course" id="course" <?php echo ($student['admi_date'] != '0000-00-00') ? 'disabled' : '' ?>>
                                 <?php foreach ($courses as $course): ?>
                                     <option value="<?php echo $course['id']; ?>" <?php echo (($student['course'] ?? '') == $course['id']) ? 'selected' : ''; ?>><?php echo $course['course']; ?></option>
                                 <?php endforeach; ?>
@@ -171,12 +171,6 @@
                 <div class="row">
                     <div class="col-md-4">
                         <div class="mb-3">
-                            <label for="address" class="form-label">Address</label>
-                            <textarea class="form-control" id="address" rows="1" placeholder="Enter Address"><?php echo isset($student['address']) ? $student['address'] : '' ?></textarea>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="mb-3">
                             <label for="ref_by" class="form-label">Referred By</label>
                             <input type="text" class="form-control" id="ref_by" placeholder="Enter Referred By" value="<?php echo isset($student['referred_by']) ? $student['referred_by'] : '' ?>">
                         </div>
@@ -185,12 +179,31 @@
                         <div class="mb-3">
                             <label for="adm_date" class="form-label">Admission Date</label>
                             <input type="text" class="form-control" id="adm_date" inputmode="none" onkeydown="return false;">
-                            <input type="hidden" id="adm_date_db" value="<?php echo isset($student['admi_date']) ? date('Y-m-d', strtotime($student['admi_date'])) : '' ?>">
+                            <input type="hidden" id="adm_date_db" value="<?php echo (isset($student['admi_date']) && $student['admi_date'] != '0000-00-00') ? date('Y-m-d', strtotime($student['admi_date'])) : '' ?>">
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="mb-3">
+                            <label for="amount" class="form-label">Amount</label>
+                            <input type="text" id="amount" class="form-control course-fee disabled" value="<?php echo isset($student['fees']) && $student['fees'] != 0 ? $student['fees'] : '' ?>" readonly>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="mb-3">
+                            <label for="discount" class="form-label">Discount</label>
+                            <div class="input-group">
+                                <input type="number" class="form-control" id="discount" min="0" max="100" <?php echo ($student['admi_date'] != '0000-00-00') ? 'readonly' : '' ?>>
+                                <span class="input-group-text">%</span>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-md-6">
+                        <label for="address" class="form-label">Address</label>
+                        <textarea class="form-control" id="address" rows="2" placeholder="Enter Address"><?php echo isset($student['address']) ? $student['address'] : '' ?></textarea>
+                    </div>
+                    <div class="col-md-6">
                         <div class="mb-3">
                             <label for="remark" class="form-label">Remark</label>
                             <textarea class="form-control" id="remark" rows="2" placeholder="Enter Remark"><?php echo isset($student['remark']) ? $student['remark'] : '' ?></textarea>
@@ -200,6 +213,8 @@
                 <div class="row">
                     <div class="col-md-12 text-center">
                         <input type="hidden" id="student_id" value="<?php echo $student['id'] ?>">
+                        <input type="hidden" id="status" value="<?php echo $student['status'] ?>">
+                        <input type="hidden" id="c-amount" class="course-fee" value="">
                         <button type="submit" class="btn btn-primary" id="update-stu">Update</button>
                     </div>
                 </div>

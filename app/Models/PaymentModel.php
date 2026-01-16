@@ -12,7 +12,7 @@ class PaymentModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['stu_id', 'amount', 'add_date', 'updated_by', 'updated_date'];
+    protected $allowedFields    = ['stu_id', 'amount', 'remark', 'add_date', 'updated_by', 'updated_date'];
 
     public function getPayHistory($data)
     {

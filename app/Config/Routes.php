@@ -32,12 +32,15 @@ $routes->group('student', function ($routes) {
     $routes->get('edit/(:num)', 'Student::edit/$1');
     $routes->get('view/(:num)', 'Student::view/$1');
     $routes->post('getStudents', 'Student::getStudents');
+    $routes->post('update-del-sts', 'Student::update_delete_sts');
 });
 
 $routes->group('inquery', function ($routes) {
     $routes->get('/', 'Inquery::index');
     $routes->post('add', 'Inquery::add');
     $routes->post('list', 'Inquery::list');
+    $routes->post('admit', 'Inquery::admit');
+    $routes->post('update-del-sts', 'Inquery::update_delete_sts');
 });
 
 $routes->group('settings', function ($routes) {
