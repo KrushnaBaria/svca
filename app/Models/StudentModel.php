@@ -58,7 +58,7 @@ class StudentModel extends Model
                 $amt = $data['fees'] * ($data['discount'] / 100);
                 $pay_query = "INSERT INTO payment (id, stu_id, amount, remark, add_date, updated_by, updated_date) VALUES (NULL, " . intval($id) . ", " . floatval($amt) . ", '" . $data['discount'] . "% Discount Applied', '" . date('Y-m-d H:i:s') . "', 'AUTO', '" . date('Y-m-d H:i:s') . "')";
                 if ($this->db->query($pay_query)) {
-                    return true;
+                    // proceed to update student status
                 } else {
                     return false;
                 }
