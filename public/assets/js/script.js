@@ -931,8 +931,8 @@
                     {
                         targets: [0],
                         orderable: false,
-                        data: function (row) {  
-                            return row.id;
+                        data: function (row, type, val, meta) {  
+                            return meta.row + 1;
                         }
                     },
                     {
@@ -951,6 +951,13 @@
                     },
                     {
                         targets: [3],
+                        orderable: false,
+                        data: function (row) {
+                            return row.updated_by;
+                        }
+                    },
+                    {
+                        targets: [4],
                         orderable: false,
                         data: function (row) {
                             return row.add_date;

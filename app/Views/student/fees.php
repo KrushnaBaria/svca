@@ -20,6 +20,7 @@
                     <th>Id</th>
                     <th>Amount</th>
                     <th>Remark</th>
+                    <th>Added By</th>
                     <th>Date</th>
                 </thead>
                 <tbody></tbody>
