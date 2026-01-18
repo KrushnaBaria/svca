@@ -96,6 +96,23 @@ class Student extends BaseController
         return view('template/header', ['page_title' => 'Edit Student']) . view('student/edit', $data) . view('template/footer', ['app_init' => 'initEditStudent']);
     }
 
+    public function update_delete_sts()
+    {
+        $id = $this->request->getPost('id');
+
+        $data = [
+            'del_sts' => 1,
+            'updated_date' => date('Y-m-d H:i:s'),
+            'updated_by' => auth()->user()->email
+        ];
+
+        if ($this->model->update($id, $data)) {
+            return json_encode(['success' => 1]);
+        } else {
+            return json_encode(['success' => 0, 'message' => 'Failed to delete inquiry.']);
+        }
+    }
+
     public function view($id)
     {
         $student = $this->model->find($id);

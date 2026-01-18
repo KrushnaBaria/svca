@@ -1,4 +1,3 @@
-<h1>Settings</h1>
 <div class="row">
     <div class="col-lg-3">
         <div class="card">
