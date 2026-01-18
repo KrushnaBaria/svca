@@ -58,6 +58,9 @@ class Login extends BaseController
             return redirect()->back()->with('error', $loginAttempt->reason());
         }
         
+        // Flash welcome message
+        session()->setFlashdata('welcome', 'Welcome back, ' . $user->email . '!');
+
         return redirect()->to('dashboard');
     }
 }
