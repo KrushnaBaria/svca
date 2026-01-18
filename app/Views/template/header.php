@@ -12,7 +12,7 @@
   <link rel="shortcut icon" type="image/png" href="<?php echo base_url('public/assets/images/logos/favicon.svg'); ?>" />
   <link rel="stylesheet" href="<?php echo base_url('public/assets/css/styles.min.css');?>" />
   <link rel="stylesheet" href="<?php echo base_url('public/assets/css/custom.min.css');?>" />
-  <!-- <link rel="stylesheet" href="<?php echo base_url('public/assets/css/dataTables.dataTables.css');?>" /> -->
+  <link rel="stylesheet" href="<?php echo base_url('public/assets/libs/apexcharts/dist/apexcharts.css')?>" />
   <link rel="stylesheet" href="https://cdn.datatables.net/v/dt/jq-3.7.0/moment-2.29.4/dt-2.3.2/sl-3.0.1/datatables.min.css">
   <link rel="stylesheet" href="<?php echo base_url('public/assets/css/custom.min.css');?>" />
   <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css">
@@ -67,7 +67,7 @@
 							<i class="ti ti-list-check fs-6"></i>
 							<p class="mb-0 fs-3">My Task</p>
 						</a>
-						<a href="./authentication-login.html" class="btn btn-outline-primary mx-3 mt-2 d-block">Logout</a>
+						<a href="./logout" class="btn btn-outline-primary mx-3 mt-2 d-block">Logout</a>
 						</div>
 					</div>
 					</li>

@@ -17,6 +17,7 @@ service('auth')->routes($routes);
 
 $routes->group('dashboard', function ($routes) {
     $routes->get('/', 'Dashboard::index');
+    $routes->post('get-main-report-chart-data', 'Dashboard::getMainReportChartData');
 });
 
 $routes->group('expense', function ($routes) {

@@ -45,4 +45,61 @@ class ExpenseModel extends Model
         $result['data'] = $this->db->query($query)->getResultArray();
         return $result;
     }
+
+    public function getMainReportChartData()
+    {
+        $revenue_query = "SELECT DATE_FORMAT(add_date, '%b') AS month, MONTH(add_date) AS month_no, SUM(amount) AS revenue
+                    FROM payment
+                    GROUP BY YEAR(add_date), MONTH(add_date)
+                    ORDER BY month_no;";
+        
+        $expense_query = "SELECT DATE_FORMAT(add_date, '%b') AS month, MONTH(add_date) AS month_no, SUM(amount) AS expenses
+                    FROM expenses
+                    GROUP BY YEAR(add_date), MONTH(add_date)
+                    ORDER BY month_no;";
+
+        $revenue_result = $this->db->query($revenue_query)->getResultArray();
+        $expense_result = $this->db->query($expense_query)->getResultArray();
+        
+        // Combine revenue and expense by month, calculate profit
+
+        // Build associative arrays for fast lookup
+        $revenue_by_month = [];
+        foreach ($revenue_result as $row) {
+            $revenue_by_month[$row['month_no']] = [
+                'month' => $row['month'],
+                'revenue' => (float)$row['revenue']
+            ];
+        }
+
+        $expense_by_month = [];
+        foreach ($expense_result as $row) {
+            $expense_by_month[$row['month_no']] = [
+                'month' => $row['month'],
+                'expenses' => (float)$row['expenses']
+            ];
+        }
+
+        // Get list of all months present in either
+        $months = array_unique(array_merge(array_keys($revenue_by_month), array_keys($expense_by_month)));
+        sort($months, SORT_NUMERIC);
+
+        $result = [];
+        foreach ($months as $month_no) {
+            $month_name = isset($revenue_by_month[$month_no]['month']) ? $revenue_by_month[$month_no]['month'] :
+                        (isset($expense_by_month[$month_no]['month']) ? $expense_by_month[$month_no]['month'] : '');
+
+            $revenue = isset($revenue_by_month[$month_no]['revenue']) ? $revenue_by_month[$month_no]['revenue'] : 0;
+            $expenses = isset($expense_by_month[$month_no]['expenses']) ? $expense_by_month[$month_no]['expenses'] : 0;
+            $profit = $revenue - $expenses;
+
+            $result[] = [
+                'month' => $month_name,
+                'revenue' => $revenue,
+                'expenses' => $expenses,
+                'profit' => $profit
+            ];
+        }
+        return $result;
+    }
 }

@@ -6,6 +6,7 @@
     <script src="<?php echo base_url('public/assets/js/sidebarmenu.js');?>"></script>
     <script src="<?php echo base_url('public/assets/js/app.min.js');?>"></script>
     <script src="<?php echo base_url('public/assets/libs/simplebar/dist/simplebar.js')?>"></script>
+    <script src="<?php echo base_url('public/assets/libs/apexcharts/dist/apexcharts.min.js')?>"></script>
     <!-- solar icons -->
     <script src="https://cdn.jsdelivr.net/npm/iconify-icon@1.0.8/dist/iconify-icon.min.js"></script>
     <!-- <script src="<?php echo base_url('public/assets/js/jquery-3.7.1.js')?>"></script>
