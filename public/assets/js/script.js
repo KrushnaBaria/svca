@@ -1064,6 +1064,68 @@
             });
         },
 
+        initLogs: function(){
+            let editlogtbl = $('#student-log-tbl');
+            let editlogTbl = new DataTable('#student-log-tbl', {
+                responsive: true,
+                searching: typeof editlogtbl.data('dt-searching') === 'undefined' ? true : editlogtbl.data('dt-searching'),
+                lengthChange: typeof editlogtbl.data('dt-lengthchange') === 'undefined' ? true : editlogtbl.data('dt-lengthchange'),
+                processing: true,
+                serverSide: true,
+                bSortable: true,
+                bFilter: true,
+                pagingType: "full_numbers",
+                ajax: {
+                    url: conf.baseUrl + "logs/student-edit",
+                    type: 'post',
+                },
+                lengthMenu: [
+                    [5, 10, 20, -1],
+                    [5, 10, 20, "All"]
+                ],
+                pageLength: (typeof editlogtbl.data('dt-pagelength') === 'undefined' || editlogtbl.data('dt-pagelength') === '-1') ? 5 : editlogtbl.data('dt-pagelength'),
+                paging: true,
+                ordering: false,
+                columnDefs: [
+                    {
+                        targets: [0],
+                        orderable: false,
+                        data: function (row, type, val, meta) {  
+                            return meta.row + 1;
+                        }
+                    },
+                    {
+                        targets: [1],
+                        orderable: true,
+                        data: function (row) {
+                            return row.remark;
+                        }
+                    },
+                    {
+                        targets: [2],
+                        orderable: false,
+                        data: function (row) {
+                            return `<a href="${conf.baseUrl}student/edit/${row.student_id}">${row.student_id}</a>`;
+                        }
+                    },
+                    {
+                        targets: [3],
+                        orderable: false,
+                        data: function (row) {
+                            return row.updated_date;
+                        }
+                    },
+                    {
+                        targets: [4],
+                        orderable: false,
+                        data: function (row) {
+                            return row.updated_by;
+                        }
+                    }
+                ],
+            });
+        },
+
         initExpense: function(){
 
             let expensetbl = $('#expense-tbl');

@@ -39,6 +39,7 @@ class Student extends BaseController
     public function add()
     {
         $stu_id = $this->request->getPost('studentId');
+        $remark = $this->request->getPost('remark') ? $this->request->getPost('remark') : '';
         $data = [
             's_name' => $this->request->getPost('s_name'),
             'f_name' => $this->request->getPost('f_name'),
@@ -65,7 +66,7 @@ class Student extends BaseController
         ];
         
         if($stu_id){
-            $res = $this->model->updateStudent($stu_id, $data);
+            $res = $this->model->updateStudent($stu_id, $data, $remark);
             if ($res) {
                 return json_encode(['success' => 1]);
             } else {

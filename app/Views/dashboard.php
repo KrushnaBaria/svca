@@ -11,6 +11,21 @@
             </div>
         </div>
     </div>
+
+    <div>
+        <table id="recent-inquries-tbl" class="table table-striped" style="width:100%">
+            <thead class="text-dark fs-4">
+                <th><h6 class="fs-3 fw-semibold">No</h6></th>
+                <th><h6 class="fs-3 fw-semibold">Student Name</h6></th>
+                <th><h6 class="fs-3 fw-semibold">Phone</h6></th>
+                <th><h6 class="fs-3 fw-semibold">Course</h6></th>
+                <th><h6 class="fs-3 fw-semibold">Center</h6></th>
+                <th><h6 class="fs-3 fw-semibold">Date</h6></th>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
 </div>
 
 <?php if (session()->getFlashdata('welcome')): ?>

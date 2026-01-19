@@ -67,3 +67,8 @@ $routes->group('payment', function ($routes){
     $routes->post('add', 'Payment::add');
     $routes->post('get-payhistory', 'Payment::getPayHistory');
 });
+
+$routes->group('logs', function ($routes) {
+    $routes->get('/', 'Editlog::index');
+    $routes->post('student-edit', 'Editlog::getStudentEditLogs');
+});

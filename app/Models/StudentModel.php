@@ -41,7 +41,7 @@ class StudentModel extends Model
         }
     }
 
-    public function updateStudent($id, $data)
+    public function updateStudent($id, $data, $remark)
     {
         // Convert dob from d/m/Y to Y-m-d
         $dob = \DateTime::createFromFormat('d/m/Y', $data['dob']);
@@ -50,6 +50,15 @@ class StudentModel extends Model
         // Convert adm_date from d/m/Y to Y-m-d
         $adm_date = \DateTime::createFromFormat('d/m/Y', $data['adm_date']);
         $adm_dateFormatted = $adm_date ? $adm_date->format('Y-m-d') : null;
+
+        if($remark){
+            $log_query = "INSERT INTO edit_log (id, remark, student_id, updated_date, updated_by) VALUES (NULL, '" . $remark . "', " . intval($id) . ", '" . date('Y-m-d H:i:s') . "', '" . $data['updated_by'] . "')";
+            if($this->db->query($log_query)){
+                // proceed to update student
+            } else {
+                return false;
+            };
+        }
 
         $query1 = "SELECT status FROM students WHERE id = " . intval($id);
         $result = $this->db->query($query1)->getRowArray();

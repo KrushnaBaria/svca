@@ -30,7 +30,7 @@
                 </li>
                 <li class="sidebar-item">
                     <a class="sidebar-link" href="<?php echo base_url('/student/list');?>" aria-expanded="false">
-                        <i class="ti ti-user"></i>
+                        <i class="ti ti-school"></i>
                         <span class="hide-menu">Student</span>
                     </a>
                 </li>
@@ -40,19 +40,31 @@
                         <span class="hide-menu">Inquery</span>
                     </a>
                 </li>
-                <?php if ($user_group == 'admin' || $user_group == 'superadmin'){?>
-                <li class="sidebar-item">
-                    <a class="sidebar-link" href="<?php echo base_url('/settings');?>" aria-expanded="false">
-                        <i class="ti ti-settings"></i>
-                        <span class="hide-menu">Setting</span>
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a class="sidebar-link" href="<?php echo base_url('/add');?>" aria-expanded="false">
-                        <i class="ti ti-user"></i>
-                        <span class="hide-menu">Add User</span>
-                    </a>
-                </li>
+                <?php if ($user_group == 'superadmin'){?>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="<?php echo base_url('/add');?>" aria-expanded="false">
+                            <i class="ti ti-user"></i>
+                            <span class="hide-menu">Add User</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="<?php echo base_url('/logs');?>" aria-expanded="false">
+                            <i class="ti ti-file-stack"></i>
+                            <span class="hide-menu">Edit Logs</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="<?php echo base_url('/bin');?>" aria-expanded="false">
+                            <i class="ti ti-trash"></i>
+                            <span class="hide-menu">Recycle Bin</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="<?php echo base_url('/settings');?>" aria-expanded="false">
+                            <i class="ti ti-settings"></i>
+                            <span class="hide-menu">Setting</span>
+                        </a>
+                    </li>
                 <?php } ?>
             </ul>
         </nav>
