@@ -53,6 +53,23 @@
                             <input type="text" class="form-control" id="course_name" placeholder="Enter Course Name">
                         </div>
                         <div class="mb-3">
+                            <label for="course_type" class="form-label">Course Type</label>
+                            <select name="course_type" id="course_type" class="form-select">
+                                <option value="" disabled selected>Select Type</option>
+                                <option value="academy">Academy</option>
+                                <option value="computer">Computer</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="course_center" class="form-label">Center</label>
+                            <select name="course_center" id="course_center" class="form-select">
+                                <option value="" disabled selected>Select Center</option>
+                                <?php foreach ($centers as $center): ?>
+                                    <option value="<?= $center['id'] ?>"><?= $center['center'] ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                        <div class="mb-3">
                             <label for="course_price" class="form-label">Course Price</label>
                             <input type="text" class="form-control" id="course_price" placeholder="Enter Price">
                         </div>
@@ -76,6 +93,8 @@
                         <tr>
                             <th>Id</th>
                             <th>Course</th>
+                            <th>Type</th>
+                            <th>Center</th>
                             <th>Price</th>
                             <th>Action</th>
                         </tr>

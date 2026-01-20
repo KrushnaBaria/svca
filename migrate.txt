@@ -39,3 +39,6 @@ ALTER TABLE `expenses` ADD `add_date` DATETIME NOT NULL AFTER `amount`, ADD `upd
 [19/01/2026]
 CREATE TABLE `svca_`.`edit_log` (`id` INT(11) NOT NULL AUTO_INCREMENT , `remark` VARCHAR(255) NOT NULL , `student_id` INT(11) NOT NULL , `updaated_date` DATETIME NOT NULL , `updated_by` VARCHAR(255) NOT NULL , PRIMARY KEY (`id`));
 ALTER TABLE `edit_log` CHANGE `updaated_date` `updated_date` DATETIME NOT NULL;
+
+[20/01/2026]
+ALTER TABLE `courses` ADD `center` INT(11) NOT NULL AFTER `price`, ADD `type` VARCHAR(255) NOT NULL AFTER `center`;

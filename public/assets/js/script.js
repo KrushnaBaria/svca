@@ -167,10 +167,10 @@
                     type: 'post',
                 },
                 lengthMenu: [
-                    [5, 10, 20, -1],
-                    [5, 10, 20, "All"]
+                    [10, 20, 50, -1],
+                    [10, 20, 50, "All"]
                 ],
-                pageLength: (typeof coursetbl.data('dt-pagelength') === 'undefined' || coursetbl.data('dt-pagelength') === '-1') ? 5 : coursetbl.data('dt-pagelength'),
+                pageLength: (typeof coursetbl.data('dt-pagelength') === 'undefined' || coursetbl.data('dt-pagelength') === '-1') ? 10 : coursetbl.data('dt-pagelength'),
                 paging: true,
                 ordering: false,
                 columnDefs: [
@@ -192,11 +192,25 @@
                         targets: [2],
                         orderable: true,
                         data: function (row) {
-                            return row.price;
+                            return row.type.charAt(0).toUpperCase() + row.type.slice(1);
                         }
                     },
                     {
                         targets: [3],
+                        orderable: true,
+                        data: function (row) {
+                            return row.center_name;
+                        }
+                    },
+                    {
+                        targets: [4],
+                        orderable: true,
+                        data: function (row) {
+                            return row.price;
+                        }
+                    },
+                    {
+                        targets: [5],
                         orderable: false,
                         data: function (row) {
                             return '<button class="btn btn-danger btn-sm delete-center" data-id="' + row.id + '">Delete</button>';
@@ -208,12 +222,16 @@
                 if(data.length > 0) {
                     $("#course_name").val(data[0].course);
                     $("#course_price").val(data[0].price);
+                    $("#course_center").val(data[0].center);
+                    $("#course_type").val(data[0].type);
                     $("#course_id").val(data[0].id);
                     $("#sbt-course").text("Update");
                 }
             }).on('deselect', function(e, dt, type, indexes){
                 $("#course_name").val("");
                 $("#course_price").val("");
+                $("#course_center").val("");
+                $("#course_type").val("");
                 $("#sbt-course").text("Submit");
             });
 
@@ -229,6 +247,16 @@
                     return;
                 }
 
+                if($("#course_center").val() === ""){
+                    alert("Please select a center.");
+                    return;
+                }
+
+                if($("#course_type").val() === ""){
+                    alert("Please select a course type.");
+                    return;
+                }
+
                 if($("#course_id").val()){
                     $.ajax({
                         url: conf.baseUrl + "/settings/update-course",
@@ -237,12 +265,16 @@
                         data: {
                             id: $("#course_id").val(),
                             course_name: $("#course_name").val(),
-                            course_price: $("#course_price").val()
+                            course_price: $("#course_price").val(),
+                            center: $("#course_center").val(),
+                            type: $("#course_type").val()
                         },
                         success: function(res) {
                             if(res.success == 1) {
                                 $("#course_name").val(""); // Clear the input field
-                                alert("Course Updated Successfully.");
+                                $("#course_price").val("");
+                                $("#course_center").val("");
+                                $("#course_type").val("");
                                 courseTbl.ajax.reload(); // Reload the table data
                             } else {
                                 alert("Error updating course");
@@ -259,12 +291,16 @@
                         dataType: "json",
                         data: {
                             course_name: $("#course_name").val(),
-                            course_price: $("#course_price").val()
+                            course_price: $("#course_price").val(),
+                            center: $("#course_center").val(),
+                            type: $("#course_type").val()
                         },
                         success: function(res) {
                             if(res.success == 1) {
                                 $("#course_name").val(""); // Clear the input field
-                                alert("Course Added Successfully.");
+                                $("#course_price").val("");
+                                $("#course_center").val("");
+                                $("#course_type").val("");
                                 courseTbl.ajax.reload(); // Reload the table data
                             } else {
                                 alert("Error updating course");

@@ -27,8 +27,10 @@ class Settings extends BaseController
 
     public function index()
     {
+        $data['centers'] = $this->centerModel->findAll();
+
         return view('template/header', ['page_title' => 'Settings']) . 
-               view('settings') .  
+               view('settings', $data) .  
                view('template/footer', ['app_init' => 'initSettings']);
     }
 
@@ -62,7 +64,9 @@ class Settings extends BaseController
     {
         $data = [
             'course' => $this->request->getPost('course_name'),
-            'price' => $this->request->getPost('course_price')
+            'price' => $this->request->getPost('course_price'),
+            'center' => $this->request->getPost('center'),
+            'type' => $this->request->getPost('type')
         ];
 
         $res = $this->courseModel->addCourse($data);
@@ -90,7 +94,9 @@ class Settings extends BaseController
         $data = [
             'id' => $this->request->getPost('id'),
             'course' => $this->request->getPost('course_name'),
-            'price' => $this->request->getPost('course_price')
+            'price' => $this->request->getPost('course_price'),
+            'center' => $this->request->getPost('center'),
+            'type' => $this->request->getPost('type')
         ];
 
         $res = $this->courseModel->updateCourse($data);
