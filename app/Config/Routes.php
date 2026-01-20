@@ -72,3 +72,13 @@ $routes->group('logs', function ($routes) {
     $routes->get('/', 'Editlog::index');
     $routes->post('student-edit', 'Editlog::getStudentEditLogs');
 });
+
+$routes->group('bin', function ($routes) {
+    $routes->get('/', 'RecycleBin::index');
+    $routes->post('get-deleted-students', 'RecycleBin::getDeletedStudents');
+    $routes->post('get-deleted-inquiries', 'RecycleBin::getDeletedInquiries');
+    $routes->post('delete-student', 'RecycleBin::deleteStudent');
+    $routes->post('restore-student', 'RecycleBin::restoreStudent');
+    $routes->post('delete-inquiry', 'RecycleBin::deleteInquiry');
+    $routes->post('restore-inquiry', 'RecycleBin::restoreInquiry');
+});

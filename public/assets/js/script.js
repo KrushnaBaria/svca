@@ -1243,6 +1243,268 @@
             });
         },
 
+        initRecycleBin: function(){
+            let deletedStudenttbl = $('#deleted-student-tbl');
+            let deletedStudenTbl = new DataTable('#deleted-student-tbl', {
+                responsive: true,
+                searching: typeof deletedStudenttbl.data('dt-searching') === 'undefined' ? true : deletedStudenttbl.data('dt-searching'),
+                lengthChange: typeof deletedStudenttbl.data('dt-lengthchange') === 'undefined' ? true : deletedStudenttbl.data('dt-lengthchange'),
+                processing: true,
+                serverSide: true,
+                bSortable: true,
+                bFilter: true,
+                pagingType: "full_numbers",
+                ajax: {
+                    url: conf.baseUrl + "/bin/get-deleted-students",
+                    data: function (d) {
+                        d.student_id = $('#stu_id').val();
+                    },
+                    type: 'post',
+                },
+                lengthMenu: [
+                    [5, 10, 20, -1],
+                    [5, 10, 20, "All"]
+                ],
+                pageLength: (typeof deletedStudenttbl.data('dt-pagelength') === 'undefined' || deletedStudenttbl.data('dt-pagelength') === '-1') ? 5 : deletedStudenttbl.data('dt-pagelength'),
+                paging: true,
+                ordering: false,
+                columnDefs: [
+                    {
+                        targets: [0],
+                        orderable: false,
+                        data: function (row, type, val, meta) {  
+                            return meta.row + 1;
+                        }
+                    },
+                    {
+                        targets: [1],
+                        orderable: true,
+                        data: function (row) {
+                            return row.id;
+                        }
+                    },
+                    {
+                        targets: [2],
+                        orderable: false,
+                        data: function (row) {
+                            return row.name + row.fname;
+                        }
+                    },
+                    {
+                        targets: [3],
+                        orderable: false,
+                        data: function (row) {
+                            return row.center_name;
+                        }
+                    },
+                    {
+                        targets: [4],
+                        orderable: false,
+                        data: function (row) {
+                            return row.course_name;
+                        }
+                    },{
+                        targets: [5],
+                        orderable: false,
+                        data: function (row) {
+                            return row.deleted_by;
+                        }
+                    },{
+                        targets: [6],
+                        orderable: false,
+                        data: function (row) {
+                            return row.deleted_at;
+                        }
+                    },{
+                        targets: [7],
+                        orderable: false,
+                        data: function (row) {
+                            return `<a href="javascript:void(0)" class="restore-student text-success p-0 ms-1" data-id="${row.id}" title="Restore"><i class="ti ti-refresh fs-6"></i></a>` +
+                            `<a href="javascript:void(0)" class="delete-student text-danger p-0 ms-1" data-id="${row.id}" title="Delete"><i class="ti ti-trash fs-6"></i></a>`;
+                        }
+                    }
+                ],
+            });
+
+            $(document).on('click', '.restore-student', function() {
+                var res = confirm("Are you sure you want to restore this student?");
+                if(res){
+                    $.ajax({
+                        url: conf.baseUrl + "/bin/restore-student",
+                        type: "POST",
+                        dataType: "json",
+                        data: {
+                            student_id: $(this).data('id'),
+                        },
+                        success: function(res) {
+                            if(res.success == 1) {
+                                deletedStudenTbl.ajax.reload();
+                            } else {
+                                alert("Error restoring student");
+                            }
+                        },
+                        error: function() {
+                            alert("An error occurred while restoring the student.");
+                        }
+                    });
+                }
+            });
+
+            $(document).on('click', '.delete-student', function() {
+                var res = confirm("Are you sure you want to delete this student?");
+                if(res){
+                    $.ajax({
+                        url: conf.baseUrl + "/bin/delete-student",
+                        type: "POST",
+                        dataType: "json",
+                        data: {
+                            student_id: $(this).data('id'),
+                        },
+                        success: function(res) {
+                            if(res.success == 1) {
+                                deletedStudenTbl.ajax.reload();
+                            } else {
+                                alert("Error deleting student");
+                            }
+                        },
+                        error: function() {
+                            alert("An error occurred while deleting the student.");
+                        }
+                    });
+                }
+            });
+
+            let deletedInquirytbl = $('#deleted-inquiries-tbl');
+            let deletedInquiryTbl = new DataTable('#deleted-inquiries-tbl', {
+                responsive: true,
+                searching: typeof deletedInquirytbl.data('dt-searching') === 'undefined' ? true : deletedInquirytbl.data('dt-searching'),
+                lengthChange: typeof deletedInquirytbl.data('dt-lengthchange') === 'undefined' ? true : deletedInquirytbl.data('dt-lengthchange'),
+                processing: true,
+                serverSide: true,
+                bSortable: true,
+                bFilter: true,
+                pagingType: "full_numbers",
+                ajax: {
+                    url: conf.baseUrl + "/bin/get-deleted-inquiries",
+                    data: function (d) {
+                        d.student_id = $('#stu_id').val();
+                    },
+                    type: 'post',
+                },
+                lengthMenu: [
+                    [5, 10, 20, -1],
+                    [5, 10, 20, "All"]
+                ],
+                pageLength: (typeof deletedInquirytbl.data('dt-pagelength') === 'undefined' || deletedInquirytbl.data('dt-pagelength') === '-1') ? 5 : deletedInquirytbl.data('dt-pagelength'),
+                paging: true,
+                ordering: false,
+                columnDefs: [
+                    {
+                        targets: [0],
+                        orderable: false,
+                        data: function (row, type, val, meta) {  
+                            return meta.row + 1;
+                        }
+                    },
+                    {
+                        targets: [1],
+                        orderable: true,
+                        data: function (row) {
+                            return row.id;
+                        }
+                    },
+                    {
+                        targets: [2],
+                        orderable: false,
+                        data: function (row) {
+                            return row.name + row.fname;
+                        }
+                    },
+                    {
+                        targets: [3],
+                        orderable: false,
+                        data: function (row) {
+                            return row.center_name;
+                        }
+                    },
+                    {
+                        targets: [4],
+                        orderable: false,
+                        data: function (row) {
+                            return row.course_name;
+                        }
+                    },{
+                        targets: [5],
+                        orderable: false,
+                        data: function (row) {
+                            return row.deleted_by;
+                        }
+                    },{
+                        targets: [6],
+                        orderable: false,
+                        data: function (row) {
+                            return row.deleted_at;
+                        }
+                    },{
+                        targets: [7],
+                        orderable: false,
+                        data: function (row) {
+                            return `<a href="javascript:void(0)" class="restore-inquiry text-success p-0 ms-1" data-id="${row.id}" title="Restore"><i class="ti ti-refresh fs-6"></i></a>` +
+                            `<a href="javascript:void(0)" class="delete-inquiry text-danger p-0 ms-1" data-id="${row.id}" title="Delete"><i class="ti ti-trash fs-6"></i></a>`;
+                        }
+                    }
+                ],
+            });
+
+            $(document).on('click', '.restore-inquiry', function() {
+                var res = confirm("Are you sure you want to restore this inquiry?");
+                if(res){
+                    $.ajax({
+                        url: conf.baseUrl + "/bin/restore-inquiry",
+                        type: "POST",
+                        dataType: "json",
+                        data: {
+                            inquiry_id: $(this).data('id'),
+                        },
+                        success: function(res) {
+                            if(res.success == 1) {
+                                deletedInquiryTbl.ajax.reload();
+                            } else {
+                                alert("Error restoring inquiry");
+                            }
+                        },
+                        error: function() {
+                            alert("An error occurred while restoring the inquiry.");
+                        }
+                    });
+                }
+            });
+
+            $(document).on('click', '.delete-inquiry', function() {
+                var res = confirm("Are you sure you want to delete this inquiry?");
+                if(res){
+                    $.ajax({
+                        url: conf.baseUrl + "/bin/delete-inquiry",
+                        type: "POST",
+                        dataType: "json",
+                        data: {
+                            inquiry_id: $(this).data('id'),
+                        },
+                        success: function(res) {
+                            if(res.success == 1) {
+                                deletedInquiryTbl.ajax.reload();
+                            } else {
+                                alert("Error deleting inquiry");
+                            }
+                        },
+                        error: function() {
+                            alert("An error occurred while deleting the inquiry.");
+                        }
+                    });
+                }
+            });
+        },
+
         init: function(calltoinit) {
             if(typeof this[calltoinit] === "function"){
                 this[calltoinit]();

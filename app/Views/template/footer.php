@@ -1,5 +1,8 @@
 <?php ?>
     </div>
+        <!-- <div class="footer text-center text-muted">
+            &copy; all rights reserved by SVCA <?php echo date('Y'); ?>.
+        </div> -->
     </div>
     <script src="<?php echo base_url('public/assets/libs/jquery/dist/jquery.min.js') ?>"></script>
     <script src="<?php echo base_url('public/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js') ?>"></script>

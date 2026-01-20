@@ -197,4 +197,42 @@ class StudentModel extends Model
         $result['data'] = $this->db->query($query)->getResultArray();
         return $result;
     }
+
+    public function getDeletedStudents($data = [])
+    {
+        $start = $data['start'] ?? 0;
+        $end = $data['end'] ?? 10;
+        $search = $data['search'] ?? '';
+
+        $query = "SELECT st.*, courses.course AS course_name, centers.center AS center_name, st.updated_by AS deleted_by, st.updated_date AS deleted_at FROM students AS st
+            LEFT JOIN centers ON st.center = centers.id
+            LEFT JOIN courses ON st.course = courses.id
+            WHERE del_sts = 1 AND status = 1";
+
+        $result['recordsTotal'] = $result['recordsFiltered'] = $this->db->query($query)->getNumRows();
+
+        $query .= " ORDER BY st.id DESC LIMIT " . $start . ", " . $end;
+
+        $result['data'] = $this->db->query($query)->getResultArray();
+        return $result;
+    }
+
+    public function getDeletedInquiries($data)
+    {
+        $start = $data['start'] ?? 0;
+        $end = $data['end'] ?? 10;
+        $search = $data['search'] ?? '';
+
+        $query = "SELECT st.*, courses.course AS course_name, centers.center AS center_name, st.updated_by AS deleted_by, st.updated_date AS deleted_at FROM students AS st
+            LEFT JOIN centers ON st.center = centers.id
+            LEFT JOIN courses ON st.course = courses.id
+            WHERE del_sts = 1 AND status = 0";
+
+        $result['recordsTotal'] = $result['recordsFiltered'] = $this->db->query($query)->getNumRows();
+
+        $query .= " ORDER BY st.id DESC LIMIT " . $start . ", " . $end;
+
+        $result['data'] = $this->db->query($query)->getResultArray();
+        return $result;
+    }
 }
