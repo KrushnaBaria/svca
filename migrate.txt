@@ -42,3 +42,7 @@ ALTER TABLE `edit_log` CHANGE `updaated_date` `updated_date` DATETIME NOT NULL;
 
 [20/01/2026]
 ALTER TABLE `courses` ADD `center` INT(11) NOT NULL AFTER `price`, ADD `type` VARCHAR(255) NOT NULL AFTER `center`;
+
+[21/01/2026]
+ALTER TABLE `user_info` CHANGE `dob` `dob` VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL;
+ALTER TABLE `user_info` CHANGE `dob` `dob` VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL;
