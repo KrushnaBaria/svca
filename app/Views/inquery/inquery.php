@@ -17,6 +17,28 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="mb-3">
+                                <label for="center" class="form-label">Center</label>
+                                <select class="form-select" name="center" id="center">
+                                    <?php foreach ($centers as $center): ?>
+                                        <option value="<?= $center['id'] ?>"><?= $center['center'] ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="center" class="form-label">Type</label>
+                                <select class="form-select" name="center" id="center">
+                                    <?php foreach ($centers as $center): ?>
+                                        <option value="<?= $center['id'] ?>"><?= $center['center'] ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
                                 <label for="lst_qulifi" class="form-label">Last Qualification</label>
                                 <select class="form-select" name="lst_qulifi" id="lst_qulifi">
                                     <option value="10">10th</option>
@@ -38,14 +60,6 @@
                                 </select>
                             </div>
                         </div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="center" class="form-label">Center</label>
-                        <select class="form-select" name="center" id="center">
-                            <?php foreach ($centers as $center): ?>
-                                <option value="<?= $center['id'] ?>"><?= $center['center'] ?></option>
-                            <?php endforeach; ?>
-                        </select>
                     </div>
                     <div class="d-flex justify-content-center">
                         <input type="hidden" id="inqury_id" value="">
