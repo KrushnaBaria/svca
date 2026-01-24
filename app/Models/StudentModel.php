@@ -181,7 +181,7 @@ class StudentModel extends Model
         $end = $data['end'] ?? 10;
         $search = $data['search'] ?? '';
 
-        $query = "SELECT st.*, courses.course AS course_name, centers.center AS center_name FROM students AS st
+        $query = "SELECT st.*, courses.course AS course_name, courses.type AS course_type, centers.center AS center_name FROM students AS st
             LEFT JOIN centers ON st.center = centers.id
             LEFT JOIN courses ON st.course = courses.id
             WHERE status = 0 AND del_sts = 0";

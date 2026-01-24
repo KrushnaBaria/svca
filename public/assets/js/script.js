@@ -24,7 +24,7 @@
             });
         },
 
-        getCourseType: function(centerId){
+        getCourseType: function(centerId, preSelected){
             $.ajax({
                 url: conf.baseUrl + "/course/get-course-type",
                 type: "POST",
@@ -36,9 +36,15 @@
                     if(res.success == 1) {
                         var options = '<option value="">Select Type</option>';
                         $.each(res.types, function(index, type) {
+                            if(preSelected){
+                                if(preSelected == type.type){
+                                    options += '<option value="' + type.type + '" selected>' + type.type + '</option>';
+                                    return;
+                                }
+                            }
                             options += '<option value="' + type.type + '">' + type.type + '</option>';
                         });
-                        $('#type').html(options);
+                        $('#type').html(options).trigger('change');
                     } else {
                         alert("Error fetching course types");
                     }
@@ -49,7 +55,7 @@
             });
         },
 
-        getCourseByType: function(centerId, type){
+        getCourseByType: function(centerId, type, preSelected){
             $.ajax({
                 url: conf.baseUrl + "/course/get-courses-by-type",
                 type: "POST",
@@ -62,6 +68,12 @@
                     if(res.success == 1) {
                         var options = '<option value="">Select Course</option>';
                         $.each(res.courses, function(index, course) {
+                            if(preSelected){
+                                if(preSelected == course.id){
+                                    options += '<option value="' + course.id + '" selected>' + course.course + '</option>';
+                                    return;
+                                }
+                            }
                             options += '<option value="' + course.id + '">' + course.course + '</option>';
                         });
                         $('#course').html(options);
@@ -875,8 +887,11 @@
             let SVCAobj = this;
 
             $("#center").on('change', function() {
-                if($(this).val()){
-                    SVCAobj.getCourseType($(this).val());
+                let centerId = $(this).val();
+                if(centerId){
+                    setTimeout(function(){
+                        SVCAobj.getCourseType(centerId, $('#selected_type').val());
+                    }, 300);
                 }else{
                     $('#type').html('<option value="">Select Type</option>');
                     $('#course').html('<option value="">Select Course</option>');
@@ -884,13 +899,14 @@
             });
 
             $("#type").on('change', function() {
-                let centerId = $("#center").val();
-                let courseType = $(this).val();
-                if(centerId && courseType){
-                    SVCAobj.getCourseByType(centerId, courseType);
-                }else{
-                    $('#course').html('<option value="">Select Course</option>');
-                }
+                setTimeout(function(){
+                    let courseType = $('#type').val();
+                    if($("#center").val() && courseType){
+                        SVCAobj.getCourseByType($("#center").val(), courseType, $('#selected_course').val());
+                    }else{
+                        $('#course').html('<option value="">Select Course</option>');
+                    }
+                }, 300);
             });
 
             $('#smt-inqury').on('click', function(e){
@@ -903,6 +919,16 @@
 
                 if($('#p_number').val() == ''){
                     $('#p_number').focus();
+                    return false;
+                }
+
+                if($('#center').val() == ''){
+                    $('#center').focus();
+                    return false;
+                }
+
+                if($('#course').val() == ''){
+                    $('#course').focus();
                     return false;
                 }
 
@@ -1038,9 +1064,9 @@
                     $('#lst_qulifi').val(data[0].lqualifi).trigger('change');
                     $('#center').val(data[0].center).trigger('change');
                     $('#inqury_id').val(data[0].id);
+                    $('#selected_type').val(data[0].course_type);
+                    $('#selected_course').val(data[0].course);
                     $('#smt-inqury').text('Update');
-                    // $('#selected_type').val(data[0].type);
-                    // $('#selected_course').val(data[0].course);
                 }
             }).on('deselect', function(e, dt, type, indexes){
                 $('#s_name').val('');
@@ -1049,6 +1075,8 @@
                 $('#course').val('').trigger('change');
                 $('#center').val('').trigger('change');
                 $('#inqury_id').val('');
+                $('#selected_type').val('');
+                $('#selected_course').val('');
                 $('#smt-inqury').text('Submit');
             });
 
