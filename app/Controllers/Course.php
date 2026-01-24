@@ -35,4 +35,27 @@ class Course extends BaseController
             return json_encode(['success' => '0', 'fee' => '']);
         }
     }
+
+    public function getCourseType()
+    {
+        $center_id = $this->request->getPost('center_id');
+        $types = $this->model->getCourseTypes($center_id);
+        if($types){
+            return json_encode(['success' => '1', 'types' => $types]);
+        } else {
+            return json_encode(['success' => '0', 'types' => []]);
+        }
+    }
+
+    public function getCoursesByType()
+    {
+        $center_id = $this->request->getPost('center_id');
+        $type = $this->request->getPost('type');
+        $courses = $this->model->where(['center' => $center_id, 'type' => $type])->findAll();
+        if($courses){
+            return json_encode(['success' => '1', 'courses' => $courses]);
+        } else {
+            return json_encode(['success' => '0', 'courses' => []]);
+        }
+    }
 }

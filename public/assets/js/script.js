@@ -3,6 +3,78 @@
 
     var Svca = {
 
+        getCourseAmt: function(courseId){
+            $.ajax({
+                url: conf.baseUrl + "/course/get-course-fee",
+                type: "POST",
+                dataType: "json",
+                data: {
+                    course_id: courseId
+                },
+                success: function(res) {
+                    if(res.success == 1) {
+                        $('.course-fee').val(res.fee);
+                    } else {
+                        alert("Error fetching course fee");
+                    }
+                },
+                error: function() {
+                    alert("An error occurred while fetching the course fee.");
+                }
+            });
+        },
+
+        getCourseType: function(centerId){
+            $.ajax({
+                url: conf.baseUrl + "/course/get-course-type",
+                type: "POST",
+                dataType: "json",
+                data: {
+                    center_id: centerId
+                },
+                success: function(res) {
+                    if(res.success == 1) {
+                        var options = '<option value="">Select Type</option>';
+                        $.each(res.types, function(index, type) {
+                            options += '<option value="' + type.type + '">' + type.type + '</option>';
+                        });
+                        $('#type').html(options);
+                    } else {
+                        alert("Error fetching course types");
+                    }
+                },
+                error: function() {
+                    alert("An error occurred while fetching the course types.");
+                }
+            });
+        },
+
+        getCourseByType: function(centerId, type){
+            $.ajax({
+                url: conf.baseUrl + "/course/get-courses-by-type",
+                type: "POST",
+                dataType: "json",
+                data: {
+                    center_id: centerId,
+                    type: type
+                },
+                success: function(res) {
+                    if(res.success == 1) {
+                        var options = '<option value="">Select Course</option>';
+                        $.each(res.courses, function(index, course) {
+                            options += '<option value="' + course.id + '">' + course.course + '</option>';
+                        });
+                        $('#course').html(options);
+                    } else {
+                        alert("Error fetching courses");
+                    }
+                },
+                error: function() {
+                    alert("An error occurred while fetching the courses.");
+                }
+            });
+        },
+
         initDashboard: function() {
 
             $.ajax({
@@ -388,27 +460,6 @@
                         alert("An error occurred while updating the District.");
                     }
                 });
-            });
-        },
-
-        getCourseAmt: function(courseId){
-            $.ajax({
-                url: conf.baseUrl + "/course/get-course-fee",
-                type: "POST",
-                dataType: "json",
-                data: {
-                    course_id: courseId
-                },
-                success: function(res) {
-                    if(res.success == 1) {
-                        $('.course-fee').val(res.fee);
-                    } else {
-                        alert("Error fetching course fee");
-                    }
-                },
-                error: function() {
-                    alert("An error occurred while fetching the course fee.");
-                }
             });
         },
 
@@ -821,6 +872,27 @@
         },
 
         initInquery: function() {
+            let SVCAobj = this;
+
+            $("#center").on('change', function() {
+                if($(this).val()){
+                    SVCAobj.getCourseType($(this).val());
+                }else{
+                    $('#type').html('<option value="">Select Type</option>');
+                    $('#course').html('<option value="">Select Course</option>');
+                }
+            });
+
+            $("#type").on('change', function() {
+                let centerId = $("#center").val();
+                let courseType = $(this).val();
+                if(centerId && courseType){
+                    SVCAobj.getCourseByType(centerId, courseType);
+                }else{
+                    $('#course').html('<option value="">Select Course</option>');
+                }
+            });
+
             $('#smt-inqury').on('click', function(e){
                 e.preventDefault();
                 
@@ -964,17 +1036,18 @@
                     $('#s_name').val(data[0].name);
                     $('#p_number').val(data[0].pnumber);
                     $('#lst_qulifi').val(data[0].lqualifi).trigger('change');
-                    $('#course').val(data[0].course).trigger('change');
                     $('#center').val(data[0].center).trigger('change');
                     $('#inqury_id').val(data[0].id);
                     $('#smt-inqury').text('Update');
+                    // $('#selected_type').val(data[0].type);
+                    // $('#selected_course').val(data[0].course);
                 }
             }).on('deselect', function(e, dt, type, indexes){
                 $('#s_name').val('');
                 $('#p_number').val('');
                 // $('#lst_qulifi').val('').trigger('change');
-                // $('#course').val('').trigger('change');
-                // $('#center').val('').trigger('change');
+                $('#course').val('').trigger('change');
+                $('#center').val('').trigger('change');
                 $('#inqury_id').val('');
                 $('#smt-inqury').text('Submit');
             });

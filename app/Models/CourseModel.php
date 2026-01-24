@@ -55,4 +55,15 @@ class CourseModel extends Model
             return [];
         }
     }
+
+    public function getCourseTypes($center_id)
+    {
+        $query = "SELECT DISTINCT type FROM courses WHERE center = " . $center_id;
+        $result = $this->db->query($query)->getResultArray();
+        if ($result) {
+            return $result;
+        } else {
+            return [];
+        }
+    }
 }

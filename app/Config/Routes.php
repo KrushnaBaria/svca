@@ -60,6 +60,8 @@ $routes->group('course', function ($routes) {
     //$routes->post('add', 'Course::add');
     //$routes->post('list', 'Course::list');
     $routes->post('get-course-fee', 'Course::getCourseFee');
+    $routes->post('get-course-type', 'Course::getCourseType');
+    $routes->post('get-courses-by-type', 'Course::getCoursesByType');
 });
 
 $routes->group('payment', function ($routes){

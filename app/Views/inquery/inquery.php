@@ -17,28 +17,6 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label for="center" class="form-label">Center</label>
-                                <select class="form-select" name="center" id="center">
-                                    <?php foreach ($centers as $center): ?>
-                                        <option value="<?= $center['id'] ?>"><?= $center['center'] ?></option>
-                                    <?php endforeach; ?>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label for="center" class="form-label">Type</label>
-                                <select class="form-select" name="center" id="center">
-                                    <?php foreach ($centers as $center): ?>
-                                        <option value="<?= $center['id'] ?>"><?= $center['center'] ?></option>
-                                    <?php endforeach; ?>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="mb-3">
                                 <label for="lst_qulifi" class="form-label">Last Qualification</label>
                                 <select class="form-select" name="lst_qulifi" id="lst_qulifi">
                                     <option value="10">10th</option>
@@ -52,17 +30,38 @@
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3">
+                                <label for="center" class="form-label">Center</label>
+                                <select class="form-select" name="center" id="center">
+                                    <option value="">Select Center</option>
+                                    <?php foreach ($centers as $center): ?>
+                                        <option value="<?= $center['id'] ?>"><?= $center['center'] ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="type" class="form-label">Type</label>
+                                <select class="form-select" name="type" id="type">
+                                    <option value="">Select Type</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
                                 <label for="course" class="form-label">Preferred Course</label>
                                 <select class="form-select" name="course" id="course">
-                                    <?php foreach ($courses as $course): ?>
-                                        <option value="<?= $course['id'] ?>"><?= $course['course'] ?></option>
-                                    <?php endforeach; ?>
+                                    <option value="">Select Course</option>
                                 </select>
                             </div>
                         </div>
                     </div>
                     <div class="d-flex justify-content-center">
                         <input type="hidden" id="inqury_id" value="">
+                        <input type="hidden" id="selected_type" value="">
+                        <input type="hidden" id="selected_course" value="">
                         <button class="btn btn-primary col-md-4" id="smt-inqury">Submit</button>
                     </div>
                 </form>
