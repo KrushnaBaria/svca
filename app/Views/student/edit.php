@@ -100,11 +100,11 @@
                     </div>
                     <div class="col-md-2">
                         <div class="mb-3">
-                            <label for="course" class="form-label">Course</label>
-                            <select class="form-select" name="course" id="course" <?php echo ($student['admi_date'] != '0000-00-00') ? 'disabled' : '' ?>>
-                                <?php foreach ($courses as $course): ?>
-                                    <option value="<?php echo $course['id']; ?>" <?php echo (($student['course'] ?? '') == $course['id']) ? 'selected' : ''; ?>><?php echo $course['course']; ?></option>
-                                <?php endforeach; ?>
+                            <label for="dist" class="form-label">District</label>
+                            <select class="form-select" name="dist" id="dist">
+                                <?php foreach($districts as $district){ ?>
+                                    <option value="<?php echo $district['id']; ?>" <?php echo (($student['district'] ?? '') == $district['id']) ? 'selected' : ''; ?>><?php echo $district['name']; ?></option>
+                               <?php  } ?>
                             </select>
                         </div>
                     </div>
@@ -141,7 +141,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-2">
                         <div class="mb-3">
                             <label for="adhar" class="form-label">Adhar Number</label>
                             <input type="text" class="form-control" id="adhar" placeholder="Enter Adhar Number" inputmode="numeric" onkeypress="return event.charCode >= 48 && event.charCode <= 57 || event.charCode == 47;" maxlength="12" value="<?php echo isset($student['adhar']) ? $student['adhar'] : '' ?>">
@@ -149,21 +149,28 @@
                     </div>
                     <div class="col-md-2">
                         <div class="mb-3">
-                            <label for="dist" class="form-label">District</label>
-                            <select class="form-select" name="dist" id="dist">
-                                <?php foreach($districts as $district){ ?>
-                                    <option value="<?php echo $district['id']; ?>" <?php echo (($student['district'] ?? '') == $district['id']) ? 'selected' : ''; ?>><?php echo $district['name']; ?></option>
-                               <?php  } ?>
+                            <label for="center" class="form-label">Center</label>
+                            <select class="form-select" name="center" id="center">
+                                <option value="">Select Center </option>
+                                <?php foreach ($centers as $center): ?>
+                                    <option value="<?php echo $center['id'] ?>" <?php echo ($student['center'] ?? '') == $center['id'] ? 'selected' : '' ?>><?php echo $center['center'] ?></option>
+                                <?php endforeach; ?>
                             </select>
                         </div>
                     </div>
                     <div class="col-md-2">
                         <div class="mb-3">
-                            <label for="center" class="form-label">Center</label>
-                            <select class="form-select" name="center" id="center">
-                                <?php foreach ($centers as $center): ?>
-                                    <option value="<?php echo $center['id'] ?>" <?php echo ($student['center'] ?? '') == $center['id'] ? 'selected' : '' ?>><?php echo $center['center'] ?></option>
-                                <?php endforeach; ?>
+                            <label for="type" class="form-label">Type</label>
+                            <select class="form-select" name="type" id="type">
+                                <option value="">Select Type</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="mb-3">
+                            <label for="course" class="form-label">Course</label>
+                            <select class="form-select" name="course" id="course">
+                                <option value="">Select Course</option>
                             </select>
                         </div>
                     </div>
@@ -215,6 +222,8 @@
                         <input type="hidden" id="student_id" value="<?php echo $student['id'] ?>">
                         <input type="hidden" id="status" value="<?php echo $student['status'] ?>">
                         <input type="hidden" id="c-amount" class="course-fee" value="">
+                        <input type="hidden" id="selected_type" value="<?php echo $student['course_type'] ?>">
+                        <input type="hidden" id="selected_course" value="<?php echo $student['course'] ?>">
                         <button type="submit" class="btn btn-primary" id="update-stu">Update</button>
                     </div>
                 </div>

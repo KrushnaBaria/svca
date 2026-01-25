@@ -89,6 +89,11 @@
 
         initDashboard: function() {
 
+            let recInqurytbl = $('#recent-inquries-tbl');
+            let recInquryTbl = new DataTable('#recent-inquries-tbl', {
+                responsive: true,
+            });
+
             $.ajax({
                 url: conf.baseUrl + "/dashboard/get-main-report-chart-data",
                 type: "POST",
@@ -478,9 +483,32 @@
         initAddStudent: function(){
             let SVCAobj = this;
 
-            setTimeout(function(){
-                $('#course').trigger('change');
-            }, 300);
+            // setTimeout(function(){
+            //     $('#course').trigger('change');
+            // }, 300);
+
+            $("#center").on('change', function() {
+                let centerId = $(this).val();
+                if(centerId){
+                    setTimeout(function(){
+                        SVCAobj.getCourseType(centerId, '');
+                    }, 300);
+                }else{
+                    $('#type').html('<option value="">Select Type</option>');
+                    $('#course').html('<option value="">Select Course</option>');
+                }
+            });
+
+            $("#type").on('change', function() {
+                setTimeout(function(){
+                    let courseType = $('#type').val();
+                    if($("#center").val() && courseType){
+                        SVCAobj.getCourseByType($("#center").val(), courseType, $('#selected_course').val());
+                    }else{
+                        $('#course').html('<option value="">Select Course</option>');
+                    }
+                }, 300);
+            });
 
             $('#course').on('change', function() {
                 SVCAobj.getCourseAmt($(this).val());
@@ -544,6 +572,21 @@
 
                 if($('#adhar').val() == ''){
                     $('#adhar').focus();
+                    return false;
+                }
+
+                if($('#center').val() == ''){
+                    $('#center').focus();
+                    return false;
+                }
+
+                if($('#type').val() == ''){
+                    $('#type').focus();
+                    return false;
+                }
+
+                if($('#course').val() == ''){
+                    $('#course').focus();
                     return false;
                 }
 
@@ -619,8 +662,31 @@
             let SVCAobj = this;
 
             setTimeout(function(){
-                $('#course').trigger('change');
+                $('#center').trigger('change');
             }, 300);
+
+            $("#center").on('change', function() {
+                let centerId = $(this).val();
+                if(centerId){
+                    setTimeout(function(){
+                        SVCAobj.getCourseType(centerId, $('#selected_type').val());
+                    }, 300);
+                }else{
+                    $('#type').html('<option value="">Select Type</option>');
+                    $('#course').html('<option value="">Select Course</option>');
+                }
+            });
+
+            $("#type").on('change', function() {
+                setTimeout(function(){
+                    let courseType = $('#type').val();
+                    if($("#center").val() && courseType){
+                        SVCAobj.getCourseByType($("#center").val(), courseType, $('#selected_course').val());
+                    }else{
+                        $('#course').html('<option value="">Select Course</option>');
+                    }
+                }, 300);
+            });
 
             $('#course').on('change', function() {
                 SVCAobj.getCourseAmt($(this).val());

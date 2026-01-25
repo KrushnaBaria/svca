@@ -10,21 +10,71 @@
                 </div>
             </div>
         </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body row">
+                    <div class="owl-carousel owl-theme col-md-4" id="dashboard-carousel">
+                        <div class="item">
+                            <div class="card border-0 zoom-in bg-info-subtle shadow-none">
+                                <div class="card-body">
+                                <div class="text-center">
+                                    <img src="<?php echo base_url(); ?>/assets/images/svgs/icon-connect.svg" width="50" height="50" class="mb-3" alt="modernize-img">
+                                    <p class="fw-semibold fs-3 text-info mb-1">Reports</p>
+                                    <h5 class="fw-semibold text-info mb-0">59</h5>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="owl-carousel owl-theme col-md-4" id="dashboard-carousel">
+                        <div class="item">
+                            <div class="card border-0 zoom-in bg-success-subtle shadow-none">
+                                <div class="card-body">
+                                <div class="text-center">
+                                    <img src="<?php echo base_url(); ?>/assets/images/svgs/icon-speech-bubble.svg" width="50" height="50" class="mb-3" alt="modernize-img">
+                                    <p class="fw-semibold fs-3 text-success mb-1">Inquiries</p>
+                                    <h5 class="fw-semibold text-success mb-0">96</h5>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="owl-carousel owl-theme col-md-4" id="dashboard-carousel">
+                        <div class="item">
+                            <div class="card border-0 zoom-in bg-warning-subtle shadow-none">
+                                <div class="card-body">
+                                <div class="text-center">
+                                    <img src="<?php echo base_url(); ?>/assets/images/svgs/icon-briefcase.svg" width="50" height="50" class="mb-3" alt="modernize-img">
+                                    <p class="fw-semibold fs-3 text-warning mb-1">Students</p>
+                                    <h5 class="fw-semibold text-warning mb-0">3,650</h5>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div>
-        <table id="recent-inquries-tbl" class="table table-striped" style="width:100%">
-            <thead class="text-dark fs-4">
-                <th><h6 class="fs-3 fw-semibold">No</h6></th>
-                <th><h6 class="fs-3 fw-semibold">Student Name</h6></th>
-                <th><h6 class="fs-3 fw-semibold">Phone</h6></th>
-                <th><h6 class="fs-3 fw-semibold">Course</h6></th>
-                <th><h6 class="fs-3 fw-semibold">Center</h6></th>
-                <th><h6 class="fs-3 fw-semibold">Date</h6></th>
-            </thead>
-            <tbody>
-            </tbody>
-        </table>
+    <div class="card">
+        <div class="card-header bg-primary">
+            <h4 class="card-title text-white">Recent Inquiries</h4>
+        </div>
+        <div class="card-body">
+            <table id="recent-inquries-tbl" class="table table table-bordered" style="width:100%">
+                <thead class="text-dark fs-4">
+                    <th><h6 class="fs-3 fw-semibold">No</h6></th>
+                    <th><h6 class="fs-3 fw-semibold">Student Name</h6></th>
+                    <th><h6 class="fs-3 fw-semibold">Phone</h6></th>
+                    <th><h6 class="fs-3 fw-semibold">Course</h6></th>
+                    <th><h6 class="fs-3 fw-semibold">Center</h6></th>
+                    <th><h6 class="fs-3 fw-semibold">Date</h6></th>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 

@@ -84,12 +84,12 @@ class Student extends BaseController
 
     public function edit($id)
     {
-        $student = $this->model->find($id);
+        $student = $this->model->getEditInfo($id);
         if (!$student) {
             throw new \CodeIgniter\Exceptions\PageNotFoundException('Student not found');
         }
 
-        $data['student'] = $student;
+        $data['student'] = $student[0];
         $data['centers'] = $this->centerModel->findAll();
         $data['courses'] = $this->courseModel->findAll();
         $data['districts'] = $this->districtModel->findAll();

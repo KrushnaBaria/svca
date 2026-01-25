@@ -41,6 +41,16 @@ class StudentModel extends Model
         }
     }
 
+    public function getEditInfo($id)
+    {
+        $query = "SELECT st.*, courses.type AS course_type FROM students AS st
+            LEFT JOIN courses ON st.course = courses.id
+            WHERE st.id = ". $id ."";
+
+        $result = $this->db->query($query)->getResultArray();
+        return $result;
+    }
+
     public function updateStudent($id, $data, $remark)
     {
         // Convert dob from d/m/Y to Y-m-d
@@ -140,7 +150,7 @@ class StudentModel extends Model
         $end = $data['end'] ?? 10;
         $search = $data['search'] ?? '';
 
-        $query = "SELECT st.*, courses.course AS course_name, centers.center AS center_name FROM students AS st
+        $query = "SELECT st.*, courses.course AS course_name, centers.center AS center_name, courses.type AS course_type FROM students AS st
             LEFT JOIN centers ON st.center = centers.id
             LEFT JOIN courses ON st.course = courses.id
             WHERE status = 1 AND del_sts = 0";
