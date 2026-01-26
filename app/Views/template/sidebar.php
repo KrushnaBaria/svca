@@ -1,4 +1,3 @@
-<?php ?>
 <!--  Body Wrapper -->
 <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
     data-sidebar-position="fixed" data-header-position="fixed">
@@ -6,11 +5,12 @@
         <!-- Sidebar scroll-->
         <div>
         <div class="brand-logo d-flex align-items-center justify-content-between">
-            <a href="" class="text-nowrap logo-img">
-            <img src="<?php echo base_url('public/assets/images/logos/logo.svg');?>" alt="" />
+            <a href="" class="text-nowrap logo-img text-center">
+                <!-- <img src="<?php echo base_url('public/assets/images/logos/logo.svg');?>" alt="" /> -->
+                 <h1 class="mb-0 fs-8 fw-semibold text-primary">SVCA</h1>
             </a>
             <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
-            <i class="ti ti-x fs-6"></i>
+                <i class="ti ti-x fs-6"></i>
             </div>
         </div>
         <!-- Sidebar navigation-->

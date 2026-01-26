@@ -102,4 +102,28 @@ class ExpenseModel extends Model
         }
         return $result;
     }
+
+    public function getPERinfo()
+    {
+        $revenue_query = "SELECT SUM(amount) AS revenue
+                    FROM payment
+                    WHERE DATE_FORMAT(add_date, '%Y-%m') = '2026-01'
+                    GROUP BY YEAR(add_date), MONTH(add_date)";
+        
+        $expense_query = "SELECT SUM(amount) AS expenses
+                    FROM expenses
+                    WHERE DATE_FORMAT(add_date, '%Y-%m') = '2026-01'
+                    GROUP BY YEAR(add_date), MONTH(add_date)";
+
+        $revenue_result = $this->db->query($revenue_query)->getResultArray();
+        $expense_result = $this->db->query($expense_query)->getResultArray();
+
+        $revenue_result = count($revenue_result) > 0 ? $revenue_result : [['revenue' => 0]];
+        $expense_result = count($expense_result) > 0 ? $expense_result : [['expenses' => 0]];
+
+        return [
+            $revenue_result[0],
+            $expense_result[0]
+        ];
+    }
 }

@@ -88,10 +88,111 @@
         },
 
         initDashboard: function() {
+            setTimeout(() => {
+                $.ajax({
+                    url: conf.baseUrl + "dashboard/get-PRE",
+                    type: "POST",
+                    dataType: "json",
+                    data: {
+                        
+                    },
+                    success: function(res) {
+                        $('#revenue-count').html(res.data[0].revenue);
+                        $('#expense-count').html(res.data[1].expenses);
+                        $('#profit-count').html(res.data[0].revenue - res.data[1].expenses);
+                    },
+                    error: function() {
+                        alert("An error occurred while fwtching data.");
+                    }
+                });
+            });
+
+            setTimeout(() => {
+                $.ajax({
+                    url: conf.baseUrl + "dashboard/get-student-count",
+                    type: "POST",
+                    dataType: "json",
+                    data: {
+                        
+                    },
+                    success: function(res) {
+                        console.log(res);
+                        $('#admission-count').html(res.data.AdmiCount);
+                        $('#inquiry-count').html(res.data.InqCount);
+                    },
+                    error: function() {
+                        alert("An error occurred while fwtching data.");
+                    }
+                });
+            });
 
             let recInqurytbl = $('#recent-inquries-tbl');
             let recInquryTbl = new DataTable('#recent-inquries-tbl', {
                 responsive: true,
+                searching: typeof recInqurytbl.data('dt-searching') === 'undefined' ? true : recInqurytbl.data('dt-searching'),
+                lengthChange: typeof recInqurytbl.data('dt-lengthchange') === 'undefined' ? true : recInqurytbl.data('dt-lengthchange'),
+                processing: true,
+                serverSide: true,
+                bSortable: true,
+                bFilter: true,
+                pagingType: "full_numbers",
+                ajax: {
+                    url: conf.baseUrl + "/inquery/recent-list",
+                    data: function (d) {
+                        d.student_id = $('#stu_id').val();
+                    },
+                    type: 'post',
+                },
+                lengthMenu: [
+                    [5, 10, 20, -1],
+                    [5, 10, 20, "All"]
+                ],
+                pageLength: (typeof recInqurytbl.data('dt-pagelength') === 'undefined' || recInqurytbl.data('dt-pagelength') === '-1') ? 5 : recInqurytbl.data('dt-pagelength'),
+                paging: true,
+                ordering: false,
+                columnDefs: [
+                    {
+                        targets: [0],
+                        orderable: false,
+                        data: function (row, type, val, meta) {  
+                            return meta.row + 1;
+                        }
+                    },
+                    {
+                        targets: [1],
+                        orderable: true,
+                        data: function (row) {
+                            return row.name;
+                        }
+                    },
+                    {
+                        targets: [2],
+                        orderable: false,
+                        data: function (row) {
+                            return row.pnumber;
+                        }
+                    },
+                    {
+                        targets: [3],
+                        orderable: true,
+                        data: function (row) {
+                            return row.course_name;
+                        }
+                    },
+                    {
+                        targets: [4],
+                        orderable: true,
+                        data: function (row) {
+                            return row.center_name;
+                        }
+                    },{
+                        targets: [5],
+                        orderable: true,
+                        data: function (row) {
+                            return row.add_date;
+                        }
+                    },
+                ],
             });
 
             $.ajax({

@@ -18,6 +18,8 @@ service('auth')->routes($routes);
 $routes->group('dashboard', function ($routes) {
     $routes->get('/', 'Dashboard::index');
     $routes->post('get-main-report-chart-data', 'Dashboard::getMainReportChartData');
+    $routes->post('get-PRE', 'Dashboard::get_PRE');
+    $routes->post('get-student-count', 'Dashboard::get_Student_Count');
 });
 
 $routes->group('expense', function ($routes) {
@@ -42,6 +44,7 @@ $routes->group('inquery', function ($routes) {
     $routes->post('list', 'Inquery::list');
     $routes->post('admit', 'Inquery::admit');
     $routes->post('update-del-sts', 'Inquery::update_delete_sts');
+    $routes->post('recent-list', 'Inquery::recent_list');
 });
 
 $routes->group('settings', function ($routes) {

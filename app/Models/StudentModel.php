@@ -245,4 +245,40 @@ class StudentModel extends Model
         $result['data'] = $this->db->query($query)->getResultArray();
         return $result;
     }
+
+    public function recentInquerys($data)
+    {
+        $start = $data['start'] ?? 0;
+        $end = $data['end'] ?? 10;
+        $search = $data['search'] ?? '';
+
+        $query = "SELECT st.*, courses.course AS course_name, courses.type AS course_type, centers.center AS center_name FROM students AS st
+            LEFT JOIN centers ON st.center = centers.id
+            LEFT JOIN courses ON st.course = courses.id
+            WHERE status = 0 AND del_sts = 0 AND st.add_date >= DATE_SUB(NOW(), INTERVAL 7 DAY) ";
+
+        if (!empty($search)) {
+            $query .= " AND (st.name LIKE '%" . $this->db->escapeLikeString($search) . "%' OR st.pnumber LIKE '%" . $this->db->escapeLikeString($search) . "%')";
+        }
+
+        $result['recordsTotal'] = $result['recordsFiltered'] = $this->db->query($query)->getNumRows();
+
+        $query .= " ORDER BY st.id DESC LIMIT " . (int)$start . ", " . (int)$end;
+
+        $result['data'] = $this->db->query($query)->getResultArray();
+        return $result;
+    }
+
+    public function getStudentCount()
+    {
+        $AdmiQuery = "SELECT COUNT(*) as AdmiCount FROM students WHERE status = 1 AND del_sts = 0";
+        $AdmiCount = $this->db->query($AdmiQuery)->getRowArray();
+
+        $InqQuery = "SELECT COUNT(*) as InqCount FROM students WHERE status = 0 AND del_sts = 0";
+        $InqCount = $this->db->query($InqQuery)->getRowArray();
+
+        $result['AdmiCount'] = $AdmiCount['AdmiCount'];
+        $result['InqCount'] = $InqCount['InqCount'];
+        return $result;   
+    }
 }

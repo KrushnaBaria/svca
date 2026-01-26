@@ -2,9 +2,9 @@
     <div class="row">
         <div class="col-md-6">
             <div class="card">
-                <!-- <div class="card-header">
-                    <h4 class="card-title">Expense</h4>
-                </div> -->
+                <div class="card-header bg-primary">
+                    <h4 class="card-title text-white">Ex Chart</h4>
+                </div>
                 <div class="card-body">
                     <div id="main-report-chart"></div>
                 </div>
@@ -15,12 +15,25 @@
                 <div class="card-body row">
                     <div class="owl-carousel owl-theme col-md-4" id="dashboard-carousel">
                         <div class="item">
+                            <div class="card border-0 zoom-in bg-warning-subtle shadow-none">
+                                <div class="card-body">
+                                <div class="text-center">
+                                    <img src="<?php echo base_url(); ?>/assets/images/svgs/icon-briefcase.svg" width="50" height="50" class="mb-3" alt="modernize-img">
+                                    <p class="fw-semibold fs-3 text-warning mb-1">Admission</p>
+                                    <h5 class="fw-semibold text-warning mb-0" id="admission-count">0</h5>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="owl-carousel owl-theme col-md-4" id="dashboard-carousel">
+                        <div class="item">
                             <div class="card border-0 zoom-in bg-info-subtle shadow-none">
                                 <div class="card-body">
                                 <div class="text-center">
                                     <img src="<?php echo base_url(); ?>/assets/images/svgs/icon-connect.svg" width="50" height="50" class="mb-3" alt="modernize-img">
-                                    <p class="fw-semibold fs-3 text-info mb-1">Reports</p>
-                                    <h5 class="fw-semibold text-info mb-0">59</h5>
+                                    <p class="fw-semibold fs-3 text-info mb-1">Inquiries</p>
+                                    <h5 class="fw-semibold text-info mb-0" id="inquiry-count">0</h5>
                                 </div>
                                 </div>
                             </div>
@@ -32,8 +45,32 @@
                                 <div class="card-body">
                                 <div class="text-center">
                                     <img src="<?php echo base_url(); ?>/assets/images/svgs/icon-speech-bubble.svg" width="50" height="50" class="mb-3" alt="modernize-img">
-                                    <p class="fw-semibold fs-3 text-success mb-1">Inquiries</p>
-                                    <h5 class="fw-semibold text-success mb-0">96</h5>
+                                    <p class="fw-semibold fs-3 text-success mb-1">Follow Up</p>
+                                    <h5 class="fw-semibold text-success mb-0">0</h5>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="owl-carousel owl-theme col-md-4" id="dashboard-carousel">
+                        <div class="item">
+                            <div class="card border-0 zoom-in bg-info-subtle shadow-none">
+                                <div class="card-body">
+                                <div class="text-center">
+                                    <p class="fw-semibold fs-3 text-info mb-1">Revenue</p>
+                                    <h5 class="fw-semibold text-info mb-0" id="revenue-count">0</h5>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="owl-carousel owl-theme col-md-4" id="dashboard-carousel">
+                        <div class="item">
+                            <div class="card border-0 zoom-in bg-success-subtle shadow-none">
+                                <div class="card-body">
+                                <div class="text-center">
+                                    <p class="fw-semibold fs-3 text-success mb-1">Expense</p>
+                                    <h5 class="fw-semibold text-success mb-0" id="expense-count">0</h5>
                                 </div>
                                 </div>
                             </div>
@@ -44,9 +81,8 @@
                             <div class="card border-0 zoom-in bg-warning-subtle shadow-none">
                                 <div class="card-body">
                                 <div class="text-center">
-                                    <img src="<?php echo base_url(); ?>/assets/images/svgs/icon-briefcase.svg" width="50" height="50" class="mb-3" alt="modernize-img">
-                                    <p class="fw-semibold fs-3 text-warning mb-1">Students</p>
-                                    <h5 class="fw-semibold text-warning mb-0">3,650</h5>
+                                    <p class="fw-semibold fs-3 text-warning mb-1">Profit</p>
+                                    <h5 class="fw-semibold text-warning mb-0" id="profit-count">0</h5>
                                 </div>
                                 </div>
                             </div>

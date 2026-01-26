@@ -106,4 +106,20 @@ class Inquery extends BaseController
             return json_encode(['success' => 0, 'message' => 'Failed to delete inquiry.']);
         }
     }
+
+    public function recent_list()
+    {
+        $data = [
+            'start' => $this->request->getPost('start'),
+            'end' => $this->request->getPost('length'),
+            'search' => $this->request->getPost('search')['value'] ?? ''
+        ];
+
+        $RecentInquerys = $this->studentModel->recentInquerys($data);
+        if ($RecentInquerys) {
+            return json_encode($RecentInquerys);
+        } else {
+            return json_encode(['success' => 0, 'message' => 'No students found']);
+        }
+    }
 }
