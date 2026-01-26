@@ -103,16 +103,27 @@ class ExpenseModel extends Model
         return $result;
     }
 
-    public function getPERinfo()
+    public function getPERinfo($data)
     {
+        $whereRev = $whereExp = '';
+
+        if($data['center_id']){
+            $whereRev .= " AND stu.center = '". $data['center_id'] ."'";
+        }
+
+        if($data['center_id']){
+            $whereExp .= " AND center = '". $data['center_id'] ."'";
+        }
+
         $revenue_query = "SELECT SUM(amount) AS revenue
                     FROM payment
-                    WHERE DATE_FORMAT(add_date, '%Y-%m') = '2026-01'
-                    GROUP BY YEAR(add_date), MONTH(add_date)";
+                    LEFT JOIN students AS stu ON payment.stu_id = stu.id
+                    WHERE 1=1". $whereRev . " AND DATE_FORMAT(payment.add_date, '%Y-%m') = '". $data['f_date'] ."'
+                    GROUP BY YEAR(payment.add_date), MONTH(payment.add_date)";
         
         $expense_query = "SELECT SUM(amount) AS expenses
                     FROM expenses
-                    WHERE DATE_FORMAT(add_date, '%Y-%m') = '2026-01'
+                    WHERE 1=1". $whereExp . " AND DATE_FORMAT(add_date, '%Y-%m') = '". $data['f_date'] ."'
                     GROUP BY YEAR(add_date), MONTH(add_date)";
 
         $revenue_result = $this->db->query($revenue_query)->getResultArray();

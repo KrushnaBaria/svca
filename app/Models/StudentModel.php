@@ -269,12 +269,19 @@ class StudentModel extends Model
         return $result;
     }
 
-    public function getStudentCount()
-    {
-        $AdmiQuery = "SELECT COUNT(*) as AdmiCount FROM students WHERE status = 1 AND del_sts = 0";
+    public function getStudentCount($data)
+    {   
+        $where = '';
+        if($data['center_id']){
+            $where .= " AND center = '". $data['center_id'] ."'";
+        }
+
+        $AdmiQuery = "SELECT COUNT(*) as AdmiCount FROM students
+                        WHERE status = 1 AND del_sts = 0".$where." AND DATE_FORMAT(add_date, '%Y-%m') = '". $data['f_date'] ."'";
         $AdmiCount = $this->db->query($AdmiQuery)->getRowArray();
 
-        $InqQuery = "SELECT COUNT(*) as InqCount FROM students WHERE status = 0 AND del_sts = 0";
+        $InqQuery = "SELECT COUNT(*) as InqCount FROM students
+                        WHERE status = 0 AND del_sts = 0".$where." AND DATE_FORMAT(add_date, '%Y-%m') = '". $data['f_date'] ."'";
         $InqCount = $this->db->query($InqQuery)->getRowArray();
 
         $result['AdmiCount'] = $AdmiCount['AdmiCount'];

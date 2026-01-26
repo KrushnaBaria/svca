@@ -87,14 +87,16 @@
             });
         },
 
-        initDashboard: function() {
+        getCounts: function(){
+            const fp = $('#date-filter')[0]._flatpickr
             setTimeout(() => {
                 $.ajax({
                     url: conf.baseUrl + "dashboard/get-PRE",
                     type: "POST",
                     dataType: "json",
                     data: {
-                        
+                        f_date : fp.formatDate(fp.selectedDates[0], "Y-m"),
+                        center_id : $('#center-filter').val()
                     },
                     success: function(res) {
                         $('#revenue-count').html(res.data[0].revenue);
@@ -113,10 +115,10 @@
                     type: "POST",
                     dataType: "json",
                     data: {
-                        
+                        f_date : fp.formatDate(fp.selectedDates[0], "Y-m"),
+                        center_id : $('#center-filter').val()
                     },
                     success: function(res) {
-                        console.log(res);
                         $('#admission-count').html(res.data.AdmiCount);
                         $('#inquiry-count').html(res.data.InqCount);
                     },
@@ -125,6 +127,28 @@
                     }
                 });
             });
+        },
+
+        initDashboard: function() {
+            let SVCAobj = this;
+
+            $('#date-filter').flatpickr({
+                defaultDate: new Date(),
+                altFormat: "F Y",
+                dateFormat: "Y-m",
+                altInput: true,
+                plugins: [
+                    new monthSelectPlugin({
+                    shorthand: true
+                    })
+                ]
+            });
+
+            $('#date-filter,#center-filter').on('change', function(){
+                SVCAobj.getCounts();
+            });
+
+            SVCAobj.getCounts();
 
             let recInqurytbl = $('#recent-inquries-tbl');
             let recInquryTbl = new DataTable('#recent-inquries-tbl', {

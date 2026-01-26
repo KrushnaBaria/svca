@@ -12,6 +12,21 @@
         </div>
         <div class="col-md-6">
             <div class="card">
+                <div class="card-header bg-primary">
+                    <div class="d-flex justify-content-end gap-2">
+                        <div class="col-3">
+                            <input type="text" class="form-control text-white" id="date-filter">
+                        </div>
+                        <div class="col-3">
+                            <select class="form-control text-white" id="center-filter">
+                                <option class="text-primary" value="">Select Center</option>
+                                <?php foreach($centers as $center): ?>
+                                    <option class="text-primary" value="<?= $center['id'] ?>"><?= $center['center'] ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
+                </div>
                 <div class="card-body row">
                     <div class="owl-carousel owl-theme col-md-4" id="dashboard-carousel">
                         <div class="item">

@@ -23,6 +23,8 @@
     <script src="https://cdn.datatables.net/v/dt/jq-3.7.0/moment-2.29.4/dt-2.3.2/sl-3.0.1/datatables.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/plugins/monthSelect/index.js"></script>
     <script src="<?php echo base_url('public/assets/js/script.js');?>"></script>
 </body>
 </html>
