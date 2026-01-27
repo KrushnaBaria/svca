@@ -34,7 +34,32 @@
     </div>
 </div>
 
-<div>
+<div class="col-12">
+    <div class="card">
+        <div class="card-header bg-primary">
+            <h4 class="text-white mb-0">Expense Filter</h4>
+        </div>
+        <div class="card-body">
+            <div class="d-flex flex-wrap justify-content-md-start justify-content-center gap-2">
+                <div class="col-md-3 col-10">
+                    <label class="form-label" for="center-ftr">Center</label>
+                    <select type="text" class="form-control" id="center-ftr">
+                        <option value="">Select Center</option>
+                        <?php foreach($centers as $center): ?>
+                            <option value="<?= $center['id'] ?>"><?= $center['center'] ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                <div class="col-md-3 col-10">
+                    <label class="form-label" for="date-ftr">Date</label>
+                    <input type="text" class="form-control text-white" id="date-ftr">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="col-12">
     <div class="card">
         <div class="card-header text-bg-primary">
             <h4 class="mb-0 text-white">Expense List</h4>

@@ -250,16 +250,26 @@ class StudentModel extends Model
     {
         $start = $data['start'] ?? 0;
         $end = $data['end'] ?? 10;
-        $search = $data['search'] ?? '';
+        $search = $data['search'] ?? [];
+        $where = "";
+
+        if ($search) { 
+            $where = " AND ((st.name LIKE '%" . $search . "%' OR st.pnumber LIKE '%" . $search . "%' OR courses.course LIKE '%" . $search . "%' OR centers.center LIKE '%" . $search . "%')";
+            $sval = explode(" ", $search); 
+            if(count($sval) > 1){ 
+                $where .= " OR ("; 
+                    $tmp = []; foreach($sval as $val){ 
+                        $tmp[] = "(st.name LIKE '%" . $val . "%' OR st.pnumber LIKE '%" . $val . "%' OR courses.course LIKE '%" . $val . "%' OR centers.center LIKE '%" . $val . "%')"; 
+                    } 
+                $where .= implode(" AND ", $tmp) . ") "; 
+            } 
+            $where .= ")";
+        }
 
         $query = "SELECT st.*, courses.course AS course_name, courses.type AS course_type, centers.center AS center_name FROM students AS st
             LEFT JOIN centers ON st.center = centers.id
             LEFT JOIN courses ON st.course = courses.id
-            WHERE status = 0 AND del_sts = 0 AND st.add_date >= DATE_SUB(NOW(), INTERVAL 7 DAY) ";
-
-        if (!empty($search)) {
-            $query .= " AND (st.name LIKE '%" . $this->db->escapeLikeString($search) . "%' OR st.pnumber LIKE '%" . $this->db->escapeLikeString($search) . "%')";
-        }
+            WHERE 1=1 ". $where ." AND status = 0 AND del_sts = 0 AND st.add_date >= DATE_SUB(NOW(), INTERVAL 7 DAY) ";
 
         $result['recordsTotal'] = $result['recordsFiltered'] = $this->db->query($query)->getNumRows();
 
