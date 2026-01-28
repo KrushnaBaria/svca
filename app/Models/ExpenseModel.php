@@ -30,12 +30,36 @@ class ExpenseModel extends Model
         $end = $data['end'];
         $search = $data['search'];
 
+        // If date_ftr is set as a string like "21-01-2026 to 28-01-2026", convert it to start and end dates
+        $date_ftr = isset($data['date_ftr']) ? trim($data['date_ftr']) : '';
+        $start_date = '';
+        $end_date = '';
+
+        if (!empty($date_ftr)) {
+            $parts = explode('to', $date_ftr);
+            $start_date = $parts[0];
+            $end_date = $parts[1];
+        }
+
         $query = "SELECT e.*, c.center AS center_name
                   FROM expenses e 
-                  JOIN centers c ON e.center = c.id ";
+                  JOIN centers c ON e.center = c.id
+                  WHERE 1=1";
+
+        if($data['center_ftr']){
+            $query .= " AND e.center = " . $data['center_ftr'] . "";
+        }
+
+        if($data['user_ftr']){
+            $query .= " AND e.updated_by = '" . $data['user_ftr'] . "'";
+        }
 
         if(!empty($search)){
-            $query .= " WHERE e.exp LIKE '%" . $search . "%' OR c.center LIKE '%" . $search . "%' ";
+            $query .= " AND e.exp LIKE '%" . $search . "%' OR c.center LIKE '%" . $search . "%' ";
+        }
+
+        if($start_date && $end_date){
+            $query .= " AND DATE(e.add_date) BETWEEN '" . trim($start_date) . "' AND '" . trim($end_date) . "' ";
         }
 
         $query .= " ORDER BY e.id DESC LIMIT " . $start . ", " . $end;

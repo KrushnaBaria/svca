@@ -8,11 +8,13 @@ use CodeIgniter\HTTP\RequestInterface;
 use Psr\Log\LoggerInterface;
 use App\Models\ExpenseModel;
 use App\Models\CenterModel;
+use App\Models\UserModel;
 
 class Expense extends BaseController
 {
     protected $model;
     protected $centertModel;
+    protected $userModel;
 
     public function initController(RequestInterface $request, ResponseInterface $response, LoggerInterface $logger)
     {
@@ -20,12 +22,14 @@ class Expense extends BaseController
         parent::initController($request, $response, $logger);
         $this->model = model(ExpenseModel::class);
         $this->centerModel = model(CenterModel::class);
+        $this->userModel = model(UserModel::class);
     }
 
     public function index()
     {
         $data['centers'] = $this->centerModel->findAll();
-        return view('template/header', ['page_title' => 'Expense']). view('expense/expense', $data). view('template/footer', ['app_init' => 'initExpense']);
+        $data['users'] = $this->userModel->getUsers();
+        return view('template/header', ['page_title' => 'Expense']) . view('expense/expense', $data) . view('template/footer', ['app_init' => 'initExpense']);
     }
 
     public function add()
@@ -49,7 +53,10 @@ class Expense extends BaseController
         $data = [
             'start' => $this->request->getPost('start'),
             'end' => $this->request->getPost('length'),
-            'search' => $this->request->getPost('search')['value'] ?? ''
+            'search' => $this->request->getPost('search')['value'] ?? '',
+            'center_ftr' => $this->request->getPost('center_ftr'),
+            'user_ftr' => $this->request->getPost('user_ftr'),
+            'date_ftr' => $this->request->getPost('date_ftr'),
         ];
 
         $expenses = $this->model->getList($data);

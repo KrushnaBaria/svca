@@ -15,7 +15,7 @@
                         <select type="text" class="form-control" id="center">
                             <option value="">Select Center</option>
                             <?php foreach($centers as $center): ?>
-                                <option value="<?= $center['id'] ?>"><?= $center['center'] ?></option>
+                                <option value="<?php $center['id'] ?>"><?= $center['center'] ?></option>
                             <?php endforeach; ?>
                         </select>
                     </div>
@@ -51,8 +51,21 @@
                     </select>
                 </div>
                 <div class="col-md-3 col-10">
+                    <label class="form-label" for="user-ftr">User</label>
+                    <select type="text" class="form-control" id="user-ftr">
+                        <option value="">Select User</option>
+                        <?php foreach($users as $user): ?>
+                            <option value="<?= $user['email'] ?>"><?= $user['email'] ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                <div class="col-md-3 col-10">
                     <label class="form-label" for="date-ftr">Date</label>
-                    <input type="text" class="form-control text-white" id="date-ftr">
+                    <input type="text" class="form-control" id="date-ftr" placeholder="Select Date Range">
+                </div>
+                <div class="col-md-2 col-10 d-flex justify-content-center align-items-center mt-0 mt-md-6 pt-3">
+                    <button class="btn btn-primary mx-1" id="expense-search-btn">Search</button>
+                    <button class="btn btn-secondary mx-1" id="expense-clear-btn">Clear</button>
                 </div>
             </div>
         </div>

@@ -112,7 +112,7 @@
         <div class="card-header bg-primary">
             <h4 class="card-title text-white">Recent Inquiries</h4>
         </div>
-        <div class="card-body">
+        <div class="card-body table-responsive">
             <table id="recent-inquries-tbl" class="table table table-bordered" style="width:100%">
                 <thead class="text-dark fs-4">
                     <th><h6 class="fs-3 fw-semibold">No</h6></th>

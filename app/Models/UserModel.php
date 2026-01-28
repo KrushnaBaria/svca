@@ -46,4 +46,13 @@ class UserModel extends ShieldUserModel
             return 1;
         }
     }
+
+    public function getUsers(){
+        $query = "SELECT u.id, ai.secret AS email FROM users AS u
+            LEFT JOIN auth_identities AS ai ON ai.user_id = u.id";
+        $result = $this->db->query($query)->getResultArray();
+        if($result){
+            return $result;
+        }
+    }
 }

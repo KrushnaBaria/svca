@@ -133,6 +133,7 @@
             let SVCAobj = this;
 
             $('#date-filter').flatpickr({
+                disableMobile: true,
                 defaultDate: new Date(),
                 altFormat: "F Y",
                 dateFormat: "Y-m",
@@ -1456,6 +1457,34 @@
 
         initExpense: function(){
 
+            var center_ftr = '', 
+                date_ftr = '',
+                user_ftr = '';
+
+            let datePicker = flatpickr("#date-ftr", {
+                mode: "range",
+                altInput: true,
+                altFormat: "d-m-Y",
+                dateFormat: "Y-m-d",
+                maxDate: new Date(),
+            });
+
+            $('#expense-search-btn').on('click', function(){
+                center_ftr = $('#center-ftr').val();
+                date_ftr = $('#date-ftr').val();
+                user_ftr = $('#user-ftr').val();
+                expenseTbl.ajax.reload();
+            });
+
+            $('#expense-clear-btn').on('click', function(){
+                center_ftr = date_ftr = user_ftr = '';
+                $('#center-ftr').val('');
+                $('#date-ftr').val('');
+                $('#user-ftr').val('');
+                datePicker.clear();
+                expenseTbl.ajax.reload();
+            })
+
             let expensetbl = $('#expense-tbl');
             let expenseTbl = new DataTable('#expense-tbl', {
                 responsive: true,
@@ -1469,6 +1498,11 @@
                 ajax: {
                     url: conf.baseUrl + "/expense/list",
                     type: 'post',
+                    data: function (d) {
+                        d.center_ftr = center_ftr;
+                        d.date_ftr = date_ftr;
+                        d.user_ftr = user_ftr;
+                    }
                 },
                 lengthMenu: [
                     [5, 10, 20, -1],
