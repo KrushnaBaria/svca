@@ -150,10 +150,33 @@ class StudentModel extends Model
         $end = $data['end'] ?? 10;
         $search = $data['search'] ?? '';
 
+        // If date_ftr is set as a string like "21-01-2026 to 28-01-2026", convert it to start and end dates
+        $date_ftr = isset($data['date_ftr']) ? trim($data['date_ftr']) : '';
+        $start_date = '';
+        $end_date = '';
+
+        if (!empty($date_ftr)) {
+            $parts = explode('to', $date_ftr);
+            $start_date = $parts[0];
+            $end_date = $parts[1];
+        }
+
         $query = "SELECT st.*, courses.course AS course_name, centers.center AS center_name, courses.type AS course_type FROM students AS st
             LEFT JOIN centers ON st.center = centers.id
             LEFT JOIN courses ON st.course = courses.id
             WHERE status = 1 AND del_sts = 0";
+
+        if($data['center_ftr']){
+            $query .= " AND st.center = " . $data['center_ftr'] . "";
+        }
+
+        if($data['user_ftr']){
+            $query .= " AND st.updated_by = '" . $data['user_ftr'] . "'";
+        }
+
+        if($start_date && $end_date){
+            $query .= " AND DATE(st.add_date) BETWEEN '" . trim($start_date) . "' AND '" . trim($end_date) . "' ";
+        }
 
         if (!empty($search)) {
             $query .= " AND (st.name LIKE '%" . $this->db->escapeLikeString($search) . "%' OR st.fname LIKE '%" . $this->db->escapeLikeString($search) . "%')";

@@ -960,6 +960,34 @@
         },
 
         initStudentList: function() {
+            let datePicker = flatpickr("#date-ftr", {
+                mode: "range",
+                altInput: true,
+                altFormat: "d-m-Y",
+                dateFormat: "Y-m-d",
+                maxDate: new Date(),
+            });
+
+            var center_ftr = '', 
+                date_ftr = '',
+                user_ftr = '';
+
+            $('#student-search-btn').on('click', function(){
+                center_ftr = $('#center-ftr').val();
+                date_ftr = $('#date-ftr').val();
+                user_ftr = $('#user-ftr').val();
+                studentTbl.ajax.reload();
+            });
+
+            $('#student-clear-btn').on('click', function(){
+                center_ftr = date_ftr = user_ftr = '';
+                $('#center-ftr').val('');
+                $('#date-ftr').val('');
+                $('#user-ftr').val('');
+                datePicker.clear();
+                studentTbl.ajax.reload();
+            })
+
             let studentTbl = new DataTable('#student-tbl', {
                 responsive: true,
                 scrollX: true,
@@ -973,6 +1001,11 @@
                 ajax: {
                     url: conf.baseUrl + "/student/getStudents",
                     type: 'post',
+                    data: function (d) {
+                        d.center_ftr = center_ftr;
+                        d.date_ftr = date_ftr;
+                        d.user_ftr = user_ftr;
+                    }
                 },
                 lengthMenu: [
                     [5, 10, 20, -1],

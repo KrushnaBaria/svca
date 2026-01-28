@@ -10,6 +10,7 @@ use App\Models\CenterModel;
 use App\Models\CourseModel;
 use App\Models\StudentModel;
 use App\Models\DistrictModel;
+use App\Models\UserModel;
 
 class Student extends BaseController
 {
@@ -17,6 +18,7 @@ class Student extends BaseController
     protected $centerModel;
     protected $courseModel;
     protected $districtModel;
+    protected $userModel;
 
     public function initController(RequestInterface $request, ResponseInterface $response, LoggerInterface $logger)
     {
@@ -26,6 +28,7 @@ class Student extends BaseController
         $this->centerModel = model(\App\Models\CenterModel::class);
         $this->courseModel = model(\App\Models\CourseModel::class);
         $this->districtModel = model(DistrictModel::class);
+        $this->userModel = model(UserModel::class);
     }
 
     public function index()
@@ -131,8 +134,10 @@ class Student extends BaseController
 
     public function list()
     {
-        //$data['students'] = $this->model->getStudents();
-        return view('template/header', ['page_title' => 'Student List']) . view('student/list') . view('template/footer', ['app_init' => 'initStudentList']);
+        $data['centers'] = $this->centerModel->findAll();
+        $data['users'] = $this->userModel->getUsers();
+        $data['courses'] = $this->courseModel->findAll();
+        return view('template/header', ['page_title' => 'Student List']) . view('student/list', $data) . view('template/footer', ['app_init' => 'initStudentList']);
     }
 
     public function getStudents()
@@ -140,7 +145,10 @@ class Student extends BaseController
         $data = [
             'start' => $this->request->getPost('start'),
             'end' => $this->request->getPost('length'),
-            'search' => $this->request->getPost('search')['value'] ?? ''
+            'search' => $this->request->getPost('search')['value'] ?? '',
+            'center_ftr' => $this->request->getPost('center_ftr'),
+            'user_ftr' => $this->request->getPost('user_ftr'),
+            'date_ftr' => $this->request->getPost('date_ftr'),
         ];
 
         $students = $this->model->getStudents($data);
