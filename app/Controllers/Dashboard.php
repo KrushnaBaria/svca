@@ -28,7 +28,12 @@ class Dashboard extends BaseController
     public function index()
     {   
         $data['centers'] = $this->centerModel->findAll();
-        return view('template/header', ['page_title' => 'Dashboard']). view('dashboard', $data).  view('template/footer', ['app_init' => 'initDashboard']);
+        if(Auth()->user()->inGroup('superadmin')){
+            return view('template/header', ['page_title' => 'Dashboard']). view('dashboard', $data).  view('template/footer', ['app_init' => 'initDashboard']);
+        }else{
+            return view('template/header', ['page_title' => 'Dashboard']). view('dashboard_ad', $data).  view('template/footer', ['app_init' => 'initDashboard']);
+        }
+        
     }
 
     public function getMainReportChartData()

@@ -9,12 +9,14 @@ use Psr\Log\LoggerInterface;
 use App\Models\ExpenseModel;
 use App\Models\CenterModel;
 use App\Models\UserModel;
+use App\Models\UserInfoModel;
 
 class Expense extends BaseController
 {
     protected $model;
     protected $centertModel;
     protected $userModel;
+    protected $userInfoModel;
 
     public function initController(RequestInterface $request, ResponseInterface $response, LoggerInterface $logger)
     {
@@ -23,12 +25,24 @@ class Expense extends BaseController
         $this->model = model(ExpenseModel::class);
         $this->centerModel = model(CenterModel::class);
         $this->userModel = model(UserModel::class);
+        $this->userInfoModel = model(UserInfoModel::class);
     }
 
     public function index()
-    {
-        $data['centers'] = $this->centerModel->findAll();
-        $data['users'] = $this->userModel->getUsers();
+    {   
+        if(Auth()->user()->inGroup('superadmin')){
+            $data['centers'] = $this->centerModel->findAll();
+            $data['users'] = $this->userModel->getUsers();
+        }else{
+            $u_details = $this->userInfoModel->curUserDetail();
+            $data['centers'] = $this->centerModel->where('id', $u_details['center'])->findAll();
+            $users = $this->userModel->getUsers();
+            // Only include the user whose id matches $u_details['user_id'], if present
+            $data['users'] = array_filter($users ?? [], function($user) use ($u_details) {
+                return isset($u_details['user_id']) && $user['id'] == $u_details['user_id'];
+            });
+        }
+        
         return view('template/header', ['page_title' => 'Expense']) . view('expense/expense', $data) . view('template/footer', ['app_init' => 'initExpense']);
     }
 

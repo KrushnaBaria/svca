@@ -10,9 +10,12 @@ use App\Models\CenterModel;
 use App\Models\CourseModel;
 use App\Models\StudentModel;
 use App\Models\UserModel;
+use App\Models\UserInfoModel;
 
 class Inquery extends BaseController
 {
+    protected $userInfoModel;
+
     public function initController(RequestInterface $request, ResponseInterface $response, LoggerInterface $logger)
     {
         // Do Not Edit This Line
@@ -21,13 +24,25 @@ class Inquery extends BaseController
         $this->courseModel = model(CourseModel::class);
         $this->studentModel = model(StudentModel::class);
         $this->userModel = model(UserModel::class);
+        $this->userInfoModel = model(UserInfoModel::class);
     }
 
     public function index()
-    {
-        $data['centers'] = $this->centerModel->findAll();
-        $data['courses'] = $this->courseModel->findAll();
-        $data['users'] = $this->userModel->getUsers();
+    {   
+        if(Auth()->user()->inGroup('superadmin')){
+            $data['centers'] = $this->centerModel->findAll();
+            $data['courses'] = $this->courseModel->findAll();
+            $data['users'] = $this->userModel->getUsers();
+        }else{
+            $u_details = $this->userInfoModel->curUserDetail();
+            $data['centers'] = $this->centerModel->where('id', $u_details['center'])->findAll();
+            $users = $this->userModel->getUsers();
+            // Only include the user whose id matches $u_details['user_id'], if present
+            $data['users'] = array_filter($users ?? [], function($user) use ($u_details) {
+                return isset($u_details['user_id']) && $user['id'] == $u_details['user_id'];
+            });
+        }
+        
         return view('template/header', ['page_title' => 'Inquery']) . view('inquery/inquery', $data) . view('template/footer', ['app_init' => 'initInquery']);
     }
 

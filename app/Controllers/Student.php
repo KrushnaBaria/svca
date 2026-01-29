@@ -11,6 +11,7 @@ use App\Models\CourseModel;
 use App\Models\StudentModel;
 use App\Models\DistrictModel;
 use App\Models\UserModel;
+use App\Models\UserInfoModel;
 
 class Student extends BaseController
 {
@@ -19,6 +20,7 @@ class Student extends BaseController
     protected $courseModel;
     protected $districtModel;
     protected $userModel;
+    protected $userInfoModel;
 
     public function initController(RequestInterface $request, ResponseInterface $response, LoggerInterface $logger)
     {
@@ -29,12 +31,19 @@ class Student extends BaseController
         $this->courseModel = model(\App\Models\CourseModel::class);
         $this->districtModel = model(DistrictModel::class);
         $this->userModel = model(UserModel::class);
+        $this->userInfoModel = model(UserInfoModel::class);
     }
 
     public function index()
-    {
-        $data['centers'] = $this->centerModel->findAll();
-        $data['courses'] = $this->courseModel->findAll();
+    {   
+        if(Auth()->user()->inGroup('superadmin')){
+            $data['centers'] = $this->centerModel->findAll();
+            $data['courses'] = $this->courseModel->findAll();
+        }else{
+            $u_details = $this->userInfoModel->curUserDetail();
+            $data['centers'] = $this->centerModel->where('id', $u_details['center'])->findAll();
+        }
+        
         $data['districts'] = $this->districtModel->findAll();
         return view('template/header', ['page_title' => 'Student']) . view('student/add', $data) . view('template/footer', ['app_init' => 'initAddStudent']);
     }
@@ -133,10 +142,21 @@ class Student extends BaseController
     }
 
     public function list()
-    {
-        $data['centers'] = $this->centerModel->findAll();
-        $data['users'] = $this->userModel->getUsers();
-        $data['courses'] = $this->courseModel->findAll();
+    {   
+        if(Auth()->user()->inGroup('superadmin')){
+            $data['centers'] = $this->centerModel->findAll();
+            $data['users'] = $this->userModel->getUsers();
+            $data['courses'] = $this->courseModel->findAll();
+        }else{
+            $u_details = $this->userInfoModel->curUserDetail();
+            $data['centers'] = $this->centerModel->where('id', $u_details['center'])->findAll();
+            $users = $this->userModel->getUsers();
+            // Only include the user whose id matches $u_details['user_id'], if present
+            $data['users'] = array_filter($users ?? [], function($user) use ($u_details) {
+                return isset($u_details['user_id']) && $user['id'] == $u_details['user_id'];
+            });
+        }
+        
         return view('template/header', ['page_title' => 'Student List']) . view('student/list', $data) . view('template/footer', ['app_init' => 'initStudentList']);
     }
 
