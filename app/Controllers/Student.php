@@ -149,6 +149,7 @@ class Student extends BaseController
             'center_ftr' => $this->request->getPost('center_ftr'),
             'user_ftr' => $this->request->getPost('user_ftr'),
             'date_ftr' => $this->request->getPost('date_ftr'),
+            'type_ftr' => $this->request->getPost('type_ftr')
         ];
 
         $students = $this->model->getStudents($data);

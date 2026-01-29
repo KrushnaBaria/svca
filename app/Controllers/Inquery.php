@@ -9,6 +9,7 @@ use Psr\Log\LoggerInterface;
 use App\Models\CenterModel;
 use App\Models\CourseModel;
 use App\Models\StudentModel;
+use App\Models\UserModel;
 
 class Inquery extends BaseController
 {
@@ -19,12 +20,14 @@ class Inquery extends BaseController
         $this->centerModel = model(CenterModel::class);
         $this->courseModel = model(CourseModel::class);
         $this->studentModel = model(StudentModel::class);
+        $this->userModel = model(UserModel::class);
     }
 
     public function index()
     {
         $data['centers'] = $this->centerModel->findAll();
         $data['courses'] = $this->courseModel->findAll();
+        $data['users'] = $this->userModel->getUsers();
         return view('template/header', ['page_title' => 'Inquery']) . view('inquery/inquery', $data) . view('template/footer', ['app_init' => 'initInquery']);
     }
 
@@ -62,7 +65,11 @@ class Inquery extends BaseController
         $data = [
             'start' => $this->request->getPost('start'),
             'end' => $this->request->getPost('length'),
-            'search' => $this->request->getPost('search')['value'] ?? ''
+            'search' => $this->request->getPost('search')['value'] ?? '',
+            'center_ftr' => $this->request->getPost('center_ftr'),
+            'user_ftr' => $this->request->getPost('user_ftr'),
+            'date_ftr' => $this->request->getPost('date_ftr'),
+            'type_ftr' => $this->request->getPost('type_ftr')
         ];
 
         $Inquerys = $this->studentModel->getInquerys($data);

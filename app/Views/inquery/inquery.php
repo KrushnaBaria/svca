@@ -1,3 +1,46 @@
+<div class="card">
+    <div class="card-header text-bg-primary">
+        <h4 class="mb-0 text-white">Student Filter</h4>
+    </div>
+    <div class="card-body">
+        <div class="d-flex flex-wrap justify-content-center gap-2">
+            <div class="col-md-2 col-10">
+                <label class="form-label" for="center-ftr">Center</label>
+                <select type="text" class="form-control" id="center-ftr">
+                    <option value="">Select Center</option>
+                    <?php foreach($centers as $center): ?>
+                        <option value="<?= $center['id'] ?>"><?= $center['center'] ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+            <div class="col-md-3 col-10">
+                <label class="form-label" for="user-ftr">User</label>
+                <select type="text" class="form-control" id="user-ftr">
+                    <option value="">Select User</option>
+                    <?php foreach($users as $user): ?>
+                        <option value="<?= $user['email'] ?>"><?= $user['email'] ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+            <div class="col-md-3 col-10">
+                <label class="form-label" for="type-ftr">Type</label>
+                <select type="text" class="form-control" id="type-ftr">
+                    <option value="">Select Type</option>
+                    <option value="computer">Computer</option>
+                    <option value="academy">Academy</option>
+                </select>
+            </div>
+            <div class="col-md-3 col-10">
+                <label class="form-label" for="date-ftr">Date</label>
+                <input type="text" class="form-control" id="date-ftr" placeholder="Select Date Range">
+            </div>
+        </div>
+        <div class="col-12 d-flex justify-content-center align-items-center mt-0 mt-md-6 pt-3 gap-3">
+            <button class="btn btn-primary mx-1" id="inquery-search-btn">Search</button>
+            <button class="btn btn-secondary mx-1" id="inquery-clear-btn">Clear</button>
+        </div>
+    </div>
+</div>
 <div class="row">
     <div class="col-md-4">
         <div class="card">

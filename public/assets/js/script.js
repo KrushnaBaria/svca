@@ -970,12 +970,14 @@
 
             var center_ftr = '', 
                 date_ftr = '',
-                user_ftr = '';
+                user_ftr = '',
+                type_ftr = '';
 
             $('#student-search-btn').on('click', function(){
                 center_ftr = $('#center-ftr').val();
                 date_ftr = $('#date-ftr').val();
                 user_ftr = $('#user-ftr').val();
+                type_ftr = $('#type-ftr').val();
                 studentTbl.ajax.reload();
             });
 
@@ -984,6 +986,7 @@
                 $('#center-ftr').val('');
                 $('#date-ftr').val('');
                 $('#user-ftr').val('');
+                $('#type-ftr').val('');
                 datePicker.clear();
                 studentTbl.ajax.reload();
             })
@@ -1005,6 +1008,7 @@
                         d.center_ftr = center_ftr;
                         d.date_ftr = date_ftr;
                         d.user_ftr = user_ftr;
+                        d.type_ftr = type_ftr;
                     }
                 },
                 lengthMenu: [
@@ -1110,6 +1114,37 @@
 
         initInquery: function() {
             let SVCAobj = this;
+
+            let datePicker = flatpickr("#date-ftr", {
+                mode: "range",
+                altInput: true,
+                altFormat: "d-m-Y",
+                dateFormat: "Y-m-d",
+                maxDate: new Date(),
+            });
+
+            var center_ftr = '', 
+                date_ftr = '',
+                user_ftr = '',
+                type_ftr = '';
+
+            $('#inquery-search-btn').on('click', function(){
+                center_ftr = $('#center-ftr').val();
+                date_ftr = $('#date-ftr').val();
+                user_ftr = $('#user-ftr').val();
+                type_ftr = $('#type-ftr').val();
+                inquiryTbl.ajax.reload();
+            });
+
+            $('#inquery-clear-btn').on('click', function(){
+                center_ftr = date_ftr = user_ftr = '';
+                $('#center-ftr').val('');
+                $('#date-ftr').val('');
+                $('#user-ftr').val('');
+                $('#type-ftr').val('');
+                datePicker.clear();
+                inquiryTbl.ajax.reload();
+            })
 
             $("#center").on('change', function() {
                 let centerId = $(this).val();
@@ -1228,6 +1263,12 @@
                 ajax: {
                     url: conf.baseUrl + "/inquery/list",
                     type: 'post',
+                    data: function (d) {
+                        d.center_ftr = center_ftr;
+                        d.date_ftr = date_ftr;
+                        d.user_ftr = user_ftr;
+                        d.type_ftr = type_ftr;
+                    }
                 },
                 lengthMenu: [
                     [5, 10, 20, -1],
