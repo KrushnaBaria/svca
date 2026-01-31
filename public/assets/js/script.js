@@ -1562,6 +1562,9 @@
             let expensetbl = $('#expense-tbl');
             let expenseTbl = new DataTable('#expense-tbl', {
                 responsive: true,
+                select: {
+                    style: 'single'
+                },
                 searching: typeof expensetbl.data('dt-searching') === 'undefined' ? true : expensetbl.data('dt-searching'),
                 lengthChange: typeof expensetbl.data('dt-lengthchange') === 'undefined' ? true : expensetbl.data('dt-lengthchange'),
                 processing: true,
@@ -1634,6 +1637,21 @@
                         }
                     }
                 ],
+            }).on('select', function(e, dt, type, indexes) {
+                let data = expenseTbl.rows(indexes).data().toArray();
+                if(data.length > 0) {
+                    $('#exp').val(data[0].exp);
+                    $('#center').val(data[0].center).trigger('change');;
+                    $('#amount').val(data[0].amount);
+                    $('#expense-id').val(data[0].id);
+                    $('#sbt-expence').text('Update');
+                }
+            }).on('deselect', function(e, dt, type, indexes){
+                $('#exp').val('');
+                $('#center').val('').trigger('change');;
+                $('#amount').val('');
+                $('#expense-id').val('');
+                $('#sbt-expence').text('Submit');
             });
 
             $('#sbt-expence').on('click', function(e){
@@ -1652,30 +1670,58 @@
                     $('#amount').focus();
                     return false;
                 }
-            
-                $.ajax({
-                    url: conf.baseUrl + "/expense/add",
-                    type: "POST",
-                    dataType: "json",
-                    data: {
-                        exp: $('#exp').val(),
-                        center: $('#center').val(),
-                        amount: $('#amount').val(),
-                    },
-                    success: function(res) {
-                        if(res.success == 1) {
-                            $('#exp').val('');
-                            $('#center').val('');
-                            $('#amount').val('');
-                            expenseTbl.ajax.reload();
-                        } else {
-                            alert("Error adding expense");
+
+                if($('#expense-id').val()){
+                    $.ajax({
+                        url: conf.baseUrl + "/expense/add",
+                        type: "POST",
+                        dataType: "json",
+                        data: {
+                            exp_id: $('#expense-id').val(),
+                            exp: $('#exp').val(),
+                            center: $('#center').val(),
+                            amount: $('#amount').val(),
+                        },
+                        success: function(res) {
+                            if(res.success == 1) {
+                                $('#expense-id').val('');
+                                $('#exp').val('');
+                                $('#center').val('');
+                                $('#amount').val('');
+                                expenseTbl.ajax.reload();
+                            } else {
+                                alert("Error updating expense");
+                            }
+                        },
+                        error: function() {
+                            alert("An error occurred while updating the expense.");
                         }
-                    },
-                    error: function() {
-                        alert("An error occurred while adding the expense.");
-                    }
-                });
+                    });
+                }else{
+                    $.ajax({
+                        url: conf.baseUrl + "/expense/add",
+                        type: "POST",
+                        dataType: "json",
+                        data: {
+                            exp: $('#exp').val(),
+                            center: $('#center').val(),
+                            amount: $('#amount').val(),
+                        },
+                        success: function(res) {
+                            if(res.success == 1) {
+                                $('#exp').val('');
+                                $('#center').val('');
+                                $('#amount').val('');
+                                expenseTbl.ajax.reload();
+                            } else {
+                                alert("Error adding expense");
+                            }
+                        },
+                        error: function() {
+                            alert("An error occurred while adding the expense.");
+                        }
+                    });
+                }
             });
         },
 

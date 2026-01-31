@@ -43,14 +43,14 @@
 </div>
 
 <div class="card">
-    <div class="card-header text-bg-primary">
+    <div class="card-header text-bg-light">
         <div class="d-flex justify-content-between align-items-center">
-            <h4 class="mb-0 text-white">Student List</h4>
+            <h4 class="mb-0 ">Student List</h4>
             <a href="<?php echo base_url('/student');?>" class="btn btn-secondary">Add Student</a>
         </div>
     </div>
     <div class="card-body">
-        <table id="student-tbl" class="table table-striped" style="width:100%">
+        <table id="student-tbl" class="table" style="width:100%">
             <thead class="text-dark fs-4">
                 <tr>
                     <th><h6 class="fs-3 fw-semibold">No</h6></th>

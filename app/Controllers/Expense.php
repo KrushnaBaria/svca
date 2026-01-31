@@ -10,6 +10,7 @@ use App\Models\ExpenseModel;
 use App\Models\CenterModel;
 use App\Models\UserModel;
 use App\Models\UserInfoModel;
+use App\Models\ExpenseLog;
 
 class Expense extends BaseController
 {
@@ -17,6 +18,7 @@ class Expense extends BaseController
     protected $centertModel;
     protected $userModel;
     protected $userInfoModel;
+    protected $expenseModel;
 
     public function initController(RequestInterface $request, ResponseInterface $response, LoggerInterface $logger)
     {
@@ -26,6 +28,7 @@ class Expense extends BaseController
         $this->centerModel = model(CenterModel::class);
         $this->userModel = model(UserModel::class);
         $this->userInfoModel = model(UserInfoModel::class);
+        $this->expenseModel = model(ExpenseLog::class);
     }
 
     public function index()
@@ -47,18 +50,39 @@ class Expense extends BaseController
     }
 
     public function add()
-    {
+    {   
+        $exp_id = $this->request->getPost('exp_id');
         $data = [
-            'description' => $this->request->getPost('exp'),
-            'center_id' => $this->request->getPost('center'),
-            'amount' => $this->request->getPost('amount'),
-            'created_at' => date('Y-m-d H:i:s')
+            'exp' => $this->request->getPost('exp'),
+            'center' => $this->request->getPost('center'),
+            'amount' => $this->request->getPost('amount')
         ];
 
-        if($this->model->add($data)){
-            return json_encode(['success' => '1', 'message' => 'Expense added successfully']);
-        } else {
-            return json_encode(['success' => '0', 'message' => 'Failed to add expense']);
+        if($exp_id){
+            $data = array_merge($data, [
+                'updated_by' => auth()->user()->email,
+                'updated_date' => date('Y-m-d H:i:s')
+            ]);
+        }
+
+        if($exp_id){
+            $log = $this->expenseModel->add_log($exp_id, $data);
+            if($log){
+                $upd = $this->model->update($exp_id, $data);
+                if($upd){
+                    return json_encode(['success' => '1', 'message' => 'Expense updated successfully']);
+                } else {
+                    return json_encode(['success' => '0', 'message' => 'Failed to updated expense']);
+                }
+            }else{
+                return json_encode(['success' => '0', 'message' => 'Failed to update log']);
+            }
+        }else{
+            if($this->model->add($data)){
+                return json_encode(['success' => '1', 'message' => 'Expense added successfully']);
+            } else {
+                return json_encode(['success' => '0', 'message' => 'Failed to add expense']);
+            }
         }
     }
 

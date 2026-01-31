@@ -12,11 +12,11 @@ class ExpenseModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = [];
+    protected $allowedFields    = ['id', 'exp', 'center', 'amount', 'add_date', 'updated_by', 'updated_date'];
 
     public function add($data)
     {
-        $query = "INSERT INTO expenses (id, exp, center, amount, add_date, updated_by, updated_date) VALUES (NULL, '" . $data['description'] . "', '" . $data['center_id'] . "', '" . $data['amount'] . "', NOW(), '" . auth()->user()->email . "', NOW())";
+        $query = "INSERT INTO expenses (id, exp, center, amount, add_date, updated_by, updated_date) VALUES (NULL, '" . $data['exp'] . "', '" . $data['center'] . "', '" . $data['amount'] . "', NOW(), '" . auth()->user()->email . "', NOW())";
          if($this->db->query($query)){
             return true;
         } else {
@@ -41,10 +41,23 @@ class ExpenseModel extends Model
             $end_date = $parts[1];
         }
 
+        $center_ad = '';
+        if(!Auth()->user()->inGroup('superadmin')){
+            $query1 = "SELECT center FROM user_info WHERE user_id = ". auth()->user()->id ."";
+            $center_ad = $this->db->query($query1)->getResultArray();
+            if($center_ad){
+                $center_ad = $center_ad[0]['center'];
+            }
+        }
+
         $query = "SELECT e.*, c.center AS center_name
                   FROM expenses e 
                   JOIN centers c ON e.center = c.id
                   WHERE 1=1";
+
+        if($center_ad){
+            $query .= " AND e.center = " . $center_ad . "";
+        }
 
         if($data['center_ftr']){
             $query .= " AND e.center = " . $data['center_ftr'] . "";
