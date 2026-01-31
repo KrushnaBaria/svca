@@ -161,10 +161,23 @@ class StudentModel extends Model
             $end_date = $parts[1];
         }
 
+        $center_ad = '';
+        if(!Auth()->user()->inGroup('superadmin')){
+            $query1 = "SELECT center FROM user_info WHERE user_id = ". auth()->user()->id ."";
+            $center_ad = $this->db->query($query1)->getResultArray();
+            if($center_ad){
+                $center_ad = $center_ad[0]['center'];
+            }
+        }
+
         $query = "SELECT st.*, courses.course AS course_name, centers.center AS center_name, courses.type AS course_type FROM students AS st
             LEFT JOIN centers ON st.center = centers.id
             LEFT JOIN courses ON st.course = courses.id
             WHERE status = 1 AND del_sts = 0";
+
+        if($center_ad){
+            $query .= " AND st.center = " . $center_ad . "";
+        }
 
         if($data['center_ftr']){
             $query .= " AND st.center = " . $data['center_ftr'] . "";
@@ -229,10 +242,23 @@ class StudentModel extends Model
             $end_date = $parts[1];
         }
 
+        $center_ad = '';
+        if(!Auth()->user()->inGroup('superadmin')){
+            $query1 = "SELECT center FROM user_info WHERE user_id = ". auth()->user()->id ."";
+            $center_ad = $this->db->query($query1)->getResultArray();
+            if($center_ad){
+                $center_ad = $center_ad[0]['center'];
+            }
+        }
+
         $query = "SELECT st.*, courses.course AS course_name, courses.type AS course_type, centers.center AS center_name FROM students AS st
             LEFT JOIN centers ON st.center = centers.id
             LEFT JOIN courses ON st.course = courses.id
             WHERE status = 0 AND del_sts = 0";
+
+        if($center_ad){
+            $query .= " AND st.center = " . $center_ad . "";
+        }
 
         if($data['center_ftr']){
             $query .= " AND st.center = " . $data['center_ftr'] . "";

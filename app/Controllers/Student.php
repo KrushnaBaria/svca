@@ -102,9 +102,14 @@ class Student extends BaseController
         }
 
         $data['student'] = $student[0];
-        $data['centers'] = $this->centerModel->findAll();
-        $data['courses'] = $this->courseModel->findAll();
+        //$data['courses'] = $this->courseModel->findAll();
         $data['districts'] = $this->districtModel->findAll();
+        if(Auth()->user()->inGroup('superadmin')){
+            $data['centers'] = $this->centerModel->findAll();
+        }else{
+            $u_details = $this->userInfoModel->curUserDetail();
+            $data['centers'] = $this->centerModel->where('id', $u_details['center'])->findAll();
+        }
 
         return view('template/header', ['page_title' => 'Edit Student']) . view('student/edit', $data) . view('template/footer', ['app_init' => 'initEditStudent']);
     }

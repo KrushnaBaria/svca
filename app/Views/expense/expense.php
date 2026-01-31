@@ -74,9 +74,9 @@
 
 <div class="col-12">
     <div class="card">
-        <div class="card-header text-bg-primary">
+        <!-- <div class="card-header text-bg-primary">
             <h4 class="mb-0 text-white">Expense List</h4>
-        </div>
+        </div> -->
         <div class="card-body">
             <div class="table-responsive">
                 <table class="table table-bordered" id="expense-tbl">
