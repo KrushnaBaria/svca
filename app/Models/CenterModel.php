@@ -15,9 +15,10 @@ class CenterModel extends Model
     protected $allowedFields    = ['id', 'center'];
 
     public function addCenter($data){
-        $query = "INSERT INTO `{$this->table}` (center) VALUES ('" . $this->db->escapeString($data['center']) . "')";
+        $query = "INSERT INTO centers (center) VALUES ('" . $this->db->escapeString($data['center']) . "')";
+        $res = $this->db->query($query);
         
-        if(TRUE){
+        if($res){
             return true;
         } else {
             return false;
