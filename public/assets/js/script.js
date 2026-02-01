@@ -335,6 +335,38 @@
                 ],
             });
 
+            $(document).on("click", ".delete-center", function(e){
+                e.preventDefault();
+                if(!confirm("Are you sure you want to delete this center?")) {
+                    return;
+                }
+                var centerId = $(this).data('id');
+                if(!centerId) {
+                    alert("Some error occurred.");
+                    return;
+                }
+
+                $.ajax({
+                    url: conf.baseUrl + "/settings/delete-center",
+                    type: "POST",
+                    dataType: "json",
+                    data: {
+                        center_id: centerId
+                    },
+                    success: function(res) {
+                        if(res.success == 1) {
+                            $("#center_name").val(""); // Clear the input field
+                            centerTbl.ajax.reload(); // Reload the table data
+                        } else {
+                            alert("Error deleting center");
+                        }
+                    },
+                    error: function() {
+                        alert("An error occurred while deleting the center.");
+                    }
+                });
+            });
+
             $("#sbt-center").on("click", function(e){
                 e.preventDefault();
                 if($("#center_name").val() === "") {
@@ -369,6 +401,7 @@
                 responsive: true,
                 select: {
                     style: 'single',
+                    selector: 'td:not(:last-child)'
                 },
                 searching: typeof coursetbl.data('dt-searching') === 'undefined' ? true : coursetbl.data('dt-searching'),
                 lengthChange: typeof coursetbl.data('dt-lengthchange') === 'undefined' ? true : coursetbl.data('dt-lengthchange'),
@@ -428,7 +461,7 @@
                         targets: [5],
                         orderable: false,
                         data: function (row) {
-                            return '<button class="btn btn-danger btn-sm delete-center" data-id="' + row.id + '">Delete</button>';
+                            return '<button class="btn btn-danger btn-sm delete-course" data-id="' + row.id + '">Delete</button>';
                         }
                     }
                 ],
@@ -530,6 +563,38 @@
                 
             });
 
+            $(document).on("click", ".delete-course", function(e){
+                e.preventDefault();
+                if(!confirm("Are you sure you want to delete this course?")) {
+                    return;
+                }
+                var courseId = $(this).data('id');
+                if(!courseId) {
+                    alert("Some error occurred.");
+                    return;
+                }
+
+                $.ajax({
+                    url: conf.baseUrl + "/settings/delete-course",
+                    type: "POST",
+                    dataType: "json",
+                    data: {
+                        course_id: courseId
+                    },
+                    success: function(res) {
+                        if(res.success == 1) {
+                            $("#course_name").val(""); // Clear the input field
+                            courseTbl.ajax.reload(); // Reload the table data
+                        } else {
+                            alert("Error deleting course");
+                        }
+                    },
+                    error: function() {
+                        alert("An error occurred while deleting the course.");
+                    }
+                });
+            });
+
             let districttbl = $('#district-tbl');
             let districtTbl = new DataTable('#district-tbl', {
                 responsive: true,
@@ -570,7 +635,7 @@
                         targets: [2],
                         orderable: false,
                         data: function (row) {
-                            return '<button class="btn btn-danger btn-sm delete-center" data-id="' + row.id + '">Delete</button>';
+                            return '<button class="btn btn-danger btn-sm delete-district" data-id="' + row.id + '">Delete</button>';
                         }
                     }
                 ],
@@ -601,6 +666,38 @@
                     },
                     error: function() {
                         alert("An error occurred while updating the District.");
+                    }
+                });
+            });
+
+            $(document).on("click", ".delete-district", function(e){
+                e.preventDefault();
+                if(!confirm("Are you sure you want to delete this district?")) {
+                    return;
+                }
+                var districtId = $(this).data('id');
+                if(!districtId) {
+                    alert("Some error occurred.");
+                    return;
+                }
+
+                $.ajax({
+                    url: conf.baseUrl + "/settings/delete-district",
+                    type: "POST",
+                    dataType: "json",
+                    data: {
+                        district_id: districtId
+                    },
+                    success: function(res) {
+                        if(res.success == 1) {
+                            $("#district_name").val(""); // Clear the input field
+                            districtTbl.ajax.reload(); // Reload the table data
+                        } else {
+                            alert("Error deleting district");
+                        }
+                    },
+                    error: function() {
+                        alert("An error occurred while deleting the district.");
                     }
                 });
             });
@@ -1432,6 +1529,20 @@
                         }
                     }
                 ],
+            }).on('xhr.dt', function (e, settings, json, xhr) {
+                // Calculate the total sum of 'amount' in data rows
+                var total = 0;
+                if (json && json.data && Array.isArray(json.data)) {
+                    total = json.data.reduce(function(acc, curr) {
+                        var amt = parseFloat(curr.amount);
+                        if (!isNaN(amt)) acc += amt;
+                        return acc;
+                    }, 0);
+                }
+                var totalFees = parseFloat($('#total-fees').data('total-fees'));
+                var pending = isNaN(totalFees) ? 0 : totalFees - total;
+                $('#pending-fees').text('₹' + pending.toLocaleString(undefined, { maximumFractionDigits: 0, minimumFractionDigits: 0 }));
+                $('#paid-fees').text('₹' + total.toLocaleString(undefined, { maximumFractionDigits: 0, minimumFractionDigits: 0 }));
             });
 
             $('#paymentModal').on('click', '#acceptPayment', function(e){

@@ -56,6 +56,9 @@ $routes->group('settings', function ($routes) {
     $routes->post('update-course', 'Settings::updateCouse');
     $routes->post('add-district', 'Settings::addDidtrict');
     $routes->post('get-districts', 'Settings::getDistricts');
+    $routes->post('delete-center', 'Settings::deleteCenter');
+    $routes->post('delete-course', 'Settings::deleteCourse');
+    $routes->post('delete-district', 'Settings::deleteDistrict');
 });
 
 $routes->group('course', function ($routes) {

@@ -46,6 +46,18 @@ class Settings extends BaseController
         }
     }
 
+    public function deleteCenter()
+    {
+        $centerId = $this->request->getPost('center_id');
+
+        $res = $this->centerModel->delete($centerId);
+        if($res){
+            return json_encode(['success' => 1, 'message' => 'Center deleted successfully.']);
+        } else {
+            return json_encode(['success' => 0, 'message' => 'Failed to delete center.']);
+        }
+    }
+
     public function getCenters()
     {
         $data = [
@@ -73,6 +85,18 @@ class Settings extends BaseController
 
         if($res){
             return json_encode(['success' => 1]);
+        }
+    }
+
+    public function deleteCourse()
+    {
+        $courseId = $this->request->getPost('course_id');
+
+        $res = $this->courseModel->delete($courseId);
+        if($res){
+            return json_encode(['success' => 1, 'message' => 'Course deleted successfully.']);
+        } else {
+            return json_encode(['success' => 0, 'message' => 'Failed to delete course.']);
         }
     }
 
@@ -117,6 +141,18 @@ class Settings extends BaseController
             return json_encode(['success' => 1]);
         }else{
             return json_encode(['success' => 0, 'message' => 'Failed to add district']);
+        }
+    }
+
+    public function deleteDistrict()
+    {
+        $districtId = $this->request->getPost('district_id');
+
+        $res = $this->districtModel->delete($districtId);
+        if($res){
+            return json_encode(['success' => 1, 'message' => 'District deleted successfully.']);
+        } else {
+            return json_encode(['success' => 0, 'message' => 'Failed to delete district.']);
         }
     }
 
