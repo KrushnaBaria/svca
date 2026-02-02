@@ -51,6 +51,20 @@ class StudentModel extends Model
         return $result;
     }
 
+    public function getStudentInfo($id){
+        $query = "SELECT st.*,  courses.course AS course_name, courses.type AS course_type, centers.center AS center_name FROM students AS st
+            LEFT JOIN courses ON st.course = courses.id
+            LEFT JOIN centers ON st.center = centers.id
+            WHERE st.id = ". $id ."";
+
+        $result = $this->db->query($query)->getResultArray();
+        if(count($result) > 0){
+            return $result[0];
+        }else{
+            return 0;
+        }
+    }
+
     public function updateStudent($id, $data, $remark)
     {
         // Convert dob from d/m/Y to Y-m-d

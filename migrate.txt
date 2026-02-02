@@ -50,3 +50,6 @@ ALTER TABLE `user_info` CHANGE `dob` `dob` VARCHAR(255) CHARACTER SET utf8mb4 CO
 [31-01-2026]
 CREATE TABLE `svca_`.`expense_log` (`id` INT NOT NULL AUTO_INCREMENT , `exp_id` INT NOT NULL , `remark` VARCHAR(255) NOT NULL , `updated_by` DATETIME NOT NULL , `updated_date` DATETIME NOT NULL , PRIMARY KEY (`id`));
 ALTER TABLE `expense_log` CHANGE `updated_by` `updated_by` VARCHAR(255) NOT NULL;
+
+[02-02-2026]
+CREATE TABLE `svca_`.`payment_log` (`id` INT NOT NULL AUTO_INCREMENT , `stu_id` INT NOT NULL , `transaction_id` INT NOT NULL , `remark` VARCHAR(255) NOT NULL , `updated_by` VARCHAR(255) NOT NULL , `updated_date` TIMESTAMP NOT NULL , PRIMARY KEY (`id`));

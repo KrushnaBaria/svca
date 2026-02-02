@@ -1471,6 +1471,9 @@
             let payhistorytbl = $('#pay-historytbl');
             let payhistoryTbl = new DataTable('#pay-historytbl', {
                 responsive: true,
+                select: {
+                    style: 'single'
+                },
                 searching: typeof payhistorytbl.data('dt-searching') === 'undefined' ? true : payhistorytbl.data('dt-searching'),
                 lengthChange: typeof payhistorytbl.data('dt-lengthchange') === 'undefined' ? true : payhistorytbl.data('dt-lengthchange'),
                 processing: true,
@@ -1529,6 +1532,17 @@
                         }
                     }
                 ],
+            }).on('select', function(e, dt, type, indexes) {
+                let data = payhistoryTbl.rows(indexes).data().toArray();
+                if(data.length > 0) {
+                    $('#paymentAmount').val(data[0].amount);
+                    $('#remark').val(data[0].remark);
+                    $('#transaction_id').val(data[0].id);
+                    $('#acceptPayment').text('Update');
+                    $('#paymentModal').modal('show');
+                }
+            }).on('deselect', function(e, dt, type, indexes){
+                
             }).on('xhr.dt', function (e, settings, json, xhr) {
                 // Calculate the total sum of 'amount' in data rows
                 var total = 0;
@@ -1545,6 +1559,15 @@
                 $('#paid-fees').text('₹' + total.toLocaleString(undefined, { maximumFractionDigits: 0, minimumFractionDigits: 0 }));
             });
 
+            $('#paymentModal').on('hide.bs.modal', function () {
+                $('#paymentAmount').val('');
+                $('#remark').val('');
+                $('#transaction_id').val('');
+                $('#acceptPayment').text('Accept');
+                payhistoryTbl.rows().deselect();
+            });
+
+
             $('#paymentModal').on('click', '#acceptPayment', function(e){
                 e.preventDefault();
                 if($('#paymentAmount').val() == ''){
@@ -1560,6 +1583,7 @@
                         amount: $('#paymentAmount').val(),
                         remark: $('#remark').val(),
                         student_id: $('#stu_id').val(),
+                        transaction_id: $('#transaction_id').val()
                     },
                     success: function(res) {
                         if(res.success == 1) {

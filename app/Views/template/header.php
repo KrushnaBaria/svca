@@ -18,6 +18,7 @@
   <link rel="stylesheet" href="https://cdn.datatables.net/v/dt/jq-3.7.0/moment-2.29.4/dt-2.3.2/sl-3.0.1/datatables.min.css">
   <link rel="stylesheet" href="<?php echo base_url('public/assets/css/custom.min.css');?>" />
   <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css">
+  <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"> -->
 </head>
 <body>
 	<?php include_once(APPPATH . 'Views/template/sidebar.php'); ?>
