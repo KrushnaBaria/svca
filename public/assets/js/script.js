@@ -1414,7 +1414,8 @@
                         targets: [5],
                         orderable: false,
                         data: function (row) {
-                            return '<a href="' + conf.baseUrl + '/student/edit/' + row.id + '" class="admit-stu btn btn-primary" data-id="' + row.id + '">Admit</a>'
+                            return '<a href="' + conf.baseUrl + '/inquery/follow-up/' + row.id + '" class="admit-stu btn btn-secondary" data-id="' + row.id + '">Follow Up</a>'
+                            + '<a href="' + conf.baseUrl + '/student/edit/' + row.id + '" class="admit-stu btn btn-primary ms-1" data-id="' + row.id + '">Admit</a>'
                         + '<button class="btn btn-danger delete-inquiry ms-1" data-id="' + row.id + '"><i class="ti ti-trash fs-6"></i></button>';  
                         }
                     }
