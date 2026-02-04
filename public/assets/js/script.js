@@ -1513,22 +1513,29 @@
                         orderable: true,
                         data: function (row) {
                             console.log(row);
-                            return row.status.charAt(0).toUpperCase() + row.status.slice(1);
+                            return row.note;
                         }
                     }, {
                         targets: [2],
                         orderable: true,
                         data: function (row) {
-                            return row.follow_date;
+                            console.log(row);
+                            return row.status.charAt(0).toUpperCase() + row.status.slice(1);
                         }
                     }, {
                         targets: [3],
                         orderable: true,
                         data: function (row) {
-                            return row.added_date;
+                            return row.follow_date;
                         }
                     }, {
                         targets: [4],
+                        orderable: true,
+                        data: function (row) {
+                            return row.added_date;
+                        }
+                    }, {
+                        targets: [5],
                         orderable: true,
                         data: function (row) {
                             return row.added_by;

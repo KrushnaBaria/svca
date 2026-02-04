@@ -83,6 +83,7 @@
                 <table class="table table-bordered table-striped" id="follow-up-table">
                     <thead>
                         <tr>
+                            <th>No</th>
                             <th>Notes</th>
                             <th>Status</th>
                             <th>Follow-up Date</th>
