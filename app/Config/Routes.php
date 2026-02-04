@@ -45,6 +45,9 @@ $routes->group('inquery', function ($routes) {
     $routes->post('admit', 'Inquery::admit');
     $routes->post('update-del-sts', 'Inquery::update_delete_sts');
     $routes->post('recent-list', 'Inquery::recent_list');
+    $routes->get('follow-up/(:num)', 'Inquery::followUp/$1');
+    $routes->post('add-follow-up', 'Inquery::addFollowUp');
+    $routes->post('follow-up-list', 'Inquery::followUpList');
 });
 
 $routes->group('settings', function ($routes) {

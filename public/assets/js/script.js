@@ -1467,6 +1467,117 @@
             });
         },
 
+        initFollowUp: function(){
+
+            $('#follow-up-date').datepicker({
+                minDate: new Date(),
+                dateFormat: "dd/mm/yy", 
+            }).datepicker('setDate', $('#adm_date_db').val() ? new Date($('#adm_date_db').val()) : '');
+
+            var followUptbl = $('#follow-up-table');
+            var followUpTbl = new DataTable('#follow-up-table', {
+                responsive: true,
+                select: {
+                    style: 'single'
+                },
+                searching: typeof followUptbl.data('dt-searching') === 'undefined' ? true : followUptbl.data('dt-searching'),
+                lengthChange: typeof followUptbl.data('dt-lengthchange') === 'undefined' ? true : followUptbl.data('dt-lengthchange'),
+                processing: true,
+                serverSide: true,
+                bSortable: true,
+                bFilter: true,
+                pagingType: "full_numbers",
+                ajax: {
+                    url: conf.baseUrl + "/inquery/follow-up-list",
+                    type: 'post',
+                    data: function (d) {
+                        d.student_id = $('#stu_id').val();
+                    }
+                },
+                lengthMenu: [
+                    [5, 10, 20, -1],
+                    [5, 10, 20, "All"]
+                ],
+                pageLength: (typeof followUptbl.data('dt-pagelength') === 'undefined' || followUptbl.data('dt-pagelength') === '-1') ? 5 : followUptbl.data('dt-pagelength'),
+                paging: true,
+                ordering: false,
+                columnDefs: [
+                    {
+                        targets: [0],
+                        orderable: false,
+                        data: function (row, type, val, meta) {  
+                            return meta.row + 1;
+                        }
+                    }, {
+                        targets: [1],
+                        orderable: true,
+                        data: function (row) {
+                            console.log(row);
+                            return row.status.charAt(0).toUpperCase() + row.status.slice(1);
+                        }
+                    }, {
+                        targets: [2],
+                        orderable: true,
+                        data: function (row) {
+                            return row.follow_date;
+                        }
+                    }, {
+                        targets: [3],
+                        orderable: true,
+                        data: function (row) {
+                            return row.added_date;
+                        }
+                    }, {
+                        targets: [4],
+                        orderable: true,
+                        data: function (row) {
+                            return row.added_by;
+                        }
+                    }
+                ],
+            });
+
+            $('#sbt-follow-up').on('click', function(e){
+                e.preventDefault();
+
+                if($('#follow-up-notes').val() == ''){
+                    $('#follow-up-notes').focus();
+                    return false;
+                }
+
+                if($('#follow-up-date').val() == ''){
+                    $('#follow-up-date').focus();
+                    return false;
+                }
+
+                if($('#follow-up-status').val() == ''){
+                    $('#follow-up-status').focus();
+                    return false;
+                }
+                
+                $.ajax({
+                    url: conf.baseUrl + "/inquery/add-follow-up",
+                    type: "POST",
+                    data: {
+                        note : $('#follow-up-notes').val(),
+                        follow_up_date : $('#follow-up-date').val(),
+                        status : $('#follow-up-status').val(),
+                        student_id : $('#stu_id').val()
+                    },
+                    dataType: "json",
+                    success: function(res) {
+                        if(res.success == 1) {
+                            $('#follow-up-notes').val('');
+                            $('#follow-up-date').val('');
+                            followUpTbl.ajax.reload();   
+                        }else {
+                            alert("Error adding follow-up");
+                        }
+                    }
+                });
+            });
+        },
+
         initAddPayment: function(){
         
             let payhistorytbl = $('#pay-historytbl');
