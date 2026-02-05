@@ -1504,39 +1504,31 @@
                 columnDefs: [
                     {
                         targets: [0],
-                        orderable: false,
                         data: function (row, type, val, meta) {  
                             return meta.row + 1;
                         }
                     }, {
                         targets: [1],
-                        orderable: true,
                         data: function (row) {
-                            console.log(row);
                             return row.note;
                         }
                     }, {
                         targets: [2],
-                        orderable: true,
                         data: function (row) {
-                            console.log(row);
                             return row.status.charAt(0).toUpperCase() + row.status.slice(1);
                         }
                     }, {
                         targets: [3],
-                        orderable: true,
                         data: function (row) {
                             return row.follow_date;
                         }
                     }, {
                         targets: [4],
-                        orderable: true,
                         data: function (row) {
                             return row.added_date;
                         }
                     }, {
                         targets: [5],
-                        orderable: true,
                         data: function (row) {
                             return row.added_by;
                         }
