@@ -46,7 +46,7 @@ class CourseModel extends Model
         
         $result['recordsTotal'] = $result['recordsFiltered'] = $this->db->query($query)->getNumRows();
 
-        $query .= " LIMIT " . $data['start'] . ", " . $data['end'];
+        $query .= " ORDER BY c.center LIMIT " . $data['start'] . ", " . $data['end'];
         $result['data'] = $this->db->query($query)->getResultArray();
         
         if ($result) {
