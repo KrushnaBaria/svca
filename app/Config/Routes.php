@@ -93,3 +93,9 @@ $routes->group('bin', function ($routes) {
     $routes->post('delete-inquiry', 'RecycleBin::deleteInquiry');
     $routes->post('restore-inquiry', 'RecycleBin::restoreInquiry');
 });
+
+$routes->group('user', function ($routes) {
+    //$routes->get('/', 'UserInfo::index');
+    $routes->get('admin-list', 'UserInfo::AdminList');
+    $routes->post('get-admin-list', 'UserInfo::getAdminList');
+});

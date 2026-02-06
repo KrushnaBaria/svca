@@ -55,4 +55,23 @@ class UserModel extends ShieldUserModel
             return $result;
         }
     }
+
+    public function getAdminList($data){
+        $search = $data['search'];
+        $start = $data['start'];
+        $end = $data['end'];
+
+        $query = "SELECT u.id AS id, ui.first_name AS first_name, ui.last_name AS last_name, ai.secret AS email, gu.group AS user_group, ai.created_at AS register_on, ai.last_used_at AS last_login FROM users AS u 
+            LEFT JOIN user_info AS ui ON ui.user_id = u.id
+            LEFT JOIN auth_groups_users AS gu ON gu.user_id = u.id
+            LEFT JOIN auth_identities AS ai ON ai.user_id = u.id
+            WHERE gu.group IN ('superadmin', 'admin')";
+
+        $result['recordsTotal'] = $result['recordsFiltered'] = $this->db->query($query)->getNumRows();
+
+        $query .= " LIMIT ". $start .", ". $end;
+
+        $result['data'] = $this->db->query($query)->getResultArray();
+        return $result;
+    }
 }

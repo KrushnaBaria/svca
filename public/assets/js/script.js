@@ -2233,6 +2233,79 @@
             });
         },
 
+        initAdminList: function(){
+            console.log('test');
+                var adminListtbl = $('#admin-list-tbl');
+                var adminListTbl = new DataTable('#admin-list-tbl', {
+                    responsive: true,
+                    select: {
+                        style: 'single'
+                    },
+                    searching: typeof adminListtbl.data('dt-searching') === 'undefined' ? true : adminListtbl.data('dt-searching'),
+                    lengthChange: typeof adminListtbl.data('dt-lengthchange') === 'undefined' ? true : adminListtbl.data('dt-lengthchange'),
+                    processing: true,
+                    serverSide: true,
+                    bSortable: true,
+                    bFilter: true,
+                    pagingType: "full_numbers",
+                    ajax: {
+                        url: conf.baseUrl + "/user/get-admin-list",
+                        data: function (d) {
+                            d.student_id = $('#stu_id').val();
+                        },
+                        type: 'post',
+                    },
+                    lengthMenu: [
+                        [5, 10, 20, -1],
+                        [5, 10, 20, "All"]
+                    ],
+                    pageLength: (typeof adminListtbl.data('dt-pagelength') === 'undefined' || adminListtbl.data('dt-pagelength') === '-1') ? 5 : adminListtbl.data('dt-pagelength'),
+                    paging: true,
+                    ordering: false,
+                    columnDefs: [
+                        {
+                            targets: [0],
+                            orderable: false,
+                            data: function (row, type, val, meta) {  
+                                return meta.row + 1;
+                            }
+                        },
+                        {
+                            targets: [1],
+                            orderable: true,
+                            data: function (row) {
+                                if(row.first_name && row.last_name){
+                                    return row.first_name + ' ' + row.last_name;
+                                }else{
+                                    return '-';
+                                }
+                            }
+                        },
+                        {
+                            targets: [2],
+                            orderable: false,
+                            data: function (row) {
+                                return row.email;
+                            }
+                        },
+                        {
+                            targets: [3],
+                            orderable: false,
+                            data: function (row) {
+                                return row.user_group === 'superadmin' ? 'Super Admin' : 'Admin';
+                            }
+                        },
+                        {
+                            targets: [4],
+                            orderable: false,
+                            data: function (row) {
+                                return row.register_on;
+                            }
+                        }
+                    ],
+                });
+        },
+
         init: function(calltoinit) {
             if(typeof this[calltoinit] === "function"){
                 this[calltoinit]();
