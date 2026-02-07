@@ -55,4 +55,6 @@ ALTER TABLE `expense_log` CHANGE `updated_by` `updated_by` VARCHAR(255) NOT NULL
 CREATE TABLE `svca_`.`payment_log` (`id` INT NOT NULL AUTO_INCREMENT , `stu_id` INT NOT NULL , `transaction_id` INT NOT NULL , `remark` VARCHAR(255) NOT NULL , `updated_by` VARCHAR(255) NOT NULL , `updated_date` TIMESTAMP NOT NULL , PRIMARY KEY (`id`));
 
 [03-02-2026]
-CREATE TABLE `svca_`.`follow_up` (`id` INT NOT NULL AUTO_INCREMENT , `stu_id` INT NOT NULL , `note` VARCHAR(255) NOT NULL , `status` VARCHAR(255) NOT NULL , `follow_date` DATE NOT NULL , `added_date` DATETIME NOT NULL , `added_by` VARCHAR(255) NOT NULL , PRIMARY KEY (`id`)) 
+CREATE TABLE `svca_`.`follow_up` (`id` INT NOT NULL AUTO_INCREMENT , `stu_id` INT NOT NULL , `note` VARCHAR(255) NOT NULL , `status` VARCHAR(255) NOT NULL , `follow_date` DATE NOT NULL , `added_date` DATETIME NOT NULL , `added_by` VARCHAR(255) NOT NULL , PRIMARY KEY (`id`));
+
+['SERVER DB NAME = u435765787_admin_svca]

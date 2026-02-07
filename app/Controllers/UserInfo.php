@@ -49,4 +49,60 @@ class UserInfo extends BaseController
             return json_encode(['success' => 0, 'message' => 'No admin list found']);
         }
     }
+
+    public function ChangePassword($id)
+    {   
+        $data['user_id'] = $id;
+        return view('template/header', ['page_title' => 'Change Password']). view('change_password', $data).  view('template/footer', ['app_init' => 'initChangePassword']);
+    }
+
+    public function updatePassword()
+    {
+        $data = [
+            'user_id' => $this->request->getPost('user_id'),
+            'new_password' => $this->request->getPost('new_password'),
+            'confirm_password' => $this->request->getPost('confirm_password')
+        ];
+
+        if ($data['new_password'] !== $data['confirm_password']) {
+            return json_encode(['success' => 0, 'message' => 'New password and confirm password do not match']);
+        }
+        
+        $users = auth()->getProvider();
+        $user = $users->findById($data['user_id']);
+
+        $user->fill([
+            'password' => $data['confirm_password']
+        ]);
+
+        $update = $users->save($user);
+
+        if ($update) {
+            return json_encode(['success' => 1, 'message' => 'Password updated successfully']);
+        } else {
+            return json_encode(['success' => 0, 'message' => 'Failed to update password']);
+        }
+    }
+
+    public function deleteUser()
+    {
+        $user_id = $this->request->getPost('user_id');
+
+        $user_info_dlt = $this->model->where('user_id', $user_id)->delete();
+
+        if(!$user_info_dlt){
+            return json_encode(['success' => 0, 'message' => 'Failed to delete user info']);
+        }
+
+        $users = auth()->getProvider();
+
+        $user = $users->findById($user_id);
+        $delete = $users->delete($user->id, true);
+
+        if ($delete) {
+            return json_encode(['success' => 1, 'message' => 'User deleted successfully']);
+        } else {
+            return json_encode(['success' => 0, 'message' => 'Failed to delete user']);
+        }
+    }
 }

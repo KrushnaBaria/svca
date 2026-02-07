@@ -75,6 +75,7 @@ class Validation extends BaseConfig
             'label' => 'Auth.password',
             'rules' => [
                 'required',
+                'min_length[8]',
                 'max_byte[72]',
                 'strong_password[]',
             ],

@@ -13,6 +13,7 @@
                     <th><h6 class="fs-3 fw-semibold">Email</h6></th>
                     <th><h6 class="fs-3 fw-semibold">User Group</h6></th>
                     <th><h6 class="fs-3 fw-semibold">Created Date</h6></th>
+                    <th><h6 class="fs-3 fw-semibold">Action</h6></th>
                 </tr>
             </thead>
         </table>

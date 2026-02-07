@@ -2234,76 +2234,155 @@
         },
 
         initAdminList: function(){
-            console.log('test');
-                var adminListtbl = $('#admin-list-tbl');
-                var adminListTbl = new DataTable('#admin-list-tbl', {
-                    responsive: true,
-                    select: {
-                        style: 'single'
+            var adminListtbl = $('#admin-list-tbl');
+            var adminListTbl = new DataTable('#admin-list-tbl', {
+                responsive: true,
+                select: false,
+                searching: typeof adminListtbl.data('dt-searching') === 'undefined' ? true : adminListtbl.data('dt-searching'),
+                lengthChange: typeof adminListtbl.data('dt-lengthchange') === 'undefined' ? true : adminListtbl.data('dt-lengthchange'),
+                processing: true,
+                serverSide: true,
+                bSortable: true,
+                bFilter: true,
+                pagingType: "full_numbers",
+                ajax: {
+                    url: conf.baseUrl + "/user/get-admin-list",
+                    data: function (d) {
+                        d.student_id = $('#stu_id').val();
                     },
-                    searching: typeof adminListtbl.data('dt-searching') === 'undefined' ? true : adminListtbl.data('dt-searching'),
-                    lengthChange: typeof adminListtbl.data('dt-lengthchange') === 'undefined' ? true : adminListtbl.data('dt-lengthchange'),
-                    processing: true,
-                    serverSide: true,
-                    bSortable: true,
-                    bFilter: true,
-                    pagingType: "full_numbers",
-                    ajax: {
-                        url: conf.baseUrl + "/user/get-admin-list",
-                        data: function (d) {
-                            d.student_id = $('#stu_id').val();
-                        },
-                        type: 'post',
+                    type: 'post',
+                },
+                lengthMenu: [
+                    [5, 10, 20, -1],
+                    [5, 10, 20, "All"]
+                ],
+                pageLength: (typeof adminListtbl.data('dt-pagelength') === 'undefined' || adminListtbl.data('dt-pagelength') === '-1') ? 5 : adminListtbl.data('dt-pagelength'),
+                paging: true,
+                ordering: false,
+                columnDefs: [
+                    {
+                        targets: [0],
+                        orderable: false,
+                        data: function (row, type, val, meta) {  
+                            return meta.row + 1;
+                        }
                     },
-                    lengthMenu: [
-                        [5, 10, 20, -1],
-                        [5, 10, 20, "All"]
-                    ],
-                    pageLength: (typeof adminListtbl.data('dt-pagelength') === 'undefined' || adminListtbl.data('dt-pagelength') === '-1') ? 5 : adminListtbl.data('dt-pagelength'),
-                    paging: true,
-                    ordering: false,
-                    columnDefs: [
-                        {
-                            targets: [0],
-                            orderable: false,
-                            data: function (row, type, val, meta) {  
-                                return meta.row + 1;
-                            }
-                        },
-                        {
-                            targets: [1],
-                            orderable: true,
-                            data: function (row) {
-                                if(row.first_name && row.last_name){
-                                    return row.first_name + ' ' + row.last_name;
-                                }else{
-                                    return '-';
-                                }
-                            }
-                        },
-                        {
-                            targets: [2],
-                            orderable: false,
-                            data: function (row) {
-                                return row.email;
-                            }
-                        },
-                        {
-                            targets: [3],
-                            orderable: false,
-                            data: function (row) {
-                                return row.user_group === 'superadmin' ? 'Super Admin' : 'Admin';
-                            }
-                        },
-                        {
-                            targets: [4],
-                            orderable: false,
-                            data: function (row) {
-                                return row.register_on;
+                    {
+                        targets: [1],
+                        orderable: true,
+                        data: function (row) {
+                            if(row.first_name && row.last_name){
+                                return row.first_name + ' ' + row.last_name;
+                            }else{
+                                return '-';
                             }
                         }
-                    ],
+                    },
+                    {
+                        targets: [2],
+                        orderable: false,
+                        data: function (row) {
+                            return row.email;
+                        }
+                    },
+                    {
+                        targets: [3],
+                        orderable: false,
+                        data: function (row) {
+                            return row.user_group === 'superadmin' ? 'Super Admin' : 'Admin';
+                        }
+                    },
+                    {
+                        targets: [4],
+                        orderable: false,
+                        data: function (row) {
+                            return row.register_on;
+                        }
+                    },
+                    {
+                        targets: [5],
+                        orderable: false,
+                        data: function (row) {
+                            return '<a href="' + conf.baseUrl + 'user/change-password/' + row.id + '" class="btn btn-warning btn-sm" title="Change Password"><i class="ti ti-key fs-6"></i></a> ' +
+                                '<button class="btn btn-danger btn-sm delete-user" data-id="' + row.id + '">Delete</button>'
+                        }
+                    }
+                ],
+            });
+
+            $(document).on('click', '.delete-user', function() {
+                var conform = confirm("Are you sure you want to delete this user?");
+                if(conform){
+                    $.ajax({
+                        url: conf.baseUrl + "/user/delete",
+                        type: "POST",
+                        dataType: "json",
+                        data: {
+                            user_id: $(this).data('id')
+                        },
+                        success: function(res) {
+                            if(res.success == 1) {
+                                adminListTbl.ajax.reload();
+                            } else {
+                                alert(res.message || "Error deleting user");
+                            }
+                        },
+                        error: function() {
+                            alert("An error occurred while deleting the user.");
+                        }
+                    });
+                }
+            });
+        },
+
+        initChangePassword: function(){
+            $('#update_btn').on('click', function(e){
+                e.preventDefault();
+                if($('#new_password').val() == ''){
+                    $('#new_password').focus();
+                    return false;
+                }
+                if($('#confirm_password').val() == ''){
+                    $('#confirm_password').focus();
+                    return false;
+                }
+
+                if($('#new_password').val() != $('#confirm_password').val()){
+                    alert("Password and confirm password do not match");
+                    return false;
+                }
+
+                if(!validatePassword($('#new_password').val())){
+                    alert("Password must contain at least 8 characters, 1 uppercase letter, 1 lowercase letter, 1 number, and 1 special character");
+                    return false;
+                }
+
+                $.ajax({
+                    url: conf.baseUrl + "/user/update-password",
+                    type: "POST",
+                    dataType: "json",
+                    data: {
+                        new_password: $('#new_password').val(),
+                        confirm_password: $('#confirm_password').val(),
+                        user_id: $('#user_id').val()
+                    },
+                    success: function(res) {
+                        if(res.success == 1) {
+                            window.location.href = conf.baseUrl + "user/admin-list";
+                        } else {
+                            alert("Error updating password");
+                        }
+                    },
+                    error: function() {
+                        alert("An error occurred while updating the password.");
+                    }
                 });
+
+                function validatePassword(password) {
+                    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+                    return regex.test(password);
+                }
+            });
         },
 
         init: function(calltoinit) {
