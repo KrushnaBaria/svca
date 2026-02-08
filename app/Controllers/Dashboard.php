@@ -31,7 +31,7 @@ class Dashboard extends BaseController
         if(Auth()->user()->inGroup('superadmin')){
             return view('template/header', ['page_title' => 'Dashboard']). view('dashboard', $data).  view('template/footer', ['app_init' => 'initDashboard']);
         }else{
-            return view('template/header', ['page_title' => 'Dashboard']). view('dashboard_ad', $data).  view('template/footer', ['app_init' => 'initDashboard']);
+            return view('template/header', ['page_title' => 'Dashboard']). view('dashboard_ad', $data).  view('template/footer', ['app_init' => 'initAdDashboard']);
         }
         
     }

@@ -347,6 +347,15 @@ class StudentModel extends Model
         $search = $data['search'] ?? [];
         $where = "";
 
+        $center_ad = '';
+        if(!Auth()->user()->inGroup('superadmin')){
+            $query1 = "SELECT center FROM user_info WHERE user_id = ". auth()->user()->id ."";
+            $center_ad = $this->db->query($query1)->getResultArray();
+            if($center_ad){
+                $center_ad = $center_ad[0]['center'];
+            }
+        }
+
         if ($search) { 
             $where = " AND ((st.name LIKE '%" . $search . "%' OR st.pnumber LIKE '%" . $search . "%' OR courses.course LIKE '%" . $search . "%' OR centers.center LIKE '%" . $search . "%')";
             $sval = explode(" ", $search); 
@@ -365,6 +374,10 @@ class StudentModel extends Model
             LEFT JOIN courses ON st.course = courses.id
             WHERE 1=1 ". $where ." AND status = 0 AND del_sts = 0 AND st.add_date >= DATE_SUB(NOW(), INTERVAL 7 DAY) ";
 
+        if($center_ad){
+            $query .= " AND st.center = " . $center_ad . "";
+        }
+
         $result['recordsTotal'] = $result['recordsFiltered'] = $this->db->query($query)->getNumRows();
 
         $query .= " ORDER BY st.id DESC LIMIT " . (int)$start . ", " . (int)$end;
@@ -376,16 +389,30 @@ class StudentModel extends Model
     public function getStudentCount($data)
     {   
         $where = '';
-        if($data['center_id']){
+
+        $center_ad = '';
+        if(!Auth()->user()->inGroup('superadmin')){
+            $query1 = "SELECT center FROM user_info WHERE user_id = ". auth()->user()->id ."";
+            $center_ad = $this->db->query($query1)->getResultArray();
+            if($center_ad){
+                $center_ad = $center_ad[0]['center'];
+            }
+        }
+
+        if($center_ad){
+            $where .= " AND center = " . $center_ad . "";
+        }else if($data['center_id']){
             $where .= " AND center = '". $data['center_id'] ."'";
         }
 
-        $AdmiQuery = "SELECT COUNT(*) as AdmiCount FROM students
-                        WHERE status = 1 AND del_sts = 0".$where." AND DATE_FORMAT(add_date, '%Y-%m') = '". $data['f_date'] ."'";
+        if($data['f_date']){
+           $where .= " AND DATE_FORMAT(add_date, '%Y-%m') = '". $data['f_date'] ."'";
+        }
+
+        $AdmiQuery = "SELECT COUNT(*) as AdmiCount FROM students WHERE status = 1 AND del_sts = 0 ". $where;
         $AdmiCount = $this->db->query($AdmiQuery)->getRowArray();
 
-        $InqQuery = "SELECT COUNT(*) as InqCount FROM students
-                        WHERE status = 0 AND del_sts = 0".$where." AND DATE_FORMAT(add_date, '%Y-%m') = '". $data['f_date'] ."'";
+        $InqQuery = "SELECT COUNT(*) as InqCount FROM students WHERE status = 0 AND del_sts = 0 ". $where;
         $InqCount = $this->db->query($InqQuery)->getRowArray();
 
         $result['AdmiCount'] = $AdmiCount['AdmiCount'];

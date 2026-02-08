@@ -14,7 +14,9 @@
     <!-- <script src="https://cdn.jsdelivr.net/npm/iconify-icon@1.0.8/dist/iconify-icon.min.js"></script> -->
     <script>
         window.SvcaConfig = {
-            baseUrl: '<?php echo base_url(); ?>'
+            baseUrl: '<?php echo base_url(); ?>',
+            userId: '<?php echo Auth()->user()->id; ?>',
+            userGroup: '<?php echo Auth()->user()->getGroups()[0]; ?>',
         };
         window.SvcaViewInit = '<?php echo isset($app_init) ? $app_init : ""; ?>';
     </script>

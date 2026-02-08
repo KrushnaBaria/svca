@@ -89,25 +89,28 @@
 
         getCounts: function(){
             const fp = $('#date-filter')[0]._flatpickr
-            setTimeout(() => {
-                $.ajax({
-                    url: conf.baseUrl + "dashboard/get-PRE",
-                    type: "POST",
-                    dataType: "json",
-                    data: {
-                        f_date : fp.formatDate(fp.selectedDates[0], "Y-m"),
-                        center_id : $('#center-filter').val()
-                    },
-                    success: function(res) {
-                        $('#revenue-count').html(res.data[0].revenue);
-                        $('#expense-count').html(res.data[1].expenses);
-                        $('#profit-count').html(res.data[0].revenue - res.data[1].expenses);
-                    },
-                    error: function() {
-                        alert("An error occurred while fwtching data.");
-                    }
+            console.log(SvcaConfig);
+            if(SvcaConfig.userGroup == 'superadmin'){
+                setTimeout(() => {
+                    $.ajax({
+                        url: conf.baseUrl + "dashboard/get-PRE",
+                        type: "POST",
+                        dataType: "json",
+                        data: {
+                            f_date : fp.formatDate(fp.selectedDates[0], "Y-m"),
+                            center_id : $('#center-filter').val()
+                        },
+                        success: function(res) {
+                            $('#revenue-count').html(res.data[0].revenue);
+                            $('#expense-count').html(res.data[1].expenses);
+                            $('#profit-count').html(res.data[0].revenue - res.data[1].expenses);
+                        },
+                        error: function() {
+                            alert("An error occurred while fwtching data.");
+                        }
+                    });
                 });
-            });
+            }
 
             setTimeout(() => {
                 $.ajax({
@@ -123,34 +126,28 @@
                         $('#inquiry-count').html(res.data.InqCount);
                     },
                     error: function() {
-                        alert("An error occurred while fwtching data.");
+                        alert("An error occurred while fetching data.");
                     }
                 });
             });
         },
 
-        initDashboard: function() {
-            let SVCAobj = this;
-
-            $('#date-filter').flatpickr({
-                disableMobile: true,
-                defaultDate: new Date(),
-                altFormat: "F Y",
-                dateFormat: "Y-m",
-                altInput: true,
-                plugins: [
-                    new monthSelectPlugin({
-                    shorthand: true
-                    })
-                ]
+        getTotalStudentCount: function(){
+            $.ajax({
+                url: conf.baseUrl + "dashboard/get-student-count",
+                type: "POST",
+                dataType: "json",
+                success: function(res) {
+                    $('#total-admission-count').html(res.data.AdmiCount);
+                    $('#total-inquiry-count').html(res.data.InqCount);
+                },
+                error: function() {
+                    alert("An error occurred while fetching data.");
+                }
             });
+        },
 
-            $('#date-filter,#center-filter').on('change', function(){
-                SVCAobj.getCounts();
-            });
-
-            SVCAobj.getCounts();
-
+        recentInquey: function(){
             let recInqurytbl = $('#recent-inquries-tbl');
             let recInquryTbl = new DataTable('#recent-inquries-tbl', {
                 responsive: true,
@@ -219,6 +216,30 @@
                     },
                 ],
             });
+        },
+
+        initDashboard: function() {
+            let SVCAobj = this;
+
+            $('#date-filter').flatpickr({
+                disableMobile: true,
+                defaultDate: new Date(),
+                altFormat: "F Y",
+                dateFormat: "Y-m",
+                altInput: true,
+                plugins: [
+                    new monthSelectPlugin({
+                    shorthand: true
+                    })
+                ]
+            });
+
+            $('#date-filter,#center-filter').on('change', function(){
+                SVCAobj.getCounts();
+            });
+
+            SVCAobj.getCounts();
+            SVCAobj.recentInquey();
 
             $.ajax({
                 url: conf.baseUrl + "/dashboard/get-main-report-chart-data",
@@ -286,6 +307,31 @@
                       chart.render();
                 }
             });
+        },
+
+        initAdDashboard: function() {
+            let SVCAobj = this;
+
+            $('#date-filter').flatpickr({
+                disableMobile: true,
+                defaultDate: new Date(),
+                altFormat: "F Y",
+                dateFormat: "Y-m",
+                altInput: true,
+                plugins: [
+                    new monthSelectPlugin({
+                    shorthand: true
+                    })
+                ]
+            });
+
+            $('#date-filter,#center-filter').on('change', function(){
+                SVCAobj.getCounts();
+            });
+
+            SVCAobj.getCounts();
+            SVCAobj.getTotalStudentCount();
+            SVCAobj.recentInquey();
         },
 
         initSettings: function(){

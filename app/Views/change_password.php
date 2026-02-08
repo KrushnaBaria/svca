@@ -14,7 +14,7 @@
                     <input type="password" class="form-control" id="confirm_password" name="confirm_password" required>
                 </div>
                 <div class="d-flex justify-content-center">
-                    <input type="hidden" id="user_id" value="<?= $user_id ?>">
+                    <input type="hidden" id="user_id" value="<?php echo $user_id; ?>">
                     <button type="submit" class="btn btn-primary" id="update_btn">Update Password</button>
                 </div>           
             </form>
