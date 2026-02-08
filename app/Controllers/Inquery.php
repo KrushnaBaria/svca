@@ -195,4 +195,20 @@ class Inquery extends BaseController
             return json_encode(['success' => 0, 'message' => 'No students found']);
         }
     }
+
+    public function todayFollowUp()
+    {
+        $data = [
+            'start' => $this->request->getPost('start'),
+            'end' => $this->request->getPost('length'),
+            'search' => $this->request->getPost('search')['value'] ?? ''
+        ];
+
+        $TodayFollowUps = $this->followUpModel->todayFollowUps($data);
+        if ($TodayFollowUps) {
+            return json_encode($TodayFollowUps);
+        } else {
+            return json_encode(['success' => 0, 'message' => 'No follow-ups found']);
+        }
+    }
 }

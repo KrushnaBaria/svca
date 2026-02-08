@@ -92,6 +92,26 @@
 
 <div class="card">
     <div class="card-header bg-primary">
+        <h4 class="card-title text-white">Today's Follow Up</h4>
+    </div>
+    <div class="card-body table-responsive">
+        <table id="today-follow-up-tbl" class="table table table-bordered" style="width:100%">
+            <thead class="text-dark fs-4">
+                <th><h6 class="fs-3 fw-semibold">No</h6></th>
+                <th><h6 class="fs-3 fw-semibold">Student Name</h6></th>
+                <th><h6 class="fs-3 fw-semibold">Phone</h6></th>
+                <th><h6 class="fs-3 fw-semibold">Course</h6></th>
+                <th><h6 class="fs-3 fw-semibold">Center</h6></th>
+                <th><h6 class="fs-3 fw-semibold">Date</h6></th>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header bg-primary">
         <h4 class="card-title text-white">Recent Inquiries</h4>
     </div>
     <div class="card-body table-responsive">

@@ -48,6 +48,7 @@ $routes->group('inquery', function ($routes) {
     $routes->get('follow-up/(:num)', 'Inquery::followUp/$1');
     $routes->post('add-follow-up', 'Inquery::addFollowUp');
     $routes->post('follow-up-list', 'Inquery::followUpList');
+    $routes->post('today-follow-up', 'Inquery::todayFollowUp');
 });
 
 $routes->group('settings', function ($routes) {

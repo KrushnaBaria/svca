@@ -218,6 +218,77 @@
             });
         },
 
+        todayFollowUp: function(){
+            let FollowUptbl = $('#today-follow-up-tbl');
+            let FollowUpTbl = new DataTable('#today-follow-up-tbl', {
+                responsive: true,
+                searching: typeof FollowUptbl.data('dt-searching') === 'undefined' ? true : FollowUptbl.data('dt-searching'),
+                lengthChange: typeof FollowUptbl.data('dt-lengthchange') === 'undefined' ? true : FollowUptbl.data('dt-lengthchange'),
+                processing: true,
+                serverSide: true,
+                bSortable: true,
+                bFilter: true,
+                pagingType: "full_numbers",
+                ajax: {
+                    url: conf.baseUrl + "/inquery/today-follow-up",
+                    data: function (d) {
+                        d.student_id = $('#stu_id').val();
+                    },
+                    type: 'post',
+                },
+                lengthMenu: [
+                    [5, 10, 20, -1],
+                    [5, 10, 20, "All"]
+                ],
+                pageLength: (typeof FollowUptbl.data('dt-pagelength') === 'undefined' || FollowUptbl.data('dt-pagelength') === '-1') ? 5 : FollowUptbl.data('dt-pagelength'),
+                paging: true,
+                ordering: false,
+                columnDefs: [
+                    {
+                        targets: [0],
+                        orderable: false,
+                        data: function (row, type, val, meta) {  
+                            return meta.row + 1;
+                        }
+                    },
+                    {
+                        targets: [1],
+                        orderable: true,
+                        data: function (row) {
+                            return row.stu_name;
+                        }
+                    },
+                    {
+                        targets: [2],
+                        orderable: false,
+                        data: function (row) {
+                            return row.phone;
+                        }
+                    },
+                    {
+                        targets: [3],
+                        orderable: true,
+                        data: function (row) {
+                            return row.course_name;
+                        }
+                    },
+                    {
+                        targets: [4],
+                        orderable: true,
+                        data: function (row) {
+                            return row.center_name;
+                        }
+                    },{
+                        targets: [5],
+                        orderable: true,
+                        data: function (row) {
+                            return row.follow_date;
+                        }
+                    },
+                ],
+            });
+        },
+
         initDashboard: function() {
             let SVCAobj = this;
 
@@ -233,13 +304,6 @@
                     })
                 ]
             });
-
-            $('#date-filter,#center-filter').on('change', function(){
-                SVCAobj.getCounts();
-            });
-
-            SVCAobj.getCounts();
-            SVCAobj.recentInquey();
 
             $.ajax({
                 url: conf.baseUrl + "/dashboard/get-main-report-chart-data",
@@ -307,6 +371,14 @@
                       chart.render();
                 }
             });
+
+            $('#date-filter,#center-filter').on('change', function(){
+                SVCAobj.getCounts();
+            });
+
+            SVCAobj.getCounts();
+            SVCAobj.todayFollowUp();
+            SVCAobj.recentInquey();
         },
 
         initAdDashboard: function() {
@@ -331,6 +403,7 @@
 
             SVCAobj.getCounts();
             SVCAobj.getTotalStudentCount();
+            SVCAobj.todayFollowUp();
             SVCAobj.recentInquey();
         },
 
