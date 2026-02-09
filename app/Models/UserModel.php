@@ -61,10 +61,11 @@ class UserModel extends ShieldUserModel
         $start = $data['start'];
         $end = $data['end'];
 
-        $query = "SELECT u.id AS id, ui.first_name AS first_name, ui.last_name AS last_name, ai.secret AS email, gu.group AS user_group, ai.created_at AS register_on, ai.last_used_at AS last_login FROM users AS u 
+        $query = "SELECT u.id AS id, ui.first_name AS first_name, ui.last_name AS last_name, c.center AS center, ai.secret AS email, gu.group AS user_group, ai.created_at AS register_on, ai.last_used_at AS last_login FROM users AS u 
             LEFT JOIN user_info AS ui ON ui.user_id = u.id
             LEFT JOIN auth_groups_users AS gu ON gu.user_id = u.id
             LEFT JOIN auth_identities AS ai ON ai.user_id = u.id
+            LEFT JOIN centers AS c ON c.id = ui.center
             WHERE gu.group IN ('superadmin', 'admin')";
 
         $result['recordsTotal'] = $result['recordsFiltered'] = $this->db->query($query)->getNumRows();

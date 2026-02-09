@@ -88,8 +88,8 @@
         },
 
         getCounts: function(){
-            const fp = $('#date-filter')[0]._flatpickr
-            console.log(SvcaConfig);
+            const fp = $('#date-filter')[0]._flatpickr;
+
             if(SvcaConfig.userGroup == 'superadmin'){
                 setTimeout(() => {
                     $.ajax({
@@ -299,7 +299,6 @@
                 FollowUpTbl.column(5).visible(false);
             }
 
-            console.log(SvcaConfig);
         },
 
         initDashboard: function() {
@@ -1546,7 +1545,7 @@
                         targets: [5],
                         orderable: false,
                         data: function (row) {
-                            return '<div class="d-flex"><a href="' + conf.baseUrl + 'inquery/follow-up/' + row.id + '" class="admit-stu btn btn-secondary" data-id="' + row.id + '">Follow&nbsp;Up</a>'
+                            return '<div class="d-flex justify-content-center"><a href="' + conf.baseUrl + 'inquery/follow-up/' + row.id + '" class="admit-stu btn btn-secondary" data-id="' + row.id + '">Follow&nbsp;Up</a>'
                             + '<a href="' + conf.baseUrl + 'student/edit/' + row.id + '" class="admit-stu btn btn-primary ms-1" data-id="' + row.id + '">Admit</a>'
                         + '<button class="btn btn-danger delete-inquiry ms-1" data-id="' + row.id + '"><i class="ti ti-trash fs-6"></i></button></div>';  
                         }
@@ -2386,6 +2385,7 @@
                 searching: typeof adminListtbl.data('dt-searching') === 'undefined' ? true : adminListtbl.data('dt-searching'),
                 lengthChange: typeof adminListtbl.data('dt-lengthchange') === 'undefined' ? true : adminListtbl.data('dt-lengthchange'),
                 processing: true,
+                scrollX: true,
                 serverSide: true,
                 bSortable: true,
                 bFilter: true,
@@ -2441,15 +2441,23 @@
                         targets: [4],
                         orderable: false,
                         data: function (row) {
-                            return row.register_on;
+                            return row.center;
                         }
                     },
                     {
                         targets: [5],
                         orderable: false,
                         data: function (row) {
-                            return '<a href="' + conf.baseUrl + 'user/change-password/' + row.id + '" class="btn btn-warning btn-sm" title="Change Password"><i class="ti ti-key fs-6"></i></a> ' +
-                                '<button class="btn btn-danger btn-sm delete-user" data-id="' + row.id + '">Delete</button>'
+                            return row.register_on;
+                        }
+                    },
+                    {
+                        targets: [6],
+                        orderable: false,
+                        data: function (row) {
+                            return '<div class="d-flex gap-2 justify-content-center">' +
+                                '<a href="' + conf.baseUrl + 'user/change-password/' + row.id + '" class="btn btn-warning btn-sm" title="Change Password"><i class="ti ti-key fs-6"></i></a> ' +
+                                '<button class="btn btn-danger btn-sm delete-user" data-id="' + row.id + '">Delete</button></div>';
                         }
                     }
                 ],
