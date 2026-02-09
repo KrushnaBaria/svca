@@ -4,7 +4,7 @@
     </div>
     <div class="card-body">
         <div class="row g-2 mb-4">
-            <div class="col-lg-4">
+            <div class="col-lg-3">
                 <div class="d-flex align-items-center">
                     <div class="bg-primary bg-opacity-10 rounded-circle p-3 me-3">
                         <i class="bi bi-person-fill text-primary fs-4"></i>
@@ -15,7 +15,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-4">
+            <div class="col-lg-3">
                 <div class="d-flex align-items-center">
                     <div class="bg-info bg-opacity-10 rounded-circle p-3 me-3">
                         <i class="bi bi-journal-bookmark-fill text-info fs-4"></i>
@@ -26,7 +26,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-4">
+            <div class="col-lg-3">
                 <div class="d-flex align-items-center">
                     <div class="bg-secondary bg-opacity-10 rounded-circle p-3 me-3">
                         <i class="bi bi-building text-secondary fs-4"></i>
@@ -34,6 +34,17 @@
                     <div>
                         <small class="text-muted text-uppercase fw-medium d-block mb-1">Center</small>
                         <h6 class="mb-0"><?php echo $student['center_name']; ?></h6>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="d-flex align-items-center">
+                    <div class="bg-warning bg-opacity-10 rounded-circle p-3 me-3">
+                        <i class="bi bi-telephone-fill text-warning fs-4"></i>
+                    </div>
+                    <div>
+                        <small class="text-muted text-uppercase fw-medium d-block mb-1">Phone Number</small>
+                        <h6 class="mb-0"><?php echo $student['pnumber']; ?></h6>
                     </div>
                 </div>
             </div>

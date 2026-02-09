@@ -216,6 +216,11 @@
                     },
                 ],
             });
+
+            if(SvcaConfig.userGroup != 'superadmin'){
+                recInquryTbl.column(4).visible(false);
+                recInquryTbl.column(5).visible(false);
+            }
         },
 
         todayFollowUp: function(){
@@ -287,6 +292,13 @@
                     },
                 ],
             });
+
+            if(SvcaConfig.userGroup != 'superadmin'){
+                FollowUpTbl.column(4).visible(false);
+                FollowUpTbl.column(5).visible(false);
+            }
+
+            console.log(SvcaConfig);
         },
 
         initDashboard: function() {
@@ -1533,9 +1545,9 @@
                         targets: [5],
                         orderable: false,
                         data: function (row) {
-                            return '<a href="' + conf.baseUrl + '/inquery/follow-up/' + row.id + '" class="admit-stu btn btn-secondary" data-id="' + row.id + '">Follow Up</a>'
-                            + '<a href="' + conf.baseUrl + '/student/edit/' + row.id + '" class="admit-stu btn btn-primary ms-1" data-id="' + row.id + '">Admit</a>'
-                        + '<button class="btn btn-danger delete-inquiry ms-1" data-id="' + row.id + '"><i class="ti ti-trash fs-6"></i></button>';  
+                            return '<div class="d-flex"><a href="' + conf.baseUrl + 'inquery/follow-up/' + row.id + '" class="admit-stu btn btn-secondary" data-id="' + row.id + '">Follow&nbsp;Up</a>'
+                            + '<a href="' + conf.baseUrl + 'student/edit/' + row.id + '" class="admit-stu btn btn-primary ms-1" data-id="' + row.id + '">Admit</a>'
+                        + '<button class="btn btn-danger delete-inquiry ms-1" data-id="' + row.id + '"><i class="ti ti-trash fs-6"></i></button></div>';  
                         }
                     }
                 ],
@@ -1562,6 +1574,10 @@
                 $('#selected_course').val('');
                 $('#smt-inqury').text('Submit');
             });
+
+            if(SvcaConfig.userGroup != 'superadmin'){
+                inquiryTbl.column(4).visible(false);
+            }
 
             $(document).on('click', '.delete-inquiry', function(e) {
                 e.stopPropagation(); // Prevent row selection
@@ -1654,6 +1670,10 @@
                     }
                 ],
             });
+
+            if(SvcaConfig.userGroup != 'superadmin'){
+                followUpTbl.column(5).visible(false);
+            }
 
             $('#sbt-follow-up').on('click', function(e){
                 e.preventDefault();
@@ -2018,6 +2038,11 @@
                 $('#expense-id').val('');
                 $('#sbt-expence').text('Submit');
             });
+
+            if(SvcaConfig.userGroup != 'superadmin'){
+                expenseTbl.column(5).visible(false);
+                expenseTbl.column(6).visible(false);
+            }
 
             $('#sbt-expence').on('click', function(e){
                 e.preventDefault();
