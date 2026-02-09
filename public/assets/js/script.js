@@ -124,6 +124,7 @@
                     success: function(res) {
                         $('#admission-count').html(res.data.AdmiCount);
                         $('#inquiry-count').html(res.data.InqCount);
+                        $('#followup-count').html(res.data.FollowCount);
                     },
                     error: function() {
                         alert("An error occurred while fetching data.");
@@ -260,7 +261,7 @@
                         targets: [1],
                         orderable: true,
                         data: function (row) {
-                            return row.stu_name;
+                            return ' <a href="' + conf.baseUrl + 'inquery/follow-up/' + row.stu_id + '" class="text-info p-0 ms-1 text-black" title="Follow Up">' + row.stu_name + '</a>'
                         }
                     },
                     {

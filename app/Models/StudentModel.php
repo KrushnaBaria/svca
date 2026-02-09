@@ -415,8 +415,27 @@ class StudentModel extends Model
         $InqQuery = "SELECT COUNT(*) as InqCount FROM students WHERE status = 0 AND del_sts = 0 ". $where;
         $InqCount = $this->db->query($InqQuery)->getRowArray();
 
+        $FollowQuery = "SELECT COUNT(*) AS FollowCount
+                        FROM follow_up f
+                        LEFT JOIN students s ON f.stu_id = s.id
+                        JOIN (
+                            SELECT stu_id, MAX(follow_date) AS last_follow_date
+                            FROM follow_up
+                            GROUP BY stu_id
+                        ) last ON f.stu_id = last.stu_id AND f.follow_date = last.last_follow_date
+                        WHERE DATE_FORMAT(f.follow_date, '%Y-%m') = '".$data['f_date']."'";
+
+        if($center_ad){
+            $FollowQuery .= " AND s.center = " . $center_ad . "";
+        }else if($data['center_id']){
+            $FollowQuery .= " AND s.center = '". $data['center_id'] ."'";
+        }
+
+        $FollowCount = $this->db->query($FollowQuery)->getRowArray();    
+
         $result['AdmiCount'] = $AdmiCount['AdmiCount'];
         $result['InqCount'] = $InqCount['InqCount'];
+        $result['FollowCount'] = $FollowCount['FollowCount'];
         return $result;   
     }
 }

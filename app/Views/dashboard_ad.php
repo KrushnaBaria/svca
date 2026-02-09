@@ -42,7 +42,7 @@
                             <div class="text-center">
                                 <img src="<?php echo base_url(); ?>/assets/images/svgs/icon-speech-bubble.svg" width="50" height="50" class="mb-3" alt="modernize-img">
                                 <p class="fw-semibold fs-3 text-success mb-1">Follow Up</p>
-                                <h5 class="fw-semibold text-success mb-0">0</h5>
+                                <h5 class="fw-semibold text-success mb-0" id="followup-count">0</h5>
                             </div>
                             </div>
                         </div>
