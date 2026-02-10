@@ -83,6 +83,7 @@ $routes->group('payment', function ($routes){
 $routes->group('logs', function ($routes) {
     $routes->get('/', 'Editlog::index');
     $routes->post('student-edit', 'Editlog::getStudentEditLogs');
+    $routes->post('payment-log', 'Editlog::getPaymentLogs');
 });
 
 $routes->group('bin', function ($routes) {

@@ -1912,6 +1912,73 @@
                     }
                 ],
             });
+
+            let paymentLogtbl = $('#payment-log-tbl');
+            let paymentLogTbl = new DataTable('#payment-log-tbl', {
+                responsive: true,
+                searching: typeof paymentLogtbl.data('dt-searching') === 'undefined' ? true : paymentLogtbl.data('dt-searching'),
+                lengthChange: typeof paymentLogtbl.data('dt-lengthchange') === 'undefined' ? true : paymentLogtbl.data('dt-lengthchange'),
+                processing: true,
+                serverSide: true,
+                bSortable: true,
+                bFilter: true,
+                pagingType: "full_numbers",
+                ajax: {
+                    url: conf.baseUrl + "logs/payment-log",
+                    type: 'post',
+                },
+                lengthMenu: [
+                    [5, 10, 20, -1],
+                    [5, 10, 20, "All"]
+                ],
+                pageLength: (typeof paymentLogtbl.data('dt-pagelength') === 'undefined' || paymentLogtbl.data('dt-pagelength') === '-1') ? 5 : paymentLogtbl.data('dt-pagelength'),
+                paging: true,
+                ordering: false,
+                columnDefs: [
+                    {
+                        targets: [0],
+                        orderable: false,
+                        data: function (row, type, val, meta) {  
+                            return meta.row + 1;
+                        }
+                    },
+                    {
+                        targets: [1],
+                        orderable: true,
+                        data: function (row) {
+                            return row.remark;
+                        }
+                    },
+                    {
+                        targets: [2],
+                        orderable: false,
+                        data: function (row) {
+                            return '<a href="'+ conf.baseUrl +'payment/'+ row.stu_id +'">' + row.stu_id + '</a>';
+                        }
+                    },
+                    {
+                        targets: [3],
+                        orderable: false,
+                        data: function (row) {
+                            return row.transaction_id;
+                        }
+                    },
+                    {
+                        targets: [4],
+                        orderable: false,
+                        data: function (row) {
+                            return row.updated_date;
+                        }
+                    },
+                    {
+                        targets: [5],
+                        orderable: false,
+                        data: function (row) {
+                            return row.updated_by;
+                        }
+                    }
+                ],
+            });
         },
 
         initExpense: function(){

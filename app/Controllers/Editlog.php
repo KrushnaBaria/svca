@@ -7,16 +7,19 @@ use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\HTTP\RequestInterface;
 use Psr\Log\LoggerInterface;
 use App\Models\EditlogModel;
+use App\Models\PaymentLog;
 
 class Editlog extends BaseController
 {
     private $model;
+    private $paymentLogModel;
 
     public function initController(RequestInterface $request, ResponseInterface $response, LoggerInterface $logger)
     {
         // Do Not Edit This Line
         parent::initController($request, $response, $logger);
         $this->model = model(EditlogModel::class);
+        $this->paymentLogModel = model(PaymentLog::class);
     }
 
     public function index()
@@ -37,6 +40,22 @@ class Editlog extends BaseController
             return json_encode($logs);
         } else {
             return json_encode(['success' => 0, 'message' => 'Failed to get student edit logs']);
+        }
+    }
+
+    public function getPaymentLogs()
+    {
+        $data = [
+            'start' => $this->request->getPost('start'),
+            'end' => $this->request->getPost('length'),
+            'search' => $this->request->getPost('search')['value'] ?? ''
+        ];
+
+        $logs = $this->paymentLogModel->getPaymentLogs($data);
+        if($logs){
+            return json_encode($logs);
+        } else {
+            return json_encode(['success' => 0, 'message' => 'Failed to get payment logs']);
         }
     }
 }
