@@ -8,11 +8,13 @@ use CodeIgniter\HTTP\RequestInterface;
 use Psr\Log\LoggerInterface;
 use App\Models\EditlogModel;
 use App\Models\PaymentLog;
+use App\Models\ExpenseLog;
 
 class Editlog extends BaseController
 {
     private $model;
     private $paymentLogModel;
+    private $expenseLogModel;
 
     public function initController(RequestInterface $request, ResponseInterface $response, LoggerInterface $logger)
     {
@@ -20,6 +22,7 @@ class Editlog extends BaseController
         parent::initController($request, $response, $logger);
         $this->model = model(EditlogModel::class);
         $this->paymentLogModel = model(PaymentLog::class);
+        $this->expenseLogModel = model(ExpenseLog::class);
     }
 
     public function index()
@@ -56,6 +59,22 @@ class Editlog extends BaseController
             return json_encode($logs);
         } else {
             return json_encode(['success' => 0, 'message' => 'Failed to get payment logs']);
+        }
+    }
+
+    public function getExpenseLogs()
+    {
+        $data = [
+            'start' => $this->request->getPost('start'),
+            'end' => $this->request->getPost('length'),
+            'search' => $this->request->getPost('search')['value'] ?? ''
+        ];
+
+        $logs = $this->expenseLogModel->getExpenseLogs($data);
+        if($logs){
+            return json_encode($logs);
+        } else {
+            return json_encode(['success' => 0, 'message' => 'Failed to get expense logs']);
         }
     }
 }

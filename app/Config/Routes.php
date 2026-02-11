@@ -84,6 +84,7 @@ $routes->group('logs', function ($routes) {
     $routes->get('/', 'Editlog::index');
     $routes->post('student-edit', 'Editlog::getStudentEditLogs');
     $routes->post('payment-log', 'Editlog::getPaymentLogs');
+    $routes->post('expense-log', 'Editlog::getExpenseLogs');
 });
 
 $routes->group('bin', function ($routes) {

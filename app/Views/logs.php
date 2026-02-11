@@ -36,3 +36,22 @@
         </table>
     </div>
 </div>
+
+<div class="card">
+    <div class="card-header text-bg-primary">
+        <h4 class="mb-0 text-white">Expense Logs</h4>
+    </div>
+    <div class="card-body">
+        <table id="expense-log-tbl" class="table table-bordered" style="width:100%">
+            <thead>
+                <th>No</th>
+                <th>Remark</th>
+                <th>Expense ID</th>
+                <th>Updated Date</th>
+                <th>Updated By</th>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</div>

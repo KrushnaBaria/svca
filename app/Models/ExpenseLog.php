@@ -39,4 +39,21 @@ class ExpenseLog extends Model
             return 0;
         }
     }
+
+    public function getExpenseLogs($data)
+    {
+        $searchQuery = "";
+        if(!empty($data['search'])){
+            $searchQuery = " AND (remark LIKE '%". $data['search'] ."%' OR exp_id LIKE '%". $data['search'] ."%' OR updated_by LIKE '%". $data['search'] ."%')";
+        }
+
+        $query = "SELECT * FROM expense_log WHERE 1=1 ". $searchQuery;
+
+        $result['recordsTotal'] = $result['recordsFiltered'] = $this->db->query($query)->getNumRows();
+
+        $query .= " ORDER BY updated_date DESC LIMIT ". $data['start'] .", ". $data['end'];
+        $result['data'] = $this->db->query($query)->getResultArray();
+        
+        return $result;
+    }
 }

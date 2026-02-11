@@ -1979,6 +1979,66 @@
                     }
                 ],
             });
+
+            let expenseLogtbl = $('#expense-log-tbl');
+            let expenseLogTbl = new DataTable('#expense-log-tbl', {
+                responsive: true,
+                searching: typeof expenseLogtbl.data('dt-searching') === 'undefined' ? true : expenseLogtbl.data('dt-searching'),
+                lengthChange: typeof expenseLogtbl.data('dt-lengthchange') === 'undefined' ? true : expenseLogtbl.data('dt-lengthchange'),
+                processing: true,
+                serverSide: true,
+                bSortable: true,
+                bFilter: true,
+                pagingType: "full_numbers",
+                ajax: {
+                    url: conf.baseUrl + "logs/expense-log",
+                    type: 'post',
+                },
+                lengthMenu: [
+                    [5, 10, 20, -1],
+                    [5, 10, 20, "All"]
+                ],
+                pageLength: (typeof expenseLogtbl.data('dt-pagelength') === 'undefined' || expenseLogtbl.data('dt-pagelength') === '-1') ? 5 : expenseLogtbl.data('dt-pagelength'),
+                paging: true,
+                ordering: false,
+                columnDefs: [
+                    {
+                        targets: [0],
+                        orderable: false,
+                        data: function (row, type, val, meta) {  
+                            return meta.row + 1;
+                        }
+                    },
+                    {
+                        targets: [1],
+                        orderable: true,
+                        data: function (row) {
+                            return row.remark;
+                        }
+                    },
+                    {
+                        targets: [2],
+                        orderable: false,
+                        data: function (row) {
+                            return row.exp_id;
+                        }
+                    },
+                    {
+                        targets: [3],
+                        orderable: false,
+                        data: function (row) {
+                            return row.updated_date;
+                        }
+                    },
+                    {
+                        targets: [4],
+                        orderable: false,
+                        data: function (row) {
+                            return row.updated_by;
+                        }
+                    }
+                ],
+            });
         },
 
         initExpense: function(){
