@@ -8,7 +8,6 @@ use CodeIgniter\Router\RouteCollection;
 $routes->get('/', 'Login::index');
 $routes->post('/process', 'Login::process');
 //$routes->get('/dashboard', 'Home::index');
-$routes->get('/add', 'AddUserController::index');
 $routes->post('/adduser', 'AddUserController::register');
 
 service('auth')->routes($routes);
@@ -99,6 +98,7 @@ $routes->group('bin', function ($routes) {
 
 $routes->group('user', function ($routes) {
     //$routes->get('/', 'UserInfo::index');
+    $routes->get('add', 'AddUserController::index');
     $routes->get('admin-list', 'UserInfo::AdminList');
     $routes->post('get-admin-list', 'UserInfo::getAdminList');
     $routes->get('change-password/(:num)', 'UserInfo::ChangePassword/$1');

@@ -42,12 +42,6 @@
                 </li>
                 <?php if ($user_group == 'superadmin'){?>
                     <li class="sidebar-item">
-                        <a class="sidebar-link" href="<?php echo base_url('/add');?>" aria-expanded="false">
-                            <i class="ti ti-user"></i>
-                            <span class="hide-menu">Add User</span>
-                        </a>
-                    </li>
-                    <li class="sidebar-item">
                         <a class="sidebar-link" href="<?php echo base_url('/user/admin-list');?>" aria-expanded="false">
                             <i class="ti ti-user"></i>
                             <span class="hide-menu"> Admin List</span>

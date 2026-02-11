@@ -80,7 +80,7 @@ class AddUserController extends ShieldRegister
         $user->activate();
 
         // Success!
-        return redirect()->to('/');
+        return redirect()->to('/user/admin-list');
     }
 
     /**

@@ -2,6 +2,7 @@
     <div class="card-header text-bg-primary">
         <div class="d-flex justify-content-between align-items-center">
             <h4 class="mb-0 text-white">Admin List</h4>
+            <a href="<?= base_url('user/add') ?>" class="btn btn-secondary text-black">Add User</a>
         </div>
     </div>
     <div class="card-body">
