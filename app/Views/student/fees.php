@@ -68,11 +68,18 @@
     </div>
 </div>
 
+
+
 <div class="card">
     <div class="card-header text-bg-primary">
         <div class="d-flex justify-content-between align-items-center">
             <h5 class="mb-0 text-white">Payment History</h5>
-            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#paymentModal">Add Payment</button>
+            <div class="d-flex align-items-center">
+                <a href="<?php echo site_url('payment/invoice/' . $student['id']); ?>" target="_blank" class="btn btn-light btn-sm me-2">
+                    <i class="bi bi-file-earmark-pdf"></i> Generate Invoice
+                </a>
+                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#paymentModal">Add Payment</button>
+            </div>
         </div>
     </div>
     <div class="card-header">

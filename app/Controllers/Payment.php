@@ -9,6 +9,8 @@ use Psr\Log\LoggerInterface;
 use App\Models\PaymentModel;
 use App\Models\StudentModel;
 use App\Models\PaymentLog;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 
 class Payment extends BaseController
 {
@@ -100,5 +102,55 @@ class Payment extends BaseController
         } else {
             return json_encode();
         }
+    }
+
+    public function invoice($id)
+    {
+        $student = $this->studentModel->getStudentInfo($id);
+        if (!$student) {
+            throw new \CodeIgniter\Exceptions\PageNotFoundException('Student not found');
+        }
+
+        // Get full payment history for this student
+        $payments = $this->model
+            ->where('stu_id', $id)
+            ->orderBy('id', 'ASC')
+            ->findAll();
+
+        $totalFees = (float) ($student['fees'] ?? 0);
+        $paidAmount = 0;
+        foreach ($payments as $p) {
+            $paidAmount += (float) $p['amount'];
+        }
+        $pendingAmount = $totalFees - $paidAmount;
+
+        $data = [
+            'student'       => $student,
+            'payments'      => $payments,
+            'totalFees'     => $totalFees,
+            'paidAmount'    => $paidAmount,
+            'pendingAmount' => $pendingAmount,
+            'invoiceNo'     => 'INV-' . str_pad($student['id'], 6, '0', STR_PAD_LEFT),
+            'generatedAt'   => date('d/m/Y H:i'),
+        ];
+
+        // Render invoice HTML from view
+        $html = view('student/invoice', $data);
+
+        // Generate PDF using Dompdf (make sure dompdf/dompdf is installed via composer)
+        $options = new Options();
+        $options->set('isRemoteEnabled', true);
+
+        $dompdf = new Dompdf($options);
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+
+        $filename = 'invoice_' . $student['id'] . '_' . date('YmdHis') . '.pdf';
+
+        return $this->response
+            ->setContentType('application/pdf')
+            ->setHeader('Content-Disposition', 'inline; filename="' . $filename . '"')
+            ->setBody($dompdf->output());
     }
 }
