@@ -75,25 +75,26 @@
         <div class="d-flex justify-content-between align-items-center">
             <h5 class="mb-0 text-white">Payment History</h5>
             <div class="d-flex align-items-center">
-                <a href="<?php echo site_url('payment/invoice/' . $student['id']); ?>" target="_blank" class="btn btn-light btn-sm me-2">
-                    <i class="bi bi-file-earmark-pdf"></i> Generate Invoice
-                </a>
                 <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#paymentModal">Add Payment</button>
             </div>
         </div>
     </div>
-    <div class="card-header">
-        <div class="card-body">
-            <table id="pay-historytbl" class="table table-bordered table-striped">
-                <thead>
-                    <th>Id</th>
-                    <th>Amount</th>
-                    <th>Remark</th>
-                    <th>Added By</th>
-                    <th>Date</th>
-                </thead>
-                <tbody></tbody>
-            </table>
+    <div class="card-body">
+        <table id="pay-historytbl" class="table table-bordered table-striped">
+            <thead>
+                <th>Id</th>
+                <th>Amount</th>
+                <th>Remark</th>
+                <th>Added By</th>
+                <th>Date</th>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    <div class="card-footer">
+        <div class="d-flex justify-content-center">
+            <!-- <button type="button" class="btn btn-secondary me-2" onclick="window.print();">Print</button> -->
+            <a href="<?php echo base_url('payment/invoice/' . $student['id']); ?>" target="_blank" class="btn btn-primary">Print Receipt</a>
         </div>
     </div>
 </div>

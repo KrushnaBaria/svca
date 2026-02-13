@@ -1727,6 +1727,7 @@
                 searching: typeof payhistorytbl.data('dt-searching') === 'undefined' ? true : payhistorytbl.data('dt-searching'),
                 lengthChange: typeof payhistorytbl.data('dt-lengthchange') === 'undefined' ? true : payhistorytbl.data('dt-lengthchange'),
                 processing: true,
+                scrollX: true,
                 serverSide: true,
                 bSortable: true,
                 bFilter: true,
