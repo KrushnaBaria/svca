@@ -18,8 +18,14 @@
             <ul id="sidebarnav">
                 <li class="sidebar-item">
                     <a class="sidebar-link" href="<?php echo base_url('/dashboard');?>" aria-expanded="false">
-                        <i class="ti ti-atom"></i>
+                        <i class="ti ti-layout-dashboard"></i>
                         <span class="hide-menu">Dashboard</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="<?php echo base_url('/profit-share');?>" aria-expanded="false">
+                        <i class="ti ti-brand-4chan"></i>
+                        <span class="hide-menu">P Share</span>
                     </a>
                 </li>
                 <li class="sidebar-item">

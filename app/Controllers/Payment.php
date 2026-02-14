@@ -137,7 +137,7 @@ class Payment extends BaseController
         // Render invoice HTML from view
         $html = view('student/invoice', $data);
 
-        // Generate PDF using Dompdf (make sure dompdf/dompdf is installed via composer)
+        // Generate PDF using Dompdf
         $options = new Options();
         $options->set('isRemoteEnabled', true);
 

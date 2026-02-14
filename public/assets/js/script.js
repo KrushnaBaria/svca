@@ -419,6 +419,95 @@
             SVCAobj.recentInquey();
         },
 
+        pShareChart: function(){
+
+            const fp = $('#date-filter')[0]._flatpickr;
+
+            $.ajax({
+                url: conf.baseUrl + "profit-share/get-total-profit",
+                type: "POST",
+                dataType: "json",
+                data: {
+                    f_date : fp.formatDate(fp.selectedDates[0], "Y-m")
+                },
+                success: function(res) {
+                    if(res.success == 1) {
+                        var profit = res.data.profit || 0;
+
+                        // Calculate shares
+                        var itShare = profit * 0.20;
+                        var marketingShare = profit * 0.20;
+                        var managementShare = profit - (itShare + marketingShare);
+
+                        var options = {
+                            chart: {
+                                type: 'pie',
+                                height: 380
+                            },
+                            dataLabels: {
+                                enabled: true,
+                                formatter: function (val, opts) {
+                                    // Show actual amount instead of percentage in chart
+                                    var value = opts.w.config.series[opts.seriesIndex];
+                                    return "₹ " + value.toFixed(2);
+                                }
+                            },
+                            series: [itShare, marketingShare, managementShare],
+                            labels: ['IT Department', 'Marketing Department', 'SVCA Management'],
+                            title: {},
+                            tooltip: {
+                                y: {
+                                    formatter: function(val) {
+                                        return "₹ " + val.toFixed(2);
+                                    }
+                                }
+                            },
+                            legend: {
+                                position: 'bottom'
+                            }
+                        };
+
+                        // Render the chart`
+                        $("#profit-share-chart").html(''); // clear old chart, if exists
+                        var chart = new ApexCharts(document.querySelector("#profit-share-chart"), options);
+                        chart.render();
+
+                        $('#it-share-amount').html('₹ ' + itShare.toFixed(2));
+                        $('#marketing-share-amount').html('₹ ' + marketingShare.toFixed(2));
+                        $('#management-share-amount').html('₹ ' + managementShare.toFixed(2));
+                    } else {
+                        alert("An error occurred while fetching Profit Share data.");
+                    }
+                },
+                error: function() {
+                    alert("An error occurred while fetching Profit Share data.");
+                }
+            });
+        },
+
+        initProfitShare: function(){
+            let SVCAobj = this;
+            
+            $('#date-filter').flatpickr({
+                disableMobile: true,
+                defaultDate: new Date(),
+                altFormat: "F Y",
+                dateFormat: "Y-m",
+                altInput: true,
+                plugins: [
+                    new monthSelectPlugin({
+                    shorthand: true
+                    })
+                ]
+            });
+
+            $('#date-filter').on('change', function(){
+                SVCAobj.pShareChart();
+            });
+
+            SVCAobj.pShareChart();
+        },
+
         initSettings: function(){
             let dtable = $('#centers-tbl');
             let centerTbl = new DataTable('#centers-tbl', {

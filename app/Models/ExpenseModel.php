@@ -174,4 +174,34 @@ class ExpenseModel extends Model
             $expense_result[0]
         ];
     }
+
+    public function getTotalProfit($date)
+    {
+        $revenue_query = "SELECT SUM(amount) AS revenue
+                    FROM payment
+                    LEFT JOIN students AS stu ON payment.stu_id = stu.id
+                    WHERE 1=1 AND DATE_FORMAT(payment.add_date, '%Y-%m') = '". $date ."'
+                    GROUP BY YEAR(payment.add_date), MONTH(payment.add_date)";
+        
+        $expense_query = "SELECT SUM(amount) AS expenses
+                    FROM expenses
+                    WHERE 1=1 AND DATE_FORMAT(add_date, '%Y-%m') = '". $date ."'
+                    GROUP BY YEAR(add_date), MONTH(add_date)";
+
+        $revenue_result = $this->db->query($revenue_query)->getResultArray();
+        $expense_result = $this->db->query($expense_query)->getResultArray();
+
+        $revenue_result = count($revenue_result) > 0 ? $revenue_result : [['revenue' => 0]];
+        $expense_result = count($expense_result) > 0 ? $expense_result : [['expenses' => 0]];
+
+        if($revenue_result[0]['revenue'] && $expense_result[0]['expenses']){
+            return [
+                'revenue' => $revenue_result[0]['revenue'],
+                'expenses' => $expense_result[0]['expenses'],
+                'profit' => $revenue_result[0]['revenue'] - $expense_result[0]['expenses']
+            ];
+        } else {
+            return false;
+        }
+    }
 }
