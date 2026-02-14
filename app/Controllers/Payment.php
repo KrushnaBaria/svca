@@ -146,7 +146,7 @@ class Payment extends BaseController
         $dompdf->setPaper('A4', 'portrait');
         $dompdf->render();
 
-        $filename = 'invoice_' . $student['id'] . '_' . date('YmdHis') . '.pdf';
+        $filename = 'svca_receipt_' . $student['id'] . '_' . date('YmdHis') . '.pdf';
 
         return $this->response
             ->setContentType('application/pdf')
