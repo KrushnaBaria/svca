@@ -221,7 +221,7 @@
                     <div class="col-md-12 text-center">
                         <input type="hidden" id="student_id" value="<?php echo $student['id'] ?>">
                         <input type="hidden" id="status" value="<?php echo $student['status'] ?>">
-                        <input type="hidden" id="c-amount" class="course-fee" value="">
+                        <input type="hidden" id="c-amount" class="course-fee" value="<?php echo isset($student['fees']) && $student['fees'] != 0 ? $student['fees'] : '' ?>">
                         <input type="hidden" id="selected_type" value="<?php echo $student['course_type'] ?>">
                         <input type="hidden" id="selected_course" value="<?php echo $student['course'] ?>">
                         <button type="submit" class="btn btn-primary" id="update-stu">Update</button>
