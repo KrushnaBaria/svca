@@ -438,4 +438,35 @@ class StudentModel extends Model
         $result['FollowCount'] = $FollowCount['FollowCount'];
         return $result;   
     }
+
+    public function getStuBirthday($data)
+    {
+        $start = $data['start'] ?? 0;
+        $end = $data['end'] ?? 10;
+        $search = $data['search'] ?? [];
+        $month = $data['month'] ?? '';
+
+        $center_ad = '';
+        if(!Auth()->user()->inGroup('superadmin')){
+            $query1 = "SELECT center FROM user_info WHERE user_id = ". auth()->user()->id ."";
+            $center_ad = $this->db->query($query1)->getResultArray();
+            if($center_ad){
+                $center_ad = $center_ad[0]['center'];
+            }
+        }
+
+        $query = "SELECT st.*, courses.course AS course_name, centers.center AS center_name FROM students AS st
+            LEFT JOIN centers ON st.center = centers.id
+            LEFT JOIN courses ON st.course = courses.id
+            WHERE DATE_FORMAT(st.dob, '%m') = '$month' AND status = 1 AND del_sts = 0";
+        if($center_ad){
+            $query .= " AND st.center = " . $center_ad . "";
+        }
+        $result['recordsTotal'] = $result['recordsFiltered'] = $this->db->query($query)->getNumRows();
+        
+        $query .= " ORDER BY st.id DESC LIMIT " . (int)$start . ", " . (int)$end;
+        
+        $result['data'] = $this->db->query($query)->getResultArray();
+        return $result;
+    }
 }

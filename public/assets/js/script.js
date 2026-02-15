@@ -1942,6 +1942,89 @@
             });
         },
 
+        initBirthdayBuzz: function(){
+
+            // Set the birth-month dropdown to the current month by default
+            let currentMonth = (new Date().getMonth() + 1).toString().padStart(2, '0');
+            $('#birth-month').val(currentMonth);
+
+            $('#birth-month').on('change', function(){
+                birthdayBuzzTbl.ajax.reload();
+            });
+            
+            let birthdayBuzztbl = $('#birthday-buzz-tbl');
+            let birthdayBuzzTbl = new DataTable('#birthday-buzz-tbl', {
+                responsive: true,
+                searching: typeof birthdayBuzztbl.data('dt-searching') === 'undefined' ? true : birthdayBuzztbl.data('dt-searching'),
+                lengthChange: typeof birthdayBuzztbl.data('dt-lengthchange') === 'undefined' ? true : birthdayBuzztbl.data('dt-lengthchange'),
+                processing: true,
+                serverSide: true,
+                bSortable: true,
+                bFilter: true,
+                pagingType: "full_numbers",
+                ajax: {
+                    url: conf.baseUrl + "student/get-stu-birthday",
+                    type: 'post',
+                    data: function (d) {
+                        d.month = $('#birth-month').val();
+                    }
+                },
+                
+                lengthMenu: [
+                    [5, 10, 20, -1],
+                    [5, 10, 20, "All"]
+                ],
+                pageLength: (typeof birthdayBuzztbl.data('dt-pagelength') === 'undefined' || birthdayBuzztbl.data('dt-pagelength') === '-1') ? 5 : birthdayBuzztbl.data('dt-pagelength'),
+                paging: true,
+                ordering: false,
+                columnDefs: [
+                    {
+                        targets: [0],
+                        orderable: false,
+                        data: function (row, type, val, meta) {  
+                            return meta.row + 1;
+                        }
+                    },
+                    {
+                        targets: [1],
+                        orderable: true,
+                        data: function (row) {
+                            console.log(row);
+                            return '<a href="' + conf.baseUrl + 'student/view/' + row.id + '">' + row.name + '</a>';
+                        }
+                    },
+                    {
+                        targets: [2],
+                        orderable: false,
+                        data: function (row) {
+                            return row.center_name;
+                        }
+                    },
+                    {
+                        targets: [3],
+                        orderable: false,
+                        data: function (row) {
+                            return row.course_name;
+                        }
+                    },
+                    {
+                        targets: [4],
+                        orderable: false,
+                        data: function (row) {
+                            return row.pnumber;
+                        }
+                    },
+                    {
+                        targets: [5],
+                        orderable: false,
+                        data: function (row) {
+                            return row.dob;
+                        }
+                    }
+                ],
+            });
+        },
+
         initLogs: function(){
             let editlogtbl = $('#student-log-tbl');
             let editlogTbl = new DataTable('#student-log-tbl', {

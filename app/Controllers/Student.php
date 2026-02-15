@@ -184,4 +184,26 @@ class Student extends BaseController
             return json_encode(['success' => 0, 'message' => 'No students found']);
         }
     }
+
+    public function birthdayBuzz()
+    {
+        return view('template/header', ['page_title' => 'Birthday Buzz']) . view('student/birthday_buzz') . view('template/footer', ['app_init' => 'initBirthdayBuzz']);
+    }
+
+    public function getStuBirthday()
+    {
+        $data = [
+            'start' => $this->request->getPost('start'),
+            'end' => $this->request->getPost('length'),
+            'search' => $this->request->getPost('search')['value'] ?? '',
+            'month' => $this->request->getPost('month'),
+        ];
+
+        $students = $this->model->getStuBirthday($data);
+        if ($students) {
+            return json_encode($students);
+        } else {
+            return json_encode(['success' => 0, 'message' => 'No students found']);
+        }
+    }
 }

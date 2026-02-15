@@ -40,6 +40,8 @@ $routes->group('student', function ($routes) {
     $routes->get('view/(:num)', 'Student::view/$1');
     $routes->post('getStudents', 'Student::getStudents');
     $routes->post('update-del-sts', 'Student::update_delete_sts');
+    $routes->get('birthday-buzz', 'Student::birthdayBuzz');
+    $routes->post('get-stu-birthday', 'Student::getStuBirthday');
 });
 
 $routes->group('inquery', function ($routes) {

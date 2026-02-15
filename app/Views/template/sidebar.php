@@ -22,12 +22,14 @@
                         <span class="hide-menu">Dashboard</span>
                     </a>
                 </li>
-                <li class="sidebar-item">
-                    <a class="sidebar-link" href="<?php echo base_url('/profit-share');?>" aria-expanded="false">
-                        <i class="ti ti-brand-4chan"></i>
-                        <span class="hide-menu">P Share</span>
-                    </a>
-                </li>
+                <?php if ($user_group == 'superadmin'){?>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="<?php echo base_url('/profit-share');?>" aria-expanded="false">
+                            <i class="ti ti-brand-4chan"></i>
+                            <span class="hide-menu">P Share</span>
+                        </a>
+                    </li>
+                <?php } ?>
                 <li class="sidebar-item">
                     <a class="sidebar-link" href="<?php echo base_url('/expense');?>" aria-expanded="false">
                         <i class="ti ti-currency-dollar"></i>
@@ -44,6 +46,12 @@
                     <a class="sidebar-link" href="<?php echo base_url('/inquery');?>" aria-expanded="false">
                         <i class="ti ti-phone-call"></i>
                         <span class="hide-menu">Inquery</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="<?php echo base_url('/student/birthday-buzz');?>" aria-expanded="false">
+                        <i class="ti ti-cake"></i>
+                        <span class="hide-menu">Birthday Buzz</span>
                     </a>
                 </li>
                 <?php if ($user_group == 'superadmin'){?>
