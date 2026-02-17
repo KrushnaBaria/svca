@@ -215,7 +215,10 @@ class StudentModel extends Model
 
         $result['recordsTotal'] = $result['recordsFiltered'] = $this->db->query($query)->getNumRows();
 
-        $query .= " ORDER BY st.id DESC LIMIT " . (int)$start . ", " . (int)$end;
+        $query .= " ORDER BY st.id DESC";
+        if($end != -1) {
+            $query .= " LIMIT " . (int)$start . ", " . (int)$end;
+        }
 
         $result['data'] = $this->db->query($query)->getResultArray();
         return $result;
@@ -296,7 +299,10 @@ class StudentModel extends Model
 
         $result['recordsTotal'] = $result['recordsFiltered'] = $this->db->query($query)->getNumRows();
 
-        $query .= " ORDER BY st.id DESC LIMIT " . (int)$start . ", " . (int)$end;
+        $query .= " ORDER BY st.id DESC";
+        if($end != -1) {
+            $query .= " LIMIT " . (int)$start . ", " . (int)$end;
+        }
 
         $result['data'] = $this->db->query($query)->getResultArray();
         return $result;
@@ -311,11 +317,13 @@ class StudentModel extends Model
         $query = "SELECT st.*, courses.course AS course_name, centers.center AS center_name, st.updated_by AS deleted_by, st.updated_date AS deleted_at FROM students AS st
             LEFT JOIN centers ON st.center = centers.id
             LEFT JOIN courses ON st.course = courses.id
-            WHERE del_sts = 1 AND status = 1";
+            WHERE del_sts = 1 AND status = 1 ORDER BY st.id DESC";
 
         $result['recordsTotal'] = $result['recordsFiltered'] = $this->db->query($query)->getNumRows();
 
-        $query .= " ORDER BY st.id DESC LIMIT " . $start . ", " . $end;
+        if($end != -1) {
+            $query .= " LIMIT " . $start . ", " . $end;
+        }
 
         $result['data'] = $this->db->query($query)->getResultArray();
         return $result;
@@ -330,11 +338,13 @@ class StudentModel extends Model
         $query = "SELECT st.*, courses.course AS course_name, centers.center AS center_name, st.updated_by AS deleted_by, st.updated_date AS deleted_at FROM students AS st
             LEFT JOIN centers ON st.center = centers.id
             LEFT JOIN courses ON st.course = courses.id
-            WHERE del_sts = 1 AND status = 0";
+            WHERE del_sts = 1 AND status = 0 ORDER BY st.id DESC";
 
         $result['recordsTotal'] = $result['recordsFiltered'] = $this->db->query($query)->getNumRows();
 
-        $query .= " ORDER BY st.id DESC LIMIT " . $start . ", " . $end;
+        if($end != -1) {
+            $query .= " LIMIT " . $start . ", " . $end;
+        }
 
         $result['data'] = $this->db->query($query)->getResultArray();
         return $result;
@@ -372,7 +382,7 @@ class StudentModel extends Model
         $query = "SELECT st.*, courses.course AS course_name, courses.type AS course_type, centers.center AS center_name FROM students AS st
             LEFT JOIN centers ON st.center = centers.id
             LEFT JOIN courses ON st.course = courses.id
-            WHERE 1=1 ". $where ." AND status = 0 AND del_sts = 0 AND st.add_date >= DATE_SUB(NOW(), INTERVAL 7 DAY) ";
+            WHERE 1=1 ". $where ." AND status = 0 AND del_sts = 0 AND st.add_date >= DATE_SUB(NOW(), INTERVAL 7 DAY) ORDER BY st.id DESC";
 
         if($center_ad){
             $query .= " AND st.center = " . $center_ad . "";
@@ -380,7 +390,9 @@ class StudentModel extends Model
 
         $result['recordsTotal'] = $result['recordsFiltered'] = $this->db->query($query)->getNumRows();
 
-        $query .= " ORDER BY st.id DESC LIMIT " . (int)$start . ", " . (int)$end;
+        if($end != -1) {
+            $query .= " LIMIT " . (int)$start . ", " . (int)$end;
+        }
 
         $result['data'] = $this->db->query($query)->getResultArray();
         return $result;
@@ -458,13 +470,14 @@ class StudentModel extends Model
         $query = "SELECT st.*, courses.course AS course_name, centers.center AS center_name FROM students AS st
             LEFT JOIN centers ON st.center = centers.id
             LEFT JOIN courses ON st.course = courses.id
-            WHERE DATE_FORMAT(st.dob, '%m') = '$month' AND status = 1 AND del_sts = 0";
+            WHERE DATE_FORMAT(st.dob, '%m') = '$month' AND status = 1 AND del_sts = 0 ORDER BY st.id DESC";
         if($center_ad){
             $query .= " AND st.center = " . $center_ad . "";
         }
         $result['recordsTotal'] = $result['recordsFiltered'] = $this->db->query($query)->getNumRows();
-        
-        $query .= " ORDER BY st.id DESC LIMIT " . (int)$start . ", " . (int)$end;
+        if($end != -1) {
+            $query .= " LIMIT " . (int)$start . ", " . (int)$end;
+        }
         
         $result['data'] = $this->db->query($query)->getResultArray();
         return $result;

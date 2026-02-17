@@ -27,7 +27,11 @@ class FollowUpModel extends Model
         }
 
         $result['recordsTotal'] = $result['recordsFiltered'] = $this->db->query($query)->getNumRows();
-        $query .= " ORDER BY added_date DESC LIMIT $start, $end";
+        $query .= " ORDER BY added_date DESC";
+
+        if($end != -1) {
+            $query .= " LIMIT $start, $end";
+        }
 
         $result['data'] = $this->db->query($query)->getResultArray();
 
@@ -54,13 +58,15 @@ class FollowUpModel extends Model
                 JOIN students s ON f.stu_id = s.id
                 JOIN courses c ON s.course = c.id
                 JOIN centers ce ON s.center = ce.id
-                WHERE DATE(f.follow_date) = '$today'";
+                WHERE DATE(f.follow_date) = '$today' ORDER BY f.added_date DESC";
         if($center_ad){
             $query .= " AND ce.id = '$center_ad'";
         }
         $result['recordsTotal'] = $result['recordsFiltered'] = $this->db->query($query)->getNumRows();
-                
-        $query .= " ORDER BY f.added_date DESC LIMIT $start, $end";
+        
+        if($end != -1) {
+            $query .= " LIMIT $start, $end";
+        }
 
         $result['data'] = $this->db->query($query)->getResultArray();
 

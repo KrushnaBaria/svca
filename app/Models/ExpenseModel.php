@@ -75,9 +75,13 @@ class ExpenseModel extends Model
             $query .= " AND DATE(e.add_date) BETWEEN '" . trim($start_date) . "' AND '" . trim($end_date) . "' ";
         }
 
-        $query .= " ORDER BY e.id DESC LIMIT " . $start . ", " . $end;
+        $query .= " ORDER BY e.id DESC";
 
         $result['recordsTotal'] = $result['recordsFiltered'] = $this->db->query($query)->getNumRows();
+
+        if($end != -1) {
+            $query .= " LIMIT " . $start . ", " . $end;
+        }
 
         $result['data'] = $this->db->query($query)->getResultArray();
         return $result;
