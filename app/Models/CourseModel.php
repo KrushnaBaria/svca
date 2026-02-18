@@ -40,13 +40,26 @@ class CourseModel extends Model
         $query = "SELECT c.*, centers.center as center_name FROM `{$this->table}` as c
                 LEFT JOIN centers ON c.center = centers.id
                 WHERE 1=1";
+
+        if(isset($data['center']) && !empty($data['center'])) {
+            $query .= " AND c.center = '" . $data['center'] . "'";
+        }
+
+        if(isset($data['type']) && !empty($data['type'])) {
+            $query .= " AND c.type = '" . $data['type'] . "'";
+        }
+        
         if (isset($data['search']) && !empty($data['search'])) {
-            $query .= " AND c.course LIKE '%" . $this->db->escapeLikeString($data['search']) . "%'";
+            $query .= " AND c.course LIKE '%" . $data['search'] . "%' OR centers.center LIKE '%" . $data['search'] . "%' OR c.type LIKE '%" . $data['search'] . "%'";
         }
         
         $result['recordsTotal'] = $result['recordsFiltered'] = $this->db->query($query)->getNumRows();
 
-        $query .= " ORDER BY c.center LIMIT " . $data['start'] . ", " . $data['end'];
+        $query .= "  ORDER BY c.center";
+        if($data['end'] != -1) {
+            $query .= " LIMIT " . $data['start'] . ", " . $data['end'];
+        }
+        
         $result['data'] = $this->db->query($query)->getResultArray();
         
         if ($result) {

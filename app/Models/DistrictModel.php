@@ -33,7 +33,10 @@ class DistrictModel extends Model
         
         $result['recordsTotal'] = $result['recordsFiltered'] = $this->db->query($query)->getNumRows();
 
-        $query .= " LIMIT " . $data['start'] . ", " . $data['end'];
+        if($data['end'] != -1) {
+            $query .= " LIMIT " . $data['start'] . ", " . $data['end'];
+        }
+        
         $result['data'] = $this->db->query($query)->getResultArray();
         
         if ($result) {

@@ -633,6 +633,10 @@
                 ajax: {
                     url: conf.baseUrl + "/settings/getCourses",
                     type: 'post',
+                    data: function (d) {
+                        d.center = $("#f-center").val();
+                        d.type = $("#f-type").val();
+                    },
                 },
                 lengthMenu: [
                     [10, 20, 50, -1],
@@ -701,6 +705,10 @@
                 $("#course_center").val("");
                 $("#course_type").val("");
                 $("#sbt-course").text("Submit");
+            });
+
+            $("#f-center, #f-type").on('change', function(){
+                courseTbl.ajax.reload();
             });
 
             $("#sbt-course").on("click", function(e){

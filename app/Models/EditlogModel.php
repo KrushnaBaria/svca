@@ -17,9 +17,14 @@ class EditlogModel extends Model
     public function getStudentEditLogs($data)
     {
         $query = "SELECT * FROM edit_log WHERE 1=1 ";
-        $query .= " ORDER BY id DESC LIMIT " . $data['start'] . ", " . $data['end'];
-        
+        $query .= " ORDER BY id DESC";
+
         $result['recordsTotal'] = $result['recordsFiltered'] = $this->db->query($query)->getNumRows();
+
+        if($data['end'] != -1) {
+            $query .= " LIMIT ". $data['start'] .", ". $data['end'];
+        }
+        
         $result['data'] = $this->db->query($query)->getResultArray();
         return $result;
     }

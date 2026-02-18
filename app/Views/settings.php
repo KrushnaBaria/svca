@@ -22,8 +22,10 @@
     </div>
     <div class="col-lg-9">
         <div class="card">
+            <div class="card-header text-bg-primary">
+                <h4 class="mb-0 text-white">Centers</h4>
+            </div>
             <div class="card-body">
-                <h4 class="card-title mb-3">Centers</h4>
                 <table id="centers-tbl" class="display responsive nowrap" style="width:100%">
                     <thead>
                         <tr>
@@ -86,8 +88,24 @@
     </div>
     <div class="col-lg-9">
         <div class="card">
+            <div class="card-header text-bg-primary d-flex align-items-center justify-content-between">
+                <h4 class="mb-0 text-white d-none d-md-block">Courses</h4>
+                <div class="d-flex align-items-center gap-2">
+                    <select name="f-center" id="f-center" class="form-select w-auto text-white">
+                    <option class="text-primary" value="" selected>Select Center</option>
+                        <?php foreach ($centers as $center): ?>
+                            <option class="text-primary" value="<?= $center['id'] ?>"><?= $center['center'] ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                    <select name="f-type" id="f-type" class="form-select w-auto text-white">
+                        <option class="text-primary" value="" selected>Select Type</option>
+                        <option class="text-primary" value="academy">Academy</option>
+                        <option class="text-primary" value="computer">Computer</option>
+                    </select>
+                </div>
+                
+            </div>
             <div class="card-body">
-                <h4 class="card-title mb-3">Courses</h4>
                 <table id="course-tbl" class="display responsive nowrap" style="width:100%">
                     <thead>
                         <tr>
@@ -131,8 +149,10 @@
     </div>
     <div class="col-lg-9">
         <div class="card">
+            <div class="card-header text-bg-primary">
+                <h4 class="mb-0 text-white">Districts</h4>
+            </div>
             <div class="card-body">
-                <h4 class="card-title mb-3">Districts</h4>
                 <table id="district-tbl" class="display responsive nowrap" style="width:100%">
                     <thead>
                         <tr>

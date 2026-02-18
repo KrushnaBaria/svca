@@ -48,10 +48,14 @@ class ExpenseLog extends Model
         }
 
         $query = "SELECT * FROM expense_log WHERE 1=1 ". $searchQuery;
+        $query .= " ORDER BY updated_date DESC";
 
         $result['recordsTotal'] = $result['recordsFiltered'] = $this->db->query($query)->getNumRows();
 
-        $query .= " ORDER BY updated_date DESC LIMIT ". $data['start'] .", ". $data['end'];
+        if($data['end'] != -1) {
+            $query .= " LIMIT ". $data['start'] .", ". $data['end'];
+        }
+        
         $result['data'] = $this->db->query($query)->getResultArray();
         
         return $result;

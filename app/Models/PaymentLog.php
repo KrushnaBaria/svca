@@ -28,7 +28,10 @@ class PaymentLog extends Model
 
         $result['recordsTotal'] = $result['recordsFiltered'] = $this->db->query($query)->getNumRows();
 
-        $query .= " LIMIT ". $start .", ". $end;
+        if($end != -1) {
+            $query .= " LIMIT ". $start .", ". $end;
+        }
+        
 
         $result['data'] = $this->db->query($query)->getResultArray();
         return $result;

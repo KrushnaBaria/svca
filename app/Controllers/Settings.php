@@ -104,7 +104,10 @@ class Settings extends BaseController
     {   
         $data = [
             'start' => $this->request->getPost('start'),
-            'end' => $this->request->getPost('length')
+            'end' => $this->request->getPost('length'),
+            'search' => $this->request->getPost('search')['value'] ?? '',
+            'center' => $this->request->getPost('center') ?? '',
+            'type' => $this->request->getPost('type') ?? ''
         ];
 
         $courses = $this->courseModel->getCourses($data);
