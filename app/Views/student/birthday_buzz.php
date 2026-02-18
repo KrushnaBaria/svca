@@ -1,7 +1,7 @@
 <div class="card">
     <div class="card-header d-flex align-items-center justify-content-between bg-primary">
         <h4 class="card-title mb-0 text-white">Birthday Buzz</h4>
-        <div class="col-2">
+        <div class="w-auto">
             <select name="birth-month" class="form-control text-white" id="birth-month">
                 <option class="text-primary" value="01">January</option>
                 <option class="text-primary" value="02">February</option>

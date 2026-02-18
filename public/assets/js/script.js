@@ -527,6 +527,7 @@
                     [2, 5, 10, 20],
                     [2, 5, 10, 20]
                 ],
+                scrollX: true,
                 pageLength: (typeof dtable.data('dt-pagelength') === 'undefined' || dtable.data('dt-pagelength') === '-1') ? 2 : dtable.data('dt-pagelength'),
                 paging: true,
                 ordering: false,
@@ -623,6 +624,7 @@
                     style: 'single',
                     selector: 'td:not(:last-child)'
                 },
+                scrollX: true,
                 searching: typeof coursetbl.data('dt-searching') === 'undefined' ? true : coursetbl.data('dt-searching'),
                 lengthChange: typeof coursetbl.data('dt-lengthchange') === 'undefined' ? true : coursetbl.data('dt-lengthchange'),
                 processing: true,
@@ -832,6 +834,7 @@
                 serverSide: true,
                 bSortable: true,
                 bFilter: true,
+                scrollX: true,
                 pagingType: "full_numbers",
                 ajax: {
                     url: conf.baseUrl + "/settings/get-districts",
@@ -2037,6 +2040,7 @@
             let editlogtbl = $('#student-log-tbl');
             let editlogTbl = new DataTable('#student-log-tbl', {
                 responsive: true,
+                scrollX: true,
                 searching: typeof editlogtbl.data('dt-searching') === 'undefined' ? true : editlogtbl.data('dt-searching'),
                 lengthChange: typeof editlogtbl.data('dt-lengthchange') === 'undefined' ? true : editlogtbl.data('dt-lengthchange'),
                 processing: true,
@@ -2097,6 +2101,7 @@
             let paymentLogtbl = $('#payment-log-tbl');
             let paymentLogTbl = new DataTable('#payment-log-tbl', {
                 responsive: true,
+                scrollX: true,
                 searching: typeof paymentLogtbl.data('dt-searching') === 'undefined' ? true : paymentLogtbl.data('dt-searching'),
                 lengthChange: typeof paymentLogtbl.data('dt-lengthchange') === 'undefined' ? true : paymentLogtbl.data('dt-lengthchange'),
                 processing: true,
@@ -2164,6 +2169,7 @@
             let expenseLogtbl = $('#expense-log-tbl');
             let expenseLogTbl = new DataTable('#expense-log-tbl', {
                 responsive: true,
+                scrollX: true,
                 searching: typeof expenseLogtbl.data('dt-searching') === 'undefined' ? true : expenseLogtbl.data('dt-searching'),
                 lengthChange: typeof expenseLogtbl.data('dt-lengthchange') === 'undefined' ? true : expenseLogtbl.data('dt-lengthchange'),
                 processing: true,
@@ -2427,6 +2433,7 @@
             let deletedStudenttbl = $('#deleted-student-tbl');
             let deletedStudenTbl = new DataTable('#deleted-student-tbl', {
                 responsive: true,
+                scrollX: true,
                 searching: typeof deletedStudenttbl.data('dt-searching') === 'undefined' ? true : deletedStudenttbl.data('dt-searching'),
                 lengthChange: typeof deletedStudenttbl.data('dt-lengthchange') === 'undefined' ? true : deletedStudenttbl.data('dt-lengthchange'),
                 processing: true,
@@ -2557,6 +2564,7 @@
             let deletedInquirytbl = $('#deleted-inquiries-tbl');
             let deletedInquiryTbl = new DataTable('#deleted-inquiries-tbl', {
                 responsive: true,
+                scrollX: true,
                 searching: typeof deletedInquirytbl.data('dt-searching') === 'undefined' ? true : deletedInquirytbl.data('dt-searching'),
                 lengthChange: typeof deletedInquirytbl.data('dt-lengthchange') === 'undefined' ? true : deletedInquirytbl.data('dt-lengthchange'),
                 processing: true,
