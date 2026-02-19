@@ -75,6 +75,15 @@ class StudentModel extends Model
         $adm_date = \DateTime::createFromFormat('d/m/Y', $data['adm_date']);
         $adm_dateFormatted = $adm_date ? $adm_date->format('Y-m-d') : null;
 
+        $getStuQuery = "SELECT * FROM students WHERE id = " . intval($id);
+        $stuInfo = $this->db->query($getStuQuery)->getRowArray();
+
+        if($stuInfo['status'] == 1){
+            if($stuInfo['course'] != $data['course']){
+                $remark .= " | Course changed from ID ". $stuInfo['course'] ." to ID ". $data['course'] ."";
+            }
+        }
+
         if($remark){
             $log_query = "INSERT INTO edit_log (id, remark, student_id, updated_date, updated_by) VALUES (NULL, '" . $remark . "', " . intval($id) . ", '" . date('Y-m-d H:i:s') . "', '" . $data['updated_by'] . "')";
             if($this->db->query($log_query)){
@@ -84,9 +93,7 @@ class StudentModel extends Model
             };
         }
 
-        $query1 = "SELECT status FROM students WHERE id = " . intval($id);
-        $result = $this->db->query($query1)->getRowArray();
-        if($result['status'] == 0){
+        if($stuInfo['status'] == 0){
             if($data['discount']){
                 $amt = $data['fees'] * ($data['discount'] / 100);
                 $pay_query = "INSERT INTO payment (id, stu_id, amount, remark, add_date, updated_by, updated_date) VALUES (NULL, " . intval($id) . ", " . floatval($amt) . ", '" . $data['discount'] . "% Discount Applied', '" . date('Y-m-d H:i:s') . "', 'AUTO', '" . date('Y-m-d H:i:s') . "')";
@@ -128,32 +135,64 @@ class StudentModel extends Model
                         return false;
                     }
         }else{
-            $query = "UPDATE students SET 
-                name = '" . $data['s_name'] . "',
-                fname = '" . $data['f_name'] . "',
-                mname = '" . $data['m_name'] . "',
-                dob = '" . $dobFormatted . "',
-                gender = '" . $data['gender'] . "',
-                marital_sts = '" . $data['marital_sts'] . "',
-                cast = '" . $data['cast'] . "',
-                lqualifi = '" . $data['lst_qulifi'] . "',
-                per = '" . $data['per'] . "',
-                pnumber = '" . $data['p_number'] . "',
-                apnumber = '" . $data['ap_number'] . "',
-                adhar = '" . $data['adhar'] . "',
-                admi_date = '". $adm_dateFormatted ."',
-                batch_time = '" . $data['b_time'] . "',
-                district = '" . $data['dist'] . "',
-                address = '" . $data['address'] . "',
-                center = '" . $data['center'] . "',
-                referred_by = '" . $data['ref_by'] . "',
-                updated_by = '" . $data['updated_by'] . "',
-                updated_date = NOW()
-                WHERE id = " . intval($id);
-            if ($this->db->query($query)) {
-                return true;
-            } else {
-                return false;
+            if($stuInfo['course'] != $data['course']){
+                $query = "UPDATE students SET 
+                    name = '" . $data['s_name'] . "',
+                    fname = '" . $data['f_name'] . "',
+                    mname = '" . $data['m_name'] . "',
+                    dob = '" . $dobFormatted . "',
+                    gender = '" . $data['gender'] . "',
+                    marital_sts = '" . $data['marital_sts'] . "',
+                    cast = '" . $data['cast'] . "',
+                    course = '" . $data['course'] . "',
+                    fees = '" . $data['fees'] . "',
+                    lqualifi = '" . $data['lst_qulifi'] . "',
+                    per = '" . $data['per'] . "',
+                    pnumber = '" . $data['p_number'] . "',
+                    apnumber = '" . $data['ap_number'] . "',
+                    adhar = '" . $data['adhar'] . "',
+                    admi_date = '". $adm_dateFormatted ."',
+                    batch_time = '" . $data['b_time'] . "',
+                    district = '" . $data['dist'] . "',
+                    address = '" . $data['address'] . "',
+                    center = '" . $data['center'] . "',
+                    referred_by = '" . $data['ref_by'] . "',
+                    updated_by = '" . $data['updated_by'] . "',
+                    updated_date = NOW()
+                    WHERE id = " . intval($id);
+                if ($this->db->query($query)) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }else{
+                $query = "UPDATE students SET 
+                    name = '" . $data['s_name'] . "',
+                    fname = '" . $data['f_name'] . "',
+                    mname = '" . $data['m_name'] . "',
+                    dob = '" . $dobFormatted . "',
+                    gender = '" . $data['gender'] . "',
+                    marital_sts = '" . $data['marital_sts'] . "',
+                    cast = '" . $data['cast'] . "',
+                    lqualifi = '" . $data['lst_qulifi'] . "',
+                    per = '" . $data['per'] . "',
+                    pnumber = '" . $data['p_number'] . "',
+                    apnumber = '" . $data['ap_number'] . "',
+                    adhar = '" . $data['adhar'] . "',
+                    admi_date = '". $adm_dateFormatted ."',
+                    batch_time = '" . $data['b_time'] . "',
+                    district = '" . $data['dist'] . "',
+                    address = '" . $data['address'] . "',
+                    center = '" . $data['center'] . "',
+                    referred_by = '" . $data['ref_by'] . "',
+                    updated_by = '" . $data['updated_by'] . "',
+                    updated_date = NOW()
+                    WHERE id = " . intval($id);
+                if ($this->db->query($query)) {
+                    return true;
+                } else {
+                    return false;
+                }
             }
         }
     }

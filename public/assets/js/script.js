@@ -4,24 +4,29 @@
     var Svca = {
 
         getCourseAmt: function(courseId){
-            $.ajax({
-                url: conf.baseUrl + "/course/get-course-fee",
-                type: "POST",
-                dataType: "json",
-                data: {
-                    course_id: courseId
-                },
-                success: function(res) {
-                    if(res.success == 1) {
-                        $('.course-fee').val(res.fee);
-                    } else {
-                        alert("Error fetching course fee");
+            if(courseId){
+                $.ajax({
+                    url: conf.baseUrl + "/course/get-course-fee",
+                    type: "POST",
+                    dataType: "json",
+                    data: {
+                        course_id: courseId
+                    },
+                    success: function(res) {
+                        if(res.success == 1) {
+                            $('.course-fee').val(res.fee);
+                        } else {
+                            alert("Error fetching course fee");
+                        }
+                    },
+                    error: function() {
+                        alert("An error occurred while fetching the course fee.");
                     }
-                },
-                error: function() {
-                    alert("An error occurred while fetching the course fee.");
-                }
-            });
+                });
+            }else{
+                $('.course-fee').val('');
+            }
+            
         },
 
         getCourseType: function(centerId, preSelected){
@@ -77,6 +82,9 @@
                             options += '<option value="' + course.id + '">' + course.course + '</option>';
                         });
                         $('#course').html(options);
+                        if($('#student_status').val() == 0){
+                            $('#course').trigger('change');
+                        }
                     } else {
                         alert("Error fetching courses");
                     }
@@ -936,10 +944,6 @@
 
         initAddStudent: function(){
             let SVCAobj = this;
-
-            // setTimeout(function(){
-            //     $('#course').trigger('change');
-            // }, 300);
 
             $("#center").on('change', function() {
                 let centerId = $(this).val();
