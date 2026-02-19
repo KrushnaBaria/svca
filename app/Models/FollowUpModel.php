@@ -58,12 +58,13 @@ class FollowUpModel extends Model
                 JOIN students s ON f.stu_id = s.id
                 JOIN courses c ON s.course = c.id
                 JOIN centers ce ON s.center = ce.id
-                WHERE DATE(f.follow_date) = '$today' ORDER BY f.added_date DESC";
+                WHERE DATE(f.follow_date) = '$today'";
         if($center_ad){
             $query .= " AND ce.id = '$center_ad'";
         }
         $result['recordsTotal'] = $result['recordsFiltered'] = $this->db->query($query)->getNumRows();
         
+        $query .= " ORDER BY f.added_date DESC";
         if($end != -1) {
             $query .= " LIMIT $start, $end";
         }
