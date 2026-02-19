@@ -105,4 +105,25 @@ class UserInfo extends BaseController
             return json_encode(['success' => 0, 'message' => 'Failed to delete user']);
         }
     }
+
+    public function changeStatus()
+    {
+        $user_id = $this->request->getPost('user_id');
+        $status = $this->request->getPost('status');
+
+        $user = auth()->getProvider()->findById($user_id);
+
+        if ($user) {
+            if($status == 1){
+                $user->ban('You are currently not part of this organization');
+            } else {
+                $user->unBan();
+            }
+            
+            return json_encode(['success' => 1, 'message' => 'User status updated successfully']);
+
+        } else {
+            return json_encode(['success' => 0, 'message' => 'User not found']);
+        }
+    }
 }

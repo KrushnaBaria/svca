@@ -112,4 +112,5 @@ $routes->group('user', function ($routes) {
     $routes->get('change-password/(:num)', 'UserInfo::ChangePassword/$1');
     $routes->post('update-password', 'UserInfo::updatePassword');
     $routes->post('delete', 'UserInfo::deleteUser');
+    $routes->post('change-status', 'UserInfo::changeStatus');
 });

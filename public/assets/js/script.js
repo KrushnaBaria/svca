@@ -2776,12 +2776,40 @@
                         orderable: false,
                         data: function (row) {
                             return '<div class="d-flex gap-2 justify-content-center">' +
+                                (row.user_status != 'banned' ? '<button class="btn btn-success change-user-status" data-id="' + row.id + '" data-status="1">Active</button>' : '<button class="btn btn-danger change-user-status" data-id="' + row.id + '" data-status="0">Inactive</button>') +
                                 '<a href="' + conf.baseUrl + 'user/change-password/' + row.id + '" class="btn btn-warning btn-sm" title="Change Password"><i class="ti ti-key fs-6"></i></a> ' +
                                 '<button class="btn btn-danger btn-sm delete-user" data-id="' + row.id + '">Delete</button></div>';
                         }
                     }
                 ],
             });
+
+                $(document).on('click', '.change-user-status', function() {
+                    var userId = $(this).data('id');
+                    var Status = $(this).data('status');
+                    var confirmMsg = Status == 1 ? "Are you sure you want to deactivate this user?" : "Are you sure you want to activate this user?";
+                    if (confirm(confirmMsg)) {
+                        $.ajax({
+                            url: conf.baseUrl + "/user/change-status",
+                            type: "POST",
+                            dataType: "json",
+                            data: {
+                                user_id: userId,
+                                status: Status
+                            },
+                            success: function(res) {
+                                if(res.success == 1) {
+                                    adminListTbl.ajax.reload();
+                                } else {
+                                    alert("Error changing user status");
+                                }
+                            },
+                            error: function() {
+                                alert("An error occurred while changing user status.");
+                            }
+                        });
+                    }
+                });
 
             $(document).on('click', '.delete-user', function() {
                 var conform = confirm("Are you sure you want to delete this user?");
