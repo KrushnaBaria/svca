@@ -86,6 +86,6 @@
         </div>
         <!-- End Sidebar scroll-->
         <div class="sidebar-footer p-3 text-center border-top">
-            <p class="text-muted small mb-0" title="<?php echo "V " . getenv('app.version'); ?>">Made With &#x2764; By Krushna</p>
+            <a class="text-muted small mb-0" target="_blank" href="https://krushnabaria.github.io/portfolio/">Made With &#x2764; By Krushna</a>
         </div>
     </aside>
