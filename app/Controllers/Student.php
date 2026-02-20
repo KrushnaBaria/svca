@@ -165,6 +165,46 @@ class Student extends BaseController
         return view('template/header', ['page_title' => 'Student List']) . view('student/list', $data) . view('template/footer', ['app_init' => 'initStudentList']);
     }
 
+    public function export()
+    {
+        $data = [
+            'center_ftr' => $this->request->getGet('center_ftr'),
+            'user_ftr'   => $this->request->getGet('user_ftr'),
+            'date_ftr'   => $this->request->getGet('date_ftr'),
+            'type_ftr'   => $this->request->getGet('type_ftr'),
+        ];
+
+        $students = $this->model->getStudentsForExport($data);
+
+        $filename = 'students_' . date('Ymd_His') . '.csv';
+
+        $response = service('response');
+        $response->setHeader('Content-Type', 'text/csv; charset=utf-8');
+        $response->setHeader('Content-Disposition', 'attachment; filename="' . $filename . '"');
+
+        $fh = fopen('php://temp', 'w');
+
+        fputcsv($fh, ['SVCA Id', 'Name', 'Center', 'Number', 'Phone', 'Course', 'Referred By']);
+
+        foreach ($students as $row) {
+            fputcsv($fh, [
+                $row['id'] ?? '',
+                $row['name'] ?? '',
+                $row['center_name'] ?? '',
+                $row['pnumber'] ?? '',
+                $row['apnumber'] ?? '',
+                $row['course_name'] ?? '',
+                $row['referred_by'] ?? '',
+            ]);
+        }
+
+        rewind($fh);
+        $csv = stream_get_contents($fh);
+        fclose($fh);
+
+        return $response->setBody($csv);
+    }
+
     public function getStudents()
     {
         $data = [

@@ -46,7 +46,10 @@
     <div class="card-header text-bg-light">
         <div class="d-flex justify-content-between align-items-center">
             <h4 class="mb-0 ">Student List</h4>
-            <a href="<?php echo base_url('/student');?>" class="btn btn-secondary">Add Student</a>
+            <div class="d-flex gap-2">
+                <button type="button" class="btn btn-success" id="student-export-btn">Export Excel</button>
+                <a href="<?php echo base_url('/student');?>" class="btn btn-secondary">Add Student</a>
+            </div>
         </div>
     </div>
     <div class="card-body">

@@ -36,6 +36,7 @@ $routes->group('student', function ($routes) {
     $routes->get('/', 'Student::index');
     $routes->post('add', 'Student::add');
     $routes->get('list', 'Student::list');
+    $routes->get('export', 'Student::export');
     $routes->get('edit/(:num)', 'Student::edit/$1');
     $routes->get('view/(:num)', 'Student::view/$1');
     $routes->post('getStudents', 'Student::getStudents');

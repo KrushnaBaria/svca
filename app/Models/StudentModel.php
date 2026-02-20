@@ -281,6 +281,58 @@ class StudentModel extends Model
         }
     }
 
+    public function getStudentsForExport($data = [])
+    {
+        // If date_ftr is set as a string like "21-01-2026 to 28-01-2026", convert it to start and end dates
+        $date_ftr = isset($data['date_ftr']) ? trim($data['date_ftr']) : '';
+        $start_date = '';
+        $end_date = '';
+
+        if (!empty($date_ftr)) {
+            $parts = explode('to', $date_ftr);
+            $start_date = $parts[0];
+            $end_date = $parts[1];
+        }
+
+        $center_ad = '';
+        if(!Auth()->user()->inGroup('superadmin')){
+            $query1 = "SELECT center FROM user_info WHERE user_id = ". auth()->user()->id ."";
+            $center_ad = $this->db->query($query1)->getResultArray();
+            if($center_ad){
+                $center_ad = $center_ad[0]['center'];
+            }
+        }
+
+        $query = "SELECT st.*, courses.course AS course_name, centers.center AS center_name, courses.type AS course_type FROM students AS st
+            LEFT JOIN centers ON st.center = centers.id
+            LEFT JOIN courses ON st.course = courses.id
+            WHERE status = 1 AND del_sts = 0";
+
+        if($center_ad){
+            $query .= " AND st.center = " . $center_ad . "";
+        }
+
+        if(!empty($data['center_ftr'])){
+            $query .= " AND st.center = " . $data['center_ftr'] . "";
+        }
+
+        if(!empty($data['user_ftr'])){
+            $query .= " AND st.updated_by = '" . $data['user_ftr'] . "'";
+        }
+
+        if(!empty($data['type_ftr'])){
+            $query .= " AND courses.type LIKE '" . $data['type_ftr'] . "'";
+        }
+
+        if($start_date && $end_date){
+            $query .= " AND DATE(st.add_date) BETWEEN '" . trim($start_date) . "' AND '" . trim($end_date) . "' ";
+        }
+
+        $query .= " ORDER BY st.id DESC";
+
+        return $this->db->query($query)->getResultArray();
+    }
+
     public function getInquerys($data = [])
     {
         $start = $data['start'] ?? 0;

@@ -1442,6 +1442,23 @@
                     });
                 }
             });
+
+            $('#student-export-btn').on('click', function(){
+                var params = {
+                    center_ftr: center_ftr,
+                    date_ftr: date_ftr,
+                    user_ftr: user_ftr,
+                    type_ftr: type_ftr
+                };
+
+                var query = $.param(params);
+                var url = conf.baseUrl + "student/export";
+                if (query) {
+                    url += "?" + query;
+                }
+
+                window.location.href = url;
+            });
         },
 
         initInquery: function() {
