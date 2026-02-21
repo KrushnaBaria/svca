@@ -184,17 +184,21 @@ class Student extends BaseController
 
         $fh = fopen('php://temp', 'w');
 
-        fputcsv($fh, ['SVCA Id', 'Name', 'Center', 'Number', 'Phone', 'Course', 'Referred By']);
+        fputcsv($fh, ['No', 'Name', 'Center', 'Number', 'Phone', 'Course', 'Cast', 'DOB', 'Adhar Number', 'Admission Date']);
 
+        $i = 0;
         foreach ($students as $row) {
             fputcsv($fh, [
-                $row['id'] ?? '',
-                $row['name'] ?? '',
+                ++$i,
+                ($row['name'] ?? '') . ' ' . ($row['fname'] ?? ''),
                 $row['center_name'] ?? '',
                 $row['pnumber'] ?? '',
                 $row['apnumber'] ?? '',
                 $row['course_name'] ?? '',
-                $row['referred_by'] ?? '',
+                $row['cast'] ?? '',
+                !empty($row['dob']) ? date('d-m-Y', strtotime($row['dob'])) : '',
+                $row['adhar'] ?? '',
+                !empty($row['admi_date']) ? date('d-m-Y', strtotime($row['admi_date'])) : ''
             ]);
         }
 
