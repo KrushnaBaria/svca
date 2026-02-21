@@ -1451,13 +1451,32 @@
                     type_ftr: type_ftr
                 };
 
-                var query = $.param(params);
-                var url = conf.baseUrl + "student/export";
-                if (query) {
-                    url += "?" + query;
-                }
-
-                window.location.href = url;
+                $.ajax({
+                    url: conf.baseUrl + "student/export",
+                    type: "GET",
+                    data: params,
+                    xhrFields: {
+                        responseType: 'blob'
+                    },
+                    success: function(data, status, xhr) {
+                        var disposition = xhr.getResponseHeader('Content-Disposition');
+                        var filename = "export.csv";
+                        if (disposition && disposition.match(/filename[^;=\n]*=(['"]?)([^;\n]*)\1/)) {
+                            var extracted = RegExp.$2;
+                            if (extracted && extracted.toLowerCase().endsWith('.csv')) {
+                                filename = extracted;
+                            }
+                        }
+                        var blob = new Blob([data], { type: 'text/csv' });
+                        var link = document.createElement('a');
+                        link.href = URL.createObjectURL(blob);
+                        link.download = filename;
+                        link.click();
+                    },
+                    error: function() {
+                        alert("An error occurred while exporting the data.");
+                    }
+                });
             });
         },
 
