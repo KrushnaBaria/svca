@@ -27,6 +27,9 @@
                 <div class="small">
                     <strong>Receipt No:</strong> <?php echo $invoiceNo ?? ''; ?> &nbsp; | &nbsp;
                     <strong>Date:</strong> <?php echo $generatedAt ?? date('d/m/Y H:i'); ?>
+                    <span style="float:right; top: -10px; position: absolute;">
+                        <img src="<?php echo base_url('public/assets/images/logos/favicon.svg'); ?>" alt="Logo" style="height:70px;">
+                    </span>
                 </div>
             </div>
 
@@ -36,7 +39,7 @@
                     <table class="summary-table">
                         <tr>
                             <td>Name</td>
-                            <td><?php echo ($student['name'] ?? '') . ' ' . ($student['fname'] ?? ''); ?></td>
+                            <td width="80%"><?php echo ($student['name'] ?? '') . ' ' . ($student['fname'] ?? ''); ?></td>
                         </tr>
                         <tr>
                             <td>Course</td>
@@ -123,7 +126,7 @@
                 This is a system generated invoice and does not require a physical signature.
             </p> -->
         </div>
-            <div style="position: fixed; bottom: 15px; text-align: center; border-top: 1px solid #ccc; width:100%;">
+            <div style="position: fixed; bottom: 1px; text-align: center; border-top: 1px solid #ccc; width:100%;">
                 <p class="small">Generated Through Swami Vivekanand Career Academy Official Website On <?php echo date('d/m/Y, H:i:s'); ?></p>
             </div>
     </body>

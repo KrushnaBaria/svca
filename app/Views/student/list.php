@@ -47,7 +47,7 @@
         <div class="d-flex justify-content-between align-items-center">
             <h4 class="mb-0 ">Student List</h4>
             <div class="d-flex gap-2">
-                <button type="button" class="btn btn-success" id="student-export-btn">Export Excel</button>
+                <button type="button" class="btn btn-success" id="student-export-btn">Export List</button>
                 <a href="<?php echo base_url('/student');?>" class="btn btn-secondary">Add Student</a>
             </div>
         </div>
