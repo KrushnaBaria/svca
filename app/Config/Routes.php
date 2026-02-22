@@ -115,3 +115,8 @@ $routes->group('user', function ($routes) {
     $routes->post('delete', 'UserInfo::deleteUser');
     $routes->post('change-status', 'UserInfo::changeStatus');
 });
+
+$routes->group('certificate', function ($routes){
+    $routes->get('/', 'Certificate::index');
+    $routes->get('add', 'Certificate::add');
+});

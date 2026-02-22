@@ -2922,6 +2922,10 @@
             });
         },
 
+        initCertificateList: function(){
+            
+        },
+
         init: function(calltoinit) {
             if(typeof this[calltoinit] === "function"){
                 this[calltoinit]();
