@@ -11,8 +11,21 @@
                         <input type="text" name="name" id="name" class="form-control" required>
                     </div>
                     <div class="mb-3">
-                        <label for="certificate_no" class="form-label">Certificate No</label>
-                        <input type="text" name="certificate_no" id="certificate_no" class="form-control" required>
+                        <div class="row">
+                            <div class="col">
+                                <label for="center" class="form-label">Center</label>
+                                <select name="center" id="center" class="form-select" required>
+                                    <option value="" selected disabled>Select Center</option>
+                                    <?php foreach($centers as $center){?>
+                                        <option value="<?php echo $center['id'];?>"><?php echo $center['center'];?></option>
+                                    <?php }?>
+                                </select>
+                            </div>
+                            <div class="col">
+                                <label for="certificate_no" class="form-label">Certificate No</label>
+                                <input type="text" name="certificate_no" id="certificate_no" class="form-control" required>
+                            </div>
+                        </div>
                     </div>
                     <div class="mb-3">
                         <label for="phone" class="form-label">Phone Number</label>

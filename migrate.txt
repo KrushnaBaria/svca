@@ -59,3 +59,6 @@ CREATE TABLE `svca_`.`follow_up` (`id` INT NOT NULL AUTO_INCREMENT , `stu_id` IN
 
 [22-02-2026]
 CREATE TABLE `svca_`.`certificates` (`id` INT NOT NULL AUTO_INCREMENT , `stu_id` INT NOT NULL , `name` VARCHAR(255) NOT NULL , `certificate_no` VARCHAR(255) NOT NULL , `issue_date` DATE NOT NULL , `updated_by` DATETIME NOT NULL , `updated_date` DATETIME NOT NULL , PRIMARY KEY (`id`));
+
+[23-02-2026]
+ALTER TABLE `certificates` ADD `center` INT NOT NULL AFTER `certificate_no`;
