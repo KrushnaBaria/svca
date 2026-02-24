@@ -12,5 +12,5 @@ class CertificateModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['id', 'stu_id', 'name', 'certificate_no', 'center', 'issued_date', 'updated_by', 'updated_date'];
+    protected $allowedFields    = ['id', 'name', 'certificate_no', 'center', 'issue_date', 'updated_by', 'updated_date'];
 }

@@ -119,4 +119,5 @@ $routes->group('user', function ($routes) {
 $routes->group('certificate', function ($routes){
     $routes->get('/', 'Certificate::index');
     $routes->get('add', 'Certificate::add');
+    $routes->post('save', 'Certificate::save');
 });

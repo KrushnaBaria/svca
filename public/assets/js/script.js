@@ -2922,8 +2922,58 @@
             });
         },
 
-        initCertificateList: function(){
-            
+        initAddCertificate: function(){
+
+            $('#issued_date').datepicker({
+                maxDate: new Date(),
+                dateFormat: "dd/mm/yy"
+            });
+
+            $('#sbt-btn').on('click', function(e){
+                e.preventDefault();
+                if($('#student-name').val() == ''){
+                    $('#student-name').focus();
+                    return false;
+                }
+
+                if($('#center').val() == ''){
+                    $('#center').focus();
+                    return false;
+                }
+
+                if($('#certificate_no').val() == ''){
+                    $('#certificate_no').focus();
+                    return false;
+                }
+
+                if($('#tel-number').val() == ''){
+                    $('#tel-number').focus();
+                    return false;
+                }
+
+                $.ajax({
+                    url: conf.baseUrl + "/certificate/save",
+                    type: "POST",
+                    dataType: "json",
+                    data: {
+                        student_name: $('#student-name').val(),
+                        center: $('#center').val(),
+                        certificate_no: $('#certificate_no').val(),
+                        issued_date: $('#issued_date').val(),
+                        tel_number: $('#tel-number').val(),
+                    },
+                    success: function(res) {
+                        if(res.success == 1) {
+                            window.location.href = conf.baseUrl + "certificate";
+                        }else{
+                            alert("Error adding certificate");
+                        }
+                    },
+                    error: function() {
+                        alert("An error occurred while adding the certificate.");
+                    }
+                });
+            });
         },
 
         init: function(calltoinit) {

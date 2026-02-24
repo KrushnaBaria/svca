@@ -41,4 +41,24 @@ class Certificate extends BaseController
         }
         return View('template/header', ['page_title' => 'Add Certificate']).View('certificate/add', $data).View('template/footer', ['app_init' => 'initAddCertificate']);
     }
+
+    public function save()
+    {
+        $data = $this->request->getPost();
+        $issue_date = date('Y-m-d', strtotime(str_replace('/', '-', $data['issued_date'])));
+
+        $res = $this->model->save([
+            'name' => $data['student_name'],
+            'certificate_no' => $data['certificate_no'],
+            'center' => $data['center'],
+            'issue_date' => $issue_date,
+            'updated_by' => Auth()->user()->email,
+            'updated_date' => date('Y-m-d H:i:s')
+        ]);
+        if($res){
+            return json_encode(['success' => 1, 'message' => 'Certificate information saved successfully.']);
+        }else{
+            return json_encode(['success' => 0, 'message' => 'Failed to save certificate information. Please try again.']);
+        }
+    }
 }

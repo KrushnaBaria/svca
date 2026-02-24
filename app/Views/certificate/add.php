@@ -5,10 +5,10 @@
         </div>
         <div class="card-body">
             <div class="">
-                <form action="" method="POST">
+                <form action="">
                     <div class="mb-3">
-                        <label for="name" class="form-label">Name</label>
-                        <input type="text" name="name" id="name" class="form-control" required>
+                        <label for="student-name" class="form-label">Name</label>
+                        <input type="text" name="student-name" id="student-name" class="form-control" required>
                     </div>
                     <div class="mb-3">
                         <div class="row">
@@ -28,11 +28,19 @@
                         </div>
                     </div>
                     <div class="mb-3">
-                        <label for="phone" class="form-label">Phone Number</label>
-                        <input type="tel" name="phone" id="phone" class="form-control" required>
+                        <div class="row">
+                            <div class="col">
+                                <label for="issued_date" class="form-label">Issued Date</label>
+                                <input type="text" name="issued_date" id="issued_date" class="form-control" required>
+                            </div>
+                            <div class="col">
+                                <label for="tel-number" class="form-label">Phone Number</label>
+                                <input type="tel" name="tel-number" id="tel-number" class="form-control" maxlength="10" pattern="[0-9]{10}" required>
+                            </div>
+                        </div>
                     </div>
                     <div class="mb-0 mt-3 text-center">
-                        <button type="submit" class="btn btn-primary">Save</button>
+                        <button id="sbt-btn" class="btn btn-primary">Save</button>
                     </div>
                 </form>
             </div>       
