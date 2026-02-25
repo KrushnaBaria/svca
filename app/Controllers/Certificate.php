@@ -42,6 +42,21 @@ class Certificate extends BaseController
         return View('template/header', ['page_title' => 'Add Certificate']).View('certificate/add', $data).View('template/footer', ['app_init' => 'initAddCertificate']);
     }
 
+    public function list()
+    {
+        $data = [
+            'start' => $this->request->getPost('start'),
+            'end' => $this->request->getPost('length'),
+            'search' => $this->request->getPost('search')['value']
+        ];
+        $result = $this->model->getList($data);
+        if($result){
+            return json_encode($result);
+        }else{
+            return json_encode(['data' => [], 'recordsTotal' => 0, 'recordsFiltered' => 0]);
+        }
+    }
+
     public function save()
     {
         $data = $this->request->getPost();
@@ -50,6 +65,7 @@ class Certificate extends BaseController
         $res = $this->model->save([
             'name' => $data['student_name'],
             'certificate_no' => $data['certificate_no'],
+            'phone' => $data['tel_number'],
             'center' => $data['center'],
             'issue_date' => $issue_date,
             'updated_by' => Auth()->user()->email,

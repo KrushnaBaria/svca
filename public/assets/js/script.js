@@ -2976,6 +2976,83 @@
             });
         },
 
+        initCertificateList: function(){
+            let certificateListtbl = $('#certificate-tbl');
+            let certificateListTbl = new DataTable('#certificate-tbl', {
+                responsive: true,
+                scrollX: true,
+                searching: true,
+                lengthChange: true,
+                processing: true,
+                serverSide: true,
+                bSortable: true,
+                bFilter: true,
+                pagingType: "full_numbers",
+                ajax: {
+                    url: conf.baseUrl + "/certificate/list",
+                    type: 'post'
+                },
+                lengthMenu: [
+                    [5, 10, 20, -1],
+                    [5, 10, 20, "All"]
+                ],
+                pageLength: 5,
+                paging: true,
+                ordering: false,
+                columnDefs: [
+                    {
+                        targets: [0],
+                        orderable: false,
+                        data: function (row, type, val, meta) {  
+                            return meta.row + 1;
+                        }
+                    },{
+                        targets: [1],
+                        orderable: false,
+                        data: function (row, type, val, meta) {  
+                            return row.name;
+                        }
+                    },{
+                        targets: [2],
+                        orderable: false,
+                        data: function (row, type, val, meta) {
+                            return row.phone;
+                        }
+                    },{
+                        targets: [3],
+                        orderable: false,
+                        data: function (row, type, val, meta) {
+                            return row.certificate_no;
+                        }
+                    },{
+                        targets: [4],
+                        orderable: false,
+                        data: function (row, type, val, meta) {  
+                            return row.center;
+                        }
+                    },{
+                        targets: [5],
+                        orderable: false,
+                        data: function (row, type, val, meta) {  
+                            return row.issue_date;
+                        }
+                    },{
+                        targets: [6],
+                        orderable: false,
+                        data: function (row, type, val, meta) {  
+                            return row.updated_by;
+                        }
+                    },{
+                        targets: [7],
+                        orderable: false,
+                        data: function (row, type, val, meta) {  
+                            return row.updated_date;
+                        }
+                    }
+                ],
+            });
+        },
+
         init: function(calltoinit) {
             if(typeof this[calltoinit] === "function"){
                 this[calltoinit]();

@@ -11,8 +11,8 @@
                 <thead class="text-dark fs-4">
                     <tr>
                         <th><h6 class="fs-3 fw-semibold">No</h6></th>
-                        <th><h6 class="fs-3 fw-semibold">SVCA Id</h6></th>
                         <th><h6 class="fs-3 fw-semibold">Name</h6></th>
+                        <th><h6 class="fs-3 fw-semibold">Phone</h6></th>
                         <th><h6 class="fs-3 fw-semibold">Certificate No</h6></th>
                         <th><h6 class="fs-3 fw-semibold">Center</h6></th>
                         <th><h6 class="fs-3 fw-semibold">Issued Date</h6></th>

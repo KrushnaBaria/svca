@@ -65,3 +65,6 @@ ALTER TABLE `certificates` ADD `center` INT NOT NULL AFTER `certificate_no`;
 
 [24-02-2026]
 ALTER TABLE `certificates` CHANGE `updated_by` `updated_by` VARCHAR(255) NOT NULL;
+
+[25-02-2026]
+ALTER TABLE `certificates` ADD `phone` INT(15) NOT NULL AFTER `certificate_no`;
