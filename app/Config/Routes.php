@@ -122,3 +122,7 @@ $routes->group('certificate', function ($routes){
     $routes->post('save', 'Certificate::save');
     $routes->post('list', 'Certificate::list');
 });
+
+$routes->group('mytask', function ($routes){
+    $routes->get('/', 'MyTask::index');
+});
