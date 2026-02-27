@@ -2946,8 +2946,8 @@
                     return false;
                 }
 
-                if($('#fess').val() == ''){
-                    $('#fess').focus();
+                if($('#fees').val() == ''){
+                    $('#fees').focus();
                     return false;
                 }
 
@@ -3051,10 +3051,16 @@
                         targets: [6],
                         orderable: false,
                         data: function (row, type, val, meta) {  
-                            return row.updated_by;
+                            return row.fees;
                         }
                     },{
                         targets: [7],
+                        orderable: false,
+                        data: function (row, type, val, meta) {  
+                            return row.updated_by;
+                        }
+                    },{
+                        targets: [8],
                         orderable: false,
                         data: function (row, type, val, meta) {  
                             return row.updated_date;

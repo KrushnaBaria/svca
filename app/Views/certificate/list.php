@@ -16,6 +16,7 @@
                         <th><h6 class="fs-3 fw-semibold">Certificate No</h6></th>
                         <th><h6 class="fs-3 fw-semibold">Center</h6></th>
                         <th><h6 class="fs-3 fw-semibold">Issued Date</h6></th>
+                        <th><h6 class="fs-3 fw-semibold">Fees</h6></th>
                         <th><h6 class="fs-3 fw-semibold">Updated By</h6></th>
                         <th><h6 class="fs-3 fw-semibold">Updated Date</h6></th>
                     </tr>

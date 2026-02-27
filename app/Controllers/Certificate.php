@@ -60,22 +60,34 @@ class Certificate extends BaseController
     public function save()
     {
         $data = $this->request->getPost();
-        $issue_date = date('Y-m-d', strtotime(str_replace('/', '-', $data['issued_date'])));
+
+        $studentName = $data['student_name'] ?? null;
+        $center = $data['center'] ?? null;
+        $certificateNo = $data['certificate_no'] ?? null;
+        $issuedDateRaw = $data['issued_date'] ?? null;
+        $telNumber = $data['tel_number'] ?? null;
+        $fees = $data['fees'] ?? ($data['fees'] ?? null);
+
+        if ($studentName === null || $center === null || $certificateNo === null || $issuedDateRaw === null || $telNumber === null || $fees === null) {
+            return $this->response->setJSON([ 'success' => 0, 'message' => 'Missing required fields.']);
+        }
+
+        $issue_date = date('Y-m-d', strtotime(str_replace('/', '-', $issuedDateRaw)));
 
         $res = $this->model->save([
-            'name' => $data['student_name'],
-            'certificate_no' => $data['certificate_no'],
-            'fees' => $data['fees'],
-            'phone' => $data['tel_number'],
-            'center' => $data['center'],
+            'name' => $studentName,
+            'certificate_no' => $certificateNo,
+            'fees' => $fees,
+            'phone' => $telNumber,
+            'center' => $center,
             'issue_date' => $issue_date,
             'updated_by' => Auth()->user()->email,
             'updated_date' => date('Y-m-d H:i:s')
         ]);
         if($res){
-            return json_encode(['success' => 1, 'message' => 'Certificate information saved successfully.']);
+            return $this->response->setJSON(['success' => 1, 'message' => 'Certificate information saved successfully.']);
         }else{
-            return json_encode(['success' => 0, 'message' => 'Failed to save certificate information. Please try again.']);
+            return $this->response->setJSON(['success' => 0, 'message' => 'Failed to save certificate information. Please try again.']);
         }
     }
 }

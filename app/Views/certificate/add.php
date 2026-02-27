@@ -8,7 +8,7 @@
                 <form action="">
                     <div class="mb-3">
                         <label for="student-name" class="form-label">Name</label>
-                        <input type="text" name="student-name" id="student-name" class="form-control" required>
+                        <input type="text" name="student_name" id="student-name" class="form-control" required>
                     </div>
                     <div class="mb-3">
                         <div class="row">
@@ -30,8 +30,8 @@
                     <div class="mb-3">
                         <div class="row">
                             <div class="col">
-                                <label for="fess" class="form-label">Fees</label>
-                                <input type="number" name="fess" id="fess" class="form-control" required>
+                                <label for="fees" class="form-label">Fees</label>
+                                <input type="number" name="fees" id="fees" class="form-control" required>
                             </div>
                             <div class="col">
                                 <label for="issued_date" class="form-label">Issued Date</label>
@@ -39,7 +39,7 @@
                             </div>
                             <div class="col">
                                 <label for="tel-number" class="form-label">Phone</label>
-                                <input type="tel" name="tel-number" id="tel-number" class="form-control" maxlength="10" pattern="[0-9]{10}" required>
+                                <input type="tel" name="tel_number" id="tel-number" class="form-control" maxlength="10" pattern="[0-9]{10}" required>
                             </div>
                         </div>
                     </div>
