@@ -12,7 +12,7 @@ class CertificateModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['id', 'name', 'certificate_no', 'phone', 'center', 'issue_date', 'updated_by', 'updated_date'];
+    protected $allowedFields    = ['id', 'name', 'certificate_no', 'fees', 'phone', 'center', 'issue_date', 'updated_by', 'updated_date'];
 
     public function getList($data)
     {

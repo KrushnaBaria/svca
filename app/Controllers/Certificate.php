@@ -65,6 +65,7 @@ class Certificate extends BaseController
         $res = $this->model->save([
             'name' => $data['student_name'],
             'certificate_no' => $data['certificate_no'],
+            'fees' => $data['fees'],
             'phone' => $data['tel_number'],
             'center' => $data['center'],
             'issue_date' => $issue_date,

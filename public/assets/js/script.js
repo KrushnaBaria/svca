@@ -2936,13 +2936,23 @@
                     return false;
                 }
 
-                if($('#center').val() == ''){
+                if(!$('#center').val()){
                     $('#center').focus();
                     return false;
                 }
 
                 if($('#certificate_no').val() == ''){
                     $('#certificate_no').focus();
+                    return false;
+                }
+
+                if($('#fess').val() == ''){
+                    $('#fess').focus();
+                    return false;
+                }
+
+                if($('#issued_date').val() == ''){
+                    $('#issued_date').focus();
                     return false;
                 }
 
@@ -2961,6 +2971,7 @@
                         certificate_no: $('#certificate_no').val(),
                         issued_date: $('#issued_date').val(),
                         tel_number: $('#tel-number').val(),
+                        fees: $('#fees').val()
                     },
                     success: function(res) {
                         if(res.success == 1) {

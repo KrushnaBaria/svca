@@ -1,5 +1,5 @@
 <div class="d-flex justify-content-center align-items-center">
-    <div class="card col-6">
+    <div class="card col-md-6">
         <div class="card-header text-bg-primary">
             <h4 class="mb-0 text-white">Add Certificate Information</h4>
         </div>
@@ -15,7 +15,7 @@
                             <div class="col">
                                 <label for="center" class="form-label">Center</label>
                                 <select name="center" id="center" class="form-select" required>
-                                    <option value="" selected disabled>Select Center</option>
+                                    <option value="" >Select Center</option>
                                     <?php foreach($centers as $center){?>
                                         <option value="<?php echo $center['id'];?>"><?php echo $center['center'];?></option>
                                     <?php }?>
@@ -30,11 +30,15 @@
                     <div class="mb-3">
                         <div class="row">
                             <div class="col">
+                                <label for="fess" class="form-label">Fees</label>
+                                <input type="number" name="fess" id="fess" class="form-control" required>
+                            </div>
+                            <div class="col">
                                 <label for="issued_date" class="form-label">Issued Date</label>
                                 <input type="text" name="issued_date" id="issued_date" class="form-control" required>
                             </div>
                             <div class="col">
-                                <label for="tel-number" class="form-label">Phone Number</label>
+                                <label for="tel-number" class="form-label">Phone</label>
                                 <input type="tel" name="tel-number" id="tel-number" class="form-control" maxlength="10" pattern="[0-9]{10}" required>
                             </div>
                         </div>
