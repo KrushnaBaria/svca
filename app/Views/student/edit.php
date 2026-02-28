@@ -1,7 +1,10 @@
 <div>
     <div class="card">
         <div class="card-header text-bg-primary">
-            <h4 class="mb-0 text-white">Edit Student Info</h4>
+            <div class="d-flex justify-content-between align-items-center">
+                <h4 class="mb-0 text-white">Edit Student Info</h4>
+                <a class="btn btn-secondary" href="<?php echo base_url('certificate/add?id='.$student['id']); ?>">Add Certificate</a>
+            </div>
         </div>
         <div class="card-body">
             <form action="">

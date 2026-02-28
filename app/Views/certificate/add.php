@@ -8,7 +8,7 @@
                 <form action="">
                     <div class="mb-3">
                         <label for="student-name" class="form-label">Name</label>
-                        <input type="text" name="student_name" id="student-name" class="form-control" required>
+                        <input type="text" name="student_name" id="student-name" class="form-control" value="<?php echo isset($student['id']) ? $student['name'] : ''; ?>" required <?php echo isset($student['id']) ? 'readonly' : ''; ?>>
                     </div>
                     <div class="mb-3">
                         <div class="row">
