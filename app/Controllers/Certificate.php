@@ -9,12 +9,16 @@ use Psr\Log\LoggerInterface;
 use App\Models\CertificateModel;
 use App\Models\CenterModel;
 use App\Models\CourseModel;
+use App\Models\StudentModel;
+use App\Models\UserInfoModel;
 
 class Certificate extends BaseController
 {
     protected $model;
     protected $centerModel;
     protected $courseModel;
+    protected $studentModel;
+    protected $userInfoModel;
 
     public function initController(RequestInterface $request, ResponseInterface $response, LoggerInterface $logger)
     {
@@ -23,6 +27,9 @@ class Certificate extends BaseController
         $this->model = model(CertificateModel::class);
         $this->centerModel = model(CenterModel::class);
         $this->courseModel = model(CourseModel::class);
+        $this->userInfoModel = model(UserInfoModel::class);
+        $this->studentModel = model(studentModel::class);
+
     }
 
     public function index()
@@ -32,6 +39,8 @@ class Certificate extends BaseController
 
     public function add()
     {
+        $id = $this->request->getGet('id');
+
         if(Auth()->user()->inGroup('superadmin')){
             $data['centers'] = $this->centerModel->findAll();
             $data['courses'] = $this->courseModel->findAll();
@@ -39,6 +48,11 @@ class Certificate extends BaseController
             $u_details = $this->userInfoModel->curUserDetail();
             $data['centers'] = $this->centerModel->where('id', $u_details['center'])->findAll();
         }
+
+        if($id){
+            $data['student'] = $this->studentModel->find($id);
+        }
+
         return View('template/header', ['page_title' => 'Add Certificate']).View('certificate/add', $data).View('template/footer', ['app_init' => 'initAddCertificate']);
     }
 
