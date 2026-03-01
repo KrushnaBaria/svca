@@ -8,6 +8,7 @@ use CodeIgniter\HTTP\RequestInterface;
 use Psr\Log\LoggerInterface;
 use App\Models\UserModel;
 use App\Models\UserInfoModel;
+use App\Models\CenterModel;
 
 class UserInfo extends BaseController
 {
@@ -18,11 +19,31 @@ class UserInfo extends BaseController
         parent::initController($request, $response, $logger);
         $this->model = model(UserInfoModel::class);
         $this->UserModel = model(UserModel::class);
+        $this->centerModel = model(CenterModel::class);
     }
 
     public function index()
     {
         
+    }
+
+    public function profile()
+    {
+        $userInfo = $this->model->curUserDetail();
+        $authUser = auth()->user();
+        $centerName = '';
+        if ($userInfo && !empty($userInfo['center'])) {
+            $center = $this->centerModel->find($userInfo['center']);
+            $centerName = $center['center'] ?? '';
+        }
+        $data = [
+            'user_info' => $userInfo,
+            'auth_user' => $authUser,
+            'center_name' => $centerName,
+        ];
+        return view('template/header', ['page_title' => 'My Profile'])
+            . view('user/profile', $data)
+            . view('template/footer');
     }
 
     public function AdminList()

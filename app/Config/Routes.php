@@ -107,6 +107,7 @@ $routes->group('bin', function ($routes) {
 
 $routes->group('user', function ($routes) {
     //$routes->get('/', 'UserInfo::index');
+    $routes->get('profile', 'UserInfo::profile');
     $routes->get('add', 'AddUserController::index');
     $routes->get('admin-list', 'UserInfo::AdminList');
     $routes->post('get-admin-list', 'UserInfo::getAdminList');
