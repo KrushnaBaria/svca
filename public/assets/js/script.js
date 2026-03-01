@@ -2966,6 +2966,7 @@
                     type: "POST",
                     dataType: "json",
                     data: {
+                        stu_id: $('#stu_id').val(),
                         student_name: $('#student-name').val(),
                         center: $('#center').val(),
                         certificate_no: $('#certificate_no').val(),
@@ -2975,7 +2976,11 @@
                     },
                     success: function(res) {
                         if(res.success == 1) {
-                            window.location.href = conf.baseUrl + "certificate";
+                            if($('#stu_id').val()){
+                                window.location.href = conf.baseUrl + "student/list";
+                            }else{
+                                window.location.href = conf.baseUrl + "certificate";
+                            }
                         }else{
                             alert("Error adding certificate");
                         }
@@ -3067,6 +3072,77 @@
                         }
                     }
                 ],
+            });
+        },
+
+        initMyTask: function(){
+            let tasktable = $('#task-tbl');
+            let taskTable = new DataTable('#task-tbl', {
+                responsive: true,
+                scrollX: true,
+                searching: typeof tasktable.data('dt-searching') === 'undefined' ? true : tasktable.data('dt-searching'),
+                lengthChange: typeof tasktable.data('dt-lengthchange') === 'undefined' ? true : tasktable.data('dt-lengthchange'),
+                processing: true,
+                serverSide: true,
+                bSortable: true,
+                bFilter: true,
+                searching: false,
+                pagingType: "full_numbers",
+                ajax: {
+                    url: conf.baseUrl + "mytask/list",
+                    type: 'post',
+                },
+                lengthMenu: [
+                    [5, 10, 20, -1],
+                    [5, 10, 20, "All"]
+                ],
+                pageLength: (typeof tasktable.data('dt-pagelength') === 'undefined' || tasktable.data('dt-pagelength') === '-1') ? 5 : tasktable.data('dt-pagelength'),
+                paging: true,
+                ordering: false,
+                columnDefs: [
+                    {   
+                        width: '10%',
+                        targets: [0],
+                        orderable: false,
+                        data: function (row, type, val, meta) {  
+                            return meta.row + 1;
+                        }
+                    },
+                    {
+                        targets: [1],
+                        orderable: false,
+                        data: function (row) {
+                            return row.task;
+                        }
+                    }
+                ],
+            });
+
+            $('#add-task').on('click', function(e){
+                e.preventDefault();
+                if($('#task').val() == ''){
+                    $('#task').focus();
+                    return false;
+                }
+
+                $.ajax({
+                    url: conf.baseUrl + "/mytask/add",
+                    type: "POST",
+                    dataType: "json",
+                    data: {
+                        task: $('#task').val()
+                    },
+                    success: function(res) {
+                        if(res.success == 1) {
+                            taskTable.ajax.reload();
+                        }else{
+                            alert("Error adding task.");
+                        }
+                    },
+                    error: function() {
+                        alert("An error occurred while adding the task.");
+                    }
+                });
             });
         },
 

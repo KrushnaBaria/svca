@@ -14,10 +14,10 @@
                         <div class="row">
                             <div class="col">
                                 <label for="center" class="form-label">Center</label>
-                                <select name="center" id="center" class="form-select" required>
+                                <select name="center" id="center" class="form-select" <?php echo (isset($student['id']) ? 'disabled' : ''); ?> required>
                                     <option value="" >Select Center</option>
                                     <?php foreach($centers as $center){?>
-                                        <option value="<?php echo $center['id'];?>"><?php echo $center['center'];?></option>
+                                        <option value="<?php echo $center['id'];?>" <?php echo (isset($student['center']) && $student['center'] == $center['id']) ? 'selected' : ''; ?>><?php echo $center['center'];?></option>
                                     <?php }?>
                                 </select>
                             </div>
@@ -31,7 +31,7 @@
                         <div class="row">
                             <div class="col">
                                 <label for="fees" class="form-label">Fees</label>
-                                <input type="number" name="fees" id="fees" class="form-control" required>
+                                <input type="number" name="fees" id="fees" class="form-control" value = "<?php echo (isset($student['id']) ? 0 : ''); ?>" <?php echo (isset($student['id']) ? 'readonly' : ''); ?> required>
                             </div>
                             <div class="col">
                                 <label for="issued_date" class="form-label">Issued Date</label>
@@ -39,11 +39,12 @@
                             </div>
                             <div class="col">
                                 <label for="tel-number" class="form-label">Phone</label>
-                                <input type="tel" name="tel_number" id="tel-number" class="form-control" maxlength="10" pattern="[0-9]{10}" required>
+                                <input type="tel" name="tel_number" id="tel-number" value = "<?php echo (isset($student['id']) ? $student['pnumber'] : ''); ?>" class="form-control" maxlength="10" pattern="[0-9]{10}" <?php echo (isset($student['id']) ? 'readonly' : ''); ?> required>
                             </div>
                         </div>
                     </div>
                     <div class="mb-0 mt-3 text-center">
+                        <input type="hidden" name="student_id" id="stu_id" value="<?php echo (isset($student['id']) ? $student['id'] : ''); ?>">
                         <button id="sbt-btn" class="btn btn-primary">Save</button>
                     </div>
                 </form>

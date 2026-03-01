@@ -73,3 +73,6 @@ ALTER TABLE `certificates` ADD `phone` INT(15) NOT NULL AFTER `certificate_no`;
 ALTER TABLE `certificates` ADD `fees` INT NOT NULL AFTER `certificate_no`;
 CREATE TABLE `svca_`.`stu_certificates` (`id` INT NOT NULL AUTO_INCREMENT , `svca_id` INT NOT NULL , `certificate_no` VARCHAR(255) NOT NULL , `issue_date` DATE NOT NULL , `updated_by` VARCHAR(255) NOT NULL , `updated_date` TIMESTAMP NOT NULL , PRIMARY KEY (`id`));
 ALTER TABLE `stu_certificates` CHANGE `svca_id` `stu_id` INT(11) NOT NULL;
+
+[01-03-2026]
+CREATE TABLE `svca_`.`my_task` (`id` INT NOT NULL AUTO_INCREMENT , `user_id` INT NOT NULL , `task` VARCHAR(255) NOT NULL , `updated_date` TIMESTAMP NOT NULL , PRIMARY KEY (`id`));

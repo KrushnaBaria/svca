@@ -11,6 +11,7 @@ use App\Models\CenterModel;
 use App\Models\CourseModel;
 use App\Models\StudentModel;
 use App\Models\UserInfoModel;
+use App\Models\StuCertificateModel;
 
 class Certificate extends BaseController
 {
@@ -19,6 +20,7 @@ class Certificate extends BaseController
     protected $courseModel;
     protected $studentModel;
     protected $userInfoModel;
+    protected $stuCertificateModel;
 
     public function initController(RequestInterface $request, ResponseInterface $response, LoggerInterface $logger)
     {
@@ -29,7 +31,7 @@ class Certificate extends BaseController
         $this->courseModel = model(CourseModel::class);
         $this->userInfoModel = model(UserInfoModel::class);
         $this->studentModel = model(studentModel::class);
-
+        $this->stuCertificateModel = model(stuCertificateModel::class);
     }
 
     public function index()
@@ -81,6 +83,7 @@ class Certificate extends BaseController
         $issuedDateRaw = $data['issued_date'] ?? null;
         $telNumber = $data['tel_number'] ?? null;
         $fees = $data['fees'] ?? ($data['fees'] ?? null);
+        $stu_id = $data['stu_id'] ?? ($data['stu_id'] ?? null);
 
         if ($studentName === null || $center === null || $certificateNo === null || $issuedDateRaw === null || $telNumber === null || $fees === null) {
             return $this->response->setJSON([ 'success' => 0, 'message' => 'Missing required fields.']);
@@ -88,16 +91,28 @@ class Certificate extends BaseController
 
         $issue_date = date('Y-m-d', strtotime(str_replace('/', '-', $issuedDateRaw)));
 
-        $res = $this->model->save([
-            'name' => $studentName,
-            'certificate_no' => $certificateNo,
-            'fees' => $fees,
-            'phone' => $telNumber,
-            'center' => $center,
-            'issue_date' => $issue_date,
-            'updated_by' => Auth()->user()->email,
-            'updated_date' => date('Y-m-d H:i:s')
-        ]);
+        if($stu_id){
+            $res = $this->stuCertificateModel->save([
+                'id' => '',
+                'stu_id' => $stu_id,
+                'certificate_no' => $certificateNo,
+                'issue_date' => $issue_date,
+                'updated_by' => Auth()->user()->email,
+                'updated_date' => date('Y-m-d H:i:s')
+            ]);
+        }else{
+            $res = $this->model->save([
+                'name' => $studentName,
+                'certificate_no' => $certificateNo,
+                'fees' => $fees,
+                'phone' => $telNumber,
+                'center' => $center,
+                'issue_date' => $issue_date,
+                'updated_by' => Auth()->user()->email,
+                'updated_date' => date('Y-m-d H:i:s')
+            ]);
+        }
+        
         if($res){
             return $this->response->setJSON(['success' => 1, 'message' => 'Certificate information saved successfully.']);
         }else{

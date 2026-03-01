@@ -125,4 +125,6 @@ $routes->group('certificate', function ($routes){
 
 $routes->group('mytask', function ($routes){
     $routes->get('/', 'MyTask::index');
+    $routes->post('list', 'MyTask::list');
+    $routes->post('add', 'MyTask::add');
 });
