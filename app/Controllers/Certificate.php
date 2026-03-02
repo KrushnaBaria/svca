@@ -73,6 +73,21 @@ class Certificate extends BaseController
         }
     }
 
+    public function ex_student_list()
+    {
+        $data = [
+            'start' => $this->request->getPost('start'),
+            'end' => $this->request->getPost('length'),
+            'search' => $this->request->getPost('search')['value']
+        ];
+        $result = $this->stuCertificateModel->getList($data);
+        if($result){
+            return json_encode($result);
+        }else{
+            return json_encode(['data' => [], 'recordsTotal' => 0, 'recordsFiltered' => 0]);
+        }
+    }
+
     public function save()
     {
         $data = $this->request->getPost();

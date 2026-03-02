@@ -122,6 +122,7 @@ $routes->group('certificate', function ($routes){
     $routes->get('add', 'Certificate::add');
     $routes->post('save', 'Certificate::save');
     $routes->post('list', 'Certificate::list');
+    $routes->post('ex-student-list', 'Certificate::ex_student_list');
 });
 
 $routes->group('mytask', function ($routes){
