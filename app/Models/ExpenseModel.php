@@ -205,7 +205,9 @@ class ExpenseModel extends Model
                 'profit' => $revenue_result[0]['revenue'] - $expense_result[0]['expenses']
             ];
         } else {
-            return false;
+            return [
+                'profit' => 0
+            ];
         }
     }
 }
