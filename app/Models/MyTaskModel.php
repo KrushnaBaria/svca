@@ -16,7 +16,7 @@ class MyTaskModel extends Model
 
     public function getList($data)
     {
-        $query = "SELECT * FROM my_task WHERE 1=1";
+        $query = "SELECT * FROM my_task WHERE DATE(updated_date) = CURDATE()";
 
         $query .= " ORDER BY id DESC";
 

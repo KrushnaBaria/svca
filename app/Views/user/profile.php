@@ -81,7 +81,7 @@ $initials = $fullName ? strtoupper(substr($userInfo['first_name'] ?? '', 0, 1) .
             </div>
         </div>
 
-        <?php if ($authUser): ?>
+        <?php if (false): ?>
         <div class="mt-3 text-center">
             <a href="<?= base_url('user/change-password/' . $authUser->id) ?>" class="btn btn-outline-primary">
                 <i class="ti ti-lock me-1"></i> Change Password
