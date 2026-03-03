@@ -520,6 +520,10 @@
             let dtable = $('#centers-tbl');
             let centerTbl = new DataTable('#centers-tbl', {
                 responsive: true,
+                select: {
+                    style: 'single',
+                    selector: 'td:not(:last-child)'
+                },
                 searching: typeof dtable.data('dt-searching') === 'undefined' ? true : dtable.data('dt-searching'),
                 lengthChange: typeof dtable.data('dt-lengthchange') === 'undefined' ? true : dtable.data('dt-lengthchange'),
                 processing: true,
@@ -562,6 +566,15 @@
                         }
                     }
                 ],
+            }).on('select', function(e, dt, type, indexes) {
+                let data = centerTbl.rows(indexes).data().toArray();
+                if(data.length > 0) {
+                    $("#center_id").val(data[0].id);
+                    $("#center_name").val(data[0].center);
+                }
+            }).on('deselect', function(e, dt, type, indexes){
+                $("#center_id").val("");
+                $("#center_name").val("");
             });
 
             $(document).on("click", ".delete-center", function(e){
@@ -608,12 +621,12 @@
                     type: "POST",
                     dataType: "json",
                     data: {
-                        center_name: $("#center_name").val()
+                        center_id: $("#center_id").val(),
+                        center_name: $("#center_name").val().charAt(0).toUpperCase() + $("#center_name").val().slice(1).toLowerCase()
                     },
                     success: function(res) {
                         if(res.success == 1) {
                             $("#center_name").val(""); // Clear the input field
-                            alert("Center Added Successfully.");
                             centerTbl.ajax.reload(); // Reload the table data
                         } else {
                             alert("Error updating center name");
@@ -750,7 +763,7 @@
                         dataType: "json",
                         data: {
                             id: $("#course_id").val(),
-                            course_name: $("#course_name").val(),
+                            course_name: $("#course_name").val().toUpperCase(),
                             course_price: $("#course_price").val(),
                             center: $("#course_center").val(),
                             type: $("#course_type").val()
@@ -892,7 +905,7 @@
                     type: "POST",
                     dataType: "json",
                     data: {
-                        dist_name: $("#district_name").val()
+                        dist_name: $("#district_name").val().charAt(0).toUpperCase() + $("#district_name").val().slice(1).toLowerCase()
                     },
                     success: function(res) {
                         if(res.success == 1) {

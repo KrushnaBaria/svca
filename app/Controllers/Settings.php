@@ -36,13 +36,21 @@ class Settings extends BaseController
 
     public function addCenter()
     {
+        $centerId = $this->request->getPost('center_id');
         $data = [
             'center' => $this->request->getPost('center_name')
         ];
 
-        $res = $this->centerModel->addCenter($data);
-        if($res){
-            return json_encode(['success' => 1]);
+        if($centerId){
+            $this->centerModel->update($centerId, $data);
+            return json_encode(['success' => 1, 'message' => 'Center updated successfully.']);
+        } else {
+            $res = $this->centerModel->addCenter($data);
+            if($res){
+                return json_encode(['success' => 1, 'message' => 'Center added successfully.']);
+            } else {
+                return json_encode(['success' => 0, 'message' => 'Failed to add center.']);
+            }
         }
     }
 

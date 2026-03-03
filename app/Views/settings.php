@@ -13,6 +13,7 @@
                     </div>
                     <div class="col-md-12">
                         <div class="mb-3 text-center">
+                            <input type="hidden" id="center_id" value="">
                             <button class="btn btn-primary" id="sbt-center">Submit</button>
                         </div>
                     </div>
