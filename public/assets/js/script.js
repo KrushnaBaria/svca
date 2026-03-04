@@ -1493,6 +1493,171 @@
             });
         },
 
+        initAttendance: function() {
+            let attDatePicker = flatpickr("#att-date", {
+                altInput: true,
+                altFormat: "d-m-Y",
+                dateFormat: "Y-m-d",
+                defaultDate: new Date(),
+                maxDate: new Date(),
+            });
+
+            var center_ftr = '',
+                type_ftr   = '',
+                att_date   = $('#att-date').val();
+
+            $('#attendance-search-btn').on('click', function(){
+                center_ftr = $('#center-ftr').val();
+                type_ftr   = $('#type-ftr').val();
+                att_date   = $('#att-date').val();
+                attendanceTbl.ajax.reload();
+            });
+
+            $('#attendance-clear-btn').on('click', function(){
+                center_ftr = '';
+                type_ftr   = '';
+                $('#center-ftr').val('');
+                $('#type-ftr').val('');
+                attendanceTbl.ajax.reload();
+            });
+
+            let attendanceTbl = new DataTable('#attendance-tbl', {
+                responsive: true,
+                scrollX: true,
+                searching: true,
+                lengthChange: true,
+                processing: true,
+                serverSide: true,
+                bSortable: true,
+                bFilter: true,
+                pagingType: "full_numbers",
+                ajax: {
+                    url: conf.baseUrl + "/attendance/get-students",
+                    type: 'post',
+                    data: function (d) {
+                        d.center_ftr = center_ftr;
+                        d.type_ftr   = type_ftr;
+                        d.att_date   = $('#att-date').val();
+                    }
+                },
+                lengthMenu: [
+                    [5, 10, 20, -1],
+                    [5, 10, 20, "All"]
+                ],
+                pageLength: 10,
+                paging: true,
+                ordering: false,
+                columnDefs: [
+                    {
+                        targets: [0],
+                        orderable: false,
+                        data: function (row, type, val, meta) {  
+                            return meta.row + 1;
+                        }
+                    },
+                    {
+                        targets: [1],
+                        orderable: true,
+                        data: function (row) {
+                            return row.id;
+                        }
+                    },
+                    {
+                        targets: [2],
+                        orderable: true,
+                        data: function (row) {
+                            return row.name + (row.fname ? ' ' + row.fname : '');
+                        }
+                    },
+                    {
+                        targets: [3],
+                        orderable: true,
+                        data: function (row) {
+                            return row.center_name;
+                        }
+                    },
+                    {
+                        targets: [4],
+                        orderable: true,
+                        data: function (row) {
+                            return row.course_name;
+                        }
+                    },
+                    {
+                        targets: [5],
+                        orderable: false,
+                        data: function (row) {
+                            var checked = row.attendance_status === 'present' ? 'checked' : '';
+                            var label   = row.attendance_status === 'present' ? 'Present' : 'Absent';
+                            return '<div class="form-check form-switch mb-0">' +
+                                '<input class="form-check-input attendance-status" type="checkbox" ' + checked + '>' +
+                                '<label class="form-check-label ms-2">' + label + '</label>' +
+                                '</div>';
+                        }
+                    }
+                ],
+                createdRow: function(row, data) {
+                    $(row).attr('data-student-id', data.id);
+                }
+            });
+
+            $('#attendance-tbl').on('change', '.attendance-status', function(){
+                var label = $(this).closest('.form-check').find('.form-check-label');
+                if($(this).is(':checked')){
+                    label.text('Present');
+                }else{
+                    label.text('Absent');
+                }
+            });
+
+            $('#attendance-save-btn').on('click', function(){
+                var attDate = $('#att-date').val();
+                if(!attDate){
+                    alert("Please select attendance date first.");
+                    return false;
+                }
+
+                var attendance = [];
+                $('#attendance-tbl tbody tr').each(function(){
+                    var stuId = $(this).data('student-id');
+                    if(!stuId){
+                        return;
+                    }
+                    var isPresent = $(this).find('.attendance-status').is(':checked');
+                    attendance.push({
+                        stu_id: stuId,
+                        status: isPresent ? 'present' : 'absent'
+                    });
+                });
+
+                if(attendance.length === 0){
+                    alert("No students found to save attendance.");
+                    return false;
+                }
+
+                $.ajax({
+                    url: conf.baseUrl + "/attendance/save",
+                    type: "POST",
+                    dataType: "json",
+                    data: {
+                        att_date: attDate,
+                        attendance: attendance
+                    },
+                    success: function(res) {
+                        if(res.success == 1) {
+                            alert("Attendance saved successfully.");
+                            attendanceTbl.ajax.reload();
+                        } else {
+                            alert(res.message || "Error saving attendance.");
+                        }
+                    },
+                    error: function() {
+                        alert("An error occurred while saving attendance.");
+                    }
+                });
+            });
+        },
+
         initInquery: function() {
             let SVCAobj = this;
 

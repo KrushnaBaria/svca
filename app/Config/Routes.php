@@ -130,3 +130,9 @@ $routes->group('mytask', function ($routes){
     $routes->post('list', 'MyTask::list');
     $routes->post('add', 'MyTask::add');
 });
+
+$routes->group('attendance', function ($routes){
+    $routes->get('/', 'Attendance::index');
+    $routes->post('get-students', 'Attendance::getStudents');
+    $routes->post('save', 'Attendance::save');
+});

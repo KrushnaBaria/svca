@@ -76,3 +76,16 @@ ALTER TABLE `stu_certificates` CHANGE `svca_id` `stu_id` INT(11) NOT NULL;
 
 [01-03-2026]
 CREATE TABLE `svca_`.`my_task` (`id` INT NOT NULL AUTO_INCREMENT , `user_id` INT NOT NULL , `task` VARCHAR(255) NOT NULL , `updated_date` TIMESTAMP NOT NULL , PRIMARY KEY (`id`));
+
+[04-03-2026]
+CREATE TABLE `student_attendance` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `stu_id` INT NOT NULL,
+  `att_date` DATE NOT NULL,
+  `status` ENUM('present', 'absent') NOT NULL DEFAULT 'absent',
+  `created_at` DATETIME DEFAULT NULL,
+  `updated_at` DATETIME DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uniq_student_date` (`stu_id`, `att_date`),
+  KEY `idx_att_date` (`att_date`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;  

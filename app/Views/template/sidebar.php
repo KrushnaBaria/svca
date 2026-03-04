@@ -55,6 +55,12 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
+                    <a class="sidebar-link" href="<?php echo base_url('/attendance');?>" aria-expanded="false">
+                        <i class="ti ti-user-check"></i>
+                        <span class="hide-menu">Attendance</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
                     <a class="sidebar-link" href="<?php echo base_url('/student/birthday-buzz');?>" aria-expanded="false">
                         <i class="ti ti-cake"></i>
                         <span class="hide-menu">Birthday Buzz</span>
