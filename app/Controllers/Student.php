@@ -234,6 +234,153 @@ class Student extends BaseController
         return view('template/header', ['page_title' => 'Birthday Buzz']) . view('student/birthday_buzz') . view('template/footer', ['app_init' => 'initBirthdayBuzz']);
     }
 
+    public function importForm()
+    {
+        return view('template/header', ['page_title' => 'Import Students']) . view('student/import') . view('template/footer', ['app_init' => 'initImportStudent']);
+    }
+
+    public function importCsv()
+    {
+        $file = $this->request->getFile('csv_file');
+
+        if (!$file || !$file->isValid()) {
+            return $this->response->setJSON(['success' => 0, 'message' => 'Please upload a CSV file.']);
+        }
+
+        if (strtolower($file->getClientExtension()) !== 'csv') {
+            return $this->response->setJSON(['success' => 0, 'message' => 'Only CSV files are allowed.']);
+        }
+
+        $handle = fopen($file->getTempName(), 'r');
+        if (!$handle) {
+            return $this->response->setJSON(['success' => 0, 'message' => 'Unable to read uploaded file.']);
+        }
+
+        $inserted = 0;
+        $skipped  = 0;
+        $errors   = [];
+        $rowNum   = 0;
+
+        // Use a transaction so that if any row fails, nothing is imported
+        $db = $this->model->db;
+        $db->transBegin();
+
+        // Expected columns:
+        // 0 => No
+        // 1 => Student Name
+        // 2 => Father Name
+        // 3 => Center (name)
+        // 4 => Course (name)
+        // 5 => Admission Date (Y-m-d or d-m-Y)
+        // 6 => Phone Number
+        // 7 => Alternative Number
+
+        // Skip header row
+        if (($header = fgetcsv($handle)) === false) {
+            fclose($handle);
+            return $this->response->setJSON(['success' => 0, 'message' => 'CSV file is empty.']);
+        }
+
+        while (($row = fgetcsv($handle)) !== false) {
+            $rowNum++;
+
+            if (count($row) < 8) {
+                $errors[] = "Row {$rowNum}: Not enough columns.";
+                continue;
+            }
+
+            $studentName = trim($row[1] ?? '');
+            $fatherName  = trim($row[2] ?? '');
+            $centerName  = trim($row[3] ?? '');
+            $courseName  = trim($row[4] ?? '');
+            $admDateRaw  = trim($row[5] ?? '');
+            $phone       = trim($row[6] ?? '');
+            $altPhone    = trim($row[7] ?? '');
+
+            if ($studentName === '' || $centerName === '' || $courseName === '' || $admDateRaw === '' || $phone === '') {
+                $errors[] = "Row {$rowNum}: Missing required fields.";
+                continue;
+            }
+
+            $center = $this->centerModel->where('center', $centerName)->first();
+            $course = $this->courseModel->where('course', $courseName)->first();
+
+            if (!$center) {
+                $errors[] = "Row {$rowNum}: Center not found.";
+                continue;
+            }
+
+            if (!$course) {
+                $errors[] = "Row {$rowNum}: Course not found.";
+                continue;
+            }
+
+            $admDate = \DateTime::createFromFormat('Y-m-d', $admDateRaw)
+                ?: \DateTime::createFromFormat('d-m-Y', $admDateRaw)
+                ?: \DateTime::createFromFormat('d/m/Y', $admDateRaw);
+
+            if ($admDate) {
+                $admDateForModel = $admDate->format('d/m/Y');
+            } else {
+                $admDateForModel = '';
+            }
+
+            $data = [
+                's_name'      => $studentName,
+                'f_name'      => $fatherName,
+                'm_name'      => '',
+                'dob'         => '',
+                'p_number'    => $phone,
+                'ap_number'   => $altPhone,
+                'gender'      => '',
+                'marital_sts' => '',
+                'cast'        => '',
+                'lst_qulifi'  => '',
+                'per'         => '',
+                'course'      => $course['id'],
+                'fees'        => 0,
+                'b_time'      => '',
+                'adhar'       => '',
+                'center'      => $center['id'],
+                'dist'        => '',
+                'address'     => '',
+                'ref_by'      => '',
+                'adm_date'    => $admDateForModel,
+                'updated_by'  => auth()->user()->email,
+                'discount'    => 0,
+            ];
+            
+            $res = $this->model->addStudent($data);
+            if ($res) {
+                $inserted++;
+            } else {
+                $errors[] = "Row {$rowNum}: Failed to insert.";
+            }
+        }
+
+        fclose($handle);
+
+        // If there were any errors for any row, roll back the entire import
+        if (!empty($errors)) {
+            $db->transRollback();
+            return $this->response->setJSON([
+                'success' => 0,
+                'message' => 'Import failed. No students were imported due to errors.',
+                'errors'  => $errors,
+            ]);
+        }
+
+        // Otherwise commit all inserted rows
+        $db->transCommit();
+
+        return $this->response->setJSON([
+            'success'  => 1,
+            'inserted' => $inserted,
+            'skipped'  => $skipped,
+            'errors'   => $errors,
+        ]);
+    }
+
     public function getStuBirthday()
     {
         $data = [

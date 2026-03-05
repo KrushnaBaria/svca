@@ -3336,6 +3336,131 @@
 
         },
 
+        initImportStudent: function(){
+            let $fileInput = $('#csv_file');
+            let $form = $('#student-import-form');
+            let $spinner = $('#upload-spinner');
+            let $submitBtn = $('#student-import-submit');
+            let $result = $('#import-result');
+            let $previewTable = $('#csv-preview-table');
+
+            $fileInput.on('change', function () {
+                $result.addClass('d-none').empty();
+                $previewTable.addClass('d-none');
+                $previewTable.find('thead').empty();
+                $previewTable.find('tbody').empty();
+
+                let file = this.files[0];
+                if (!file) {
+                    return;
+                }
+
+                if (file.type !== 'text/csv' && !file.name.toLowerCase().endsWith('.csv')) {
+                    alert('Please select a CSV file.');
+                    $fileInput.val('');
+                    return;
+                }
+
+                let reader = new FileReader();
+                reader.onload = function (e) {
+                    let text = e.target.result || '';
+                    let lines = text.split(/\r?\n/).filter(function (l) { return l.trim() !== ''; });
+                    if (lines.length === 0) {
+                        return;
+                    }
+
+                    let maxRows = 10;
+                    let headerCells = lines[0].split(',');
+                    let theadHtml = '<tr>' + headerCells.map(function (c) {
+                        return '<th class="small">' + $('<div>').text(c).html() + '</th>';
+                    }).join('') + '</tr>';
+
+                    let tbodyHtml = '';
+                    for (let i = 1; i < Math.min(lines.length, maxRows + 1); i++) {
+                        let cols = lines[i].split(',');
+                        tbodyHtml += '<tr>' + cols.map(function (c) {
+                            return '<td class="small">' + $('<div>').text(c).html() + '</td>';
+                        }).join('') + '</tr>';
+                    }
+
+                    $previewTable.find('thead').html(theadHtml);
+                    $previewTable.find('tbody').html(tbodyHtml);
+                    $previewTable.removeClass('d-none');
+                };
+                reader.readAsText(file);
+            });
+
+            $form.on('submit', function (e) {
+                e.preventDefault();
+
+                let file = $fileInput[0].files[0];
+                if (!file) {
+                    alert('Please select a CSV file.');
+                    return false;
+                }
+
+                $spinner.removeClass('d-none');
+                $submitBtn.prop('disabled', true);
+                $result.removeClass('d-none').html('');
+
+                let formData = new FormData(this);
+
+                $.ajax({
+                    url: $form.attr('action'),
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    dataType: 'json',
+                    success: function (res) {
+                        $spinner.addClass('d-none');
+                        $submitBtn.prop('disabled', false);
+
+                        if (res.success == 1) {
+                            let html = '<div class="alert alert-success mb-2">Imported <strong>' + (res.inserted || 0) + '</strong> students.';
+                            if (res.skipped) {
+                                html += ' Skipped <strong>' + res.skipped + '</strong> row(s).';
+                            }
+                            html += '</div>';
+
+                            if (res.errors && res.errors.length) {
+                                html += '<div class="alert alert-warning mb-0"><strong>Details:</strong><ul class="mb-0">';
+                                res.errors.slice(0, 10).forEach(function (msg) {
+                                    html += '<li class="small">' + $('<div>').text(msg).html() + '</li>';
+                                });
+                                if (res.errors.length > 10) {
+                                    html += '<li class="small">+' + (res.errors.length - 10) + ' more...</li>';
+                                }
+                                html += '</ul></div>';
+                            }
+
+                            $result.html(html).removeClass('d-none');
+                        } else {
+                            // Always show all errors, not just first 10, on import failure.
+                            let html = '<div class="alert alert-danger mb-2">' +
+                                $('<div>').text(res.message || 'Import failed. No students were imported.').html() +
+                                '</div>';
+
+                            if (res.errors && res.errors.length) {
+                                html += '<div class="alert alert-warning mb-0"><strong>Details:</strong><ul class="mb-0">';
+                                res.errors.forEach(function (msg) {
+                                    html += '<li class="small">' + $('<div>').text(msg).html() + '</li>';
+                                });
+                                html += '</ul></div>';
+                            }
+
+                            $result.html(html).removeClass('d-none');
+                        }
+                    },
+                    error: function () {
+                        $spinner.addClass('d-none');
+                        $submitBtn.prop('disabled', false);
+                        $result.html('<div class="alert alert-danger mb-0">An error occurred while uploading the file.</div>').removeClass('d-none');
+                    }
+                });
+            });
+        },
+
         initMyTask: function(){
             let tasktable = $('#task-tbl');
             let taskTable = new DataTable('#task-tbl', {

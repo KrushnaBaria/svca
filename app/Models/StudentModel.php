@@ -36,6 +36,7 @@ class StudentModel extends Model
                     return false;
                 }
             }
+            return true;
         } else {
             return false;
         }

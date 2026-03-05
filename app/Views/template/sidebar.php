@@ -43,6 +43,12 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
+                    <a class="sidebar-link" href="<?php echo base_url('/student/import');?>" aria-expanded="false">
+                        <i class="ti ti-file-upload"></i>
+                        <span class="hide-menu">Import Students</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
                     <a class="sidebar-link" href="<?php echo base_url('/inquery');?>" aria-expanded="false">
                         <i class="ti ti-phone-call"></i>
                         <span class="hide-menu">Inquery</span>
