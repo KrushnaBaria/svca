@@ -3145,7 +3145,7 @@
                     dataType: "json",
                     data: {
                         stu_id: $('#stu_id').val(),
-                        student_name: $('#student-name').val(),
+                        student_name: $('#student-name').val().toLowerCase().replace(/\b\w/g, function(l){ return l.toUpperCase(); }),
                         center: $('#center').val(),
                         certificate_no: $('#certificate_no').val(),
                         issued_date: $('#issued_date').val(),
