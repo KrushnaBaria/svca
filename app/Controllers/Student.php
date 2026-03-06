@@ -236,7 +236,7 @@ class Student extends BaseController
 
     public function importForm()
     {
-        return view('template/header', ['page_title' => 'Import Students']) . view('student/import') . view('template/footer', ['app_init' => 'initImportStudent']);
+        return view('template/header', ['page_title' => 'Import']) . view('student/import') . view('template/footer', ['app_init' => 'initImport']);
     }
 
     public function importCsv()

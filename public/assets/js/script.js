@@ -3336,7 +3336,7 @@
 
         },
 
-        initImportStudent: function(){
+        initImportStudentCsv: function(){
             let $fileInput = $('#csv_file');
             let $form = $('#student-import-form');
             let $spinner = $('#upload-spinner');
@@ -3412,6 +3412,93 @@
                     }
                 });
             });
+        },
+
+        initImportPaymentCsv: function(){
+            let $paymentfileInput = $('#payment_csv_file');
+            let $paymentform = $('#payment-import-form');
+            let $paymentspinner = $('#payment-upload-spinner');
+            let $paymentsubmitBtn = $('#payment-import-submit');
+            let $paymentresult = $('#payment-import-result');
+
+            if(!$paymentform.length){
+                return;
+            }
+
+            $paymentform.on('submit', function (e) {
+                e.preventDefault();
+
+                let file = $paymentfileInput[0] ? $paymentfileInput[0].files[0] : null;
+                if (!file) {
+                    alert('Please select a CSV file.');
+                    return false;
+                }
+
+                $paymentspinner.removeClass('d-none');
+                $paymentsubmitBtn.prop('disabled', true);
+                $paymentresult.removeClass('d-none').html('');
+
+                let formData = new FormData(this);
+
+                $.ajax({
+                    url: $paymentform.attr('action'),
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    dataType: 'json',
+                    success: function (res) {
+                        $paymentspinner.addClass('d-none');
+                        $paymentsubmitBtn.prop('disabled', false);
+
+                        if (res && res.success == 1) {
+                            let html = '<div class="alert alert-success mb-2">Imported <strong>' + (res.inserted || 0) + '</strong> payments.';
+                            if (res.skipped) {
+                                html += ' Skipped <strong>' + res.skipped + '</strong> row(s).';
+                            }
+                            html += '</div>';
+
+                            if (res.errors && res.errors.length) {
+                                html += '<div class="alert alert-warning mb-0"><strong>Details:</strong><ul class="mb-0">';
+                                res.errors.slice(0, 10).forEach(function (msg) {
+                                    html += '<li class="small">' + $('<div>').text(msg).html() + '</li>';
+                                });
+                                if (res.errors.length > 10) {
+                                    html += '<li class="small">+' + (res.errors.length - 10) + ' more...</li>';
+                                }
+                                html += '</ul></div>';
+                            }
+
+                            $paymentresult.html(html).removeClass('d-none');
+                        } else {
+                            let html = '<div class="alert alert-danger mb-2">' +
+                                $('<div>').text((res && res.message) ? res.message : 'Import failed. No payments were imported.').html() +
+                                '</div>';
+
+                            if (res && res.errors && res.errors.length) {
+                                html += '<div class="alert alert-warning mb-0"><strong>Details:</strong><ul class="mb-0">';
+                                res.errors.forEach(function (msg) {
+                                    html += '<li class="small">' + $('<div>').text(msg).html() + '</li>';
+                                });
+                                html += '</ul></div>';
+                            }
+
+                            $paymentresult.html(html).removeClass('d-none');
+                        }
+                    },
+                    error: function () {
+                        $paymentspinner.addClass('d-none');
+                        $paymentsubmitBtn.prop('disabled', false);
+                        $paymentresult.html('<div class="alert alert-danger mb-0">An error occurred while uploading the file.</div>').removeClass('d-none');
+                    }
+                });
+            });
+        },
+
+        initImport: function(){
+            let SVCAobj = this;
+            SVCAobj.initImportStudentCsv();
+            SVCAobj.initImportPaymentCsv();
         },
 
         initMyTask: function(){

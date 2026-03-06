@@ -153,4 +153,124 @@ class Payment extends BaseController
             ->setHeader('Content-Disposition', 'inline; filename="' . $filename . '"')
             ->setBody($dompdf->output());
     }
+
+    public function importCsv()
+    {
+        $file = $this->request->getFile('payment_csv_file');
+
+        if (!$file || !$file->isValid()) {
+            return $this->response->setJSON(['success' => 0, 'message' => 'Please upload a CSV file.']);
+        }
+
+        if (strtolower($file->getClientExtension()) !== 'csv') {
+            return $this->response->setJSON(['success' => 0, 'message' => 'Only CSV files are allowed.']);
+        }
+
+        $handle = fopen($file->getTempName(), 'r');
+        if (!$handle) {
+            return $this->response->setJSON(['success' => 0, 'message' => 'Unable to read uploaded file.']);
+        }
+
+        $inserted = 0;
+        $skipped  = 0;
+        $errors   = [];
+        $rowNum   = 0;
+
+        $db = $this->model->db;
+        $db->transBegin();
+
+        // Expected columns:
+        // 0 => No
+        // 1 => Student ID
+        // 2 => Amount
+        // 3 => Date (Y-m-d or d-m-Y)
+        if (($header = fgetcsv($handle)) === false) {
+            fclose($handle);
+            return $this->response->setJSON(['success' => 0, 'message' => 'CSV file is empty.']);
+        }
+
+        $parseDate = function(string $raw){
+            $raw = trim($raw);
+            if ($raw === '') return null;
+
+            $dt = \DateTime::createFromFormat('Y-m-d H:i:s', $raw)
+                ?: \DateTime::createFromFormat('d-m-Y H:i:s', $raw)
+                ?: \DateTime::createFromFormat('d/m/Y H:i:s', $raw)
+                ?: \DateTime::createFromFormat('Y-m-d', $raw)
+                ?: \DateTime::createFromFormat('d-m-Y', $raw)
+                ?: \DateTime::createFromFormat('d/m/Y', $raw);
+
+            if (!$dt) return null;
+
+            // If date had no explicit time, default to 00:00:00
+            return $dt->format('Y-m-d') . ' 00:00:00';
+        };
+
+        while (($row = fgetcsv($handle)) !== false) {
+            $rowNum++;
+
+            if (count($row) < 4) {
+                $errors[] = "Row {$rowNum}: Not enough columns.";
+                continue;
+            }
+
+            $stuIdRaw  = trim($row[1] ?? '');
+            $amountRaw = trim($row[2] ?? '');
+            $dateRaw   = trim($row[3] ?? '');
+
+            $stuId = ctype_digit($stuIdRaw) ? (int) $stuIdRaw : 0;
+            $amount = is_numeric($amountRaw) ? (float) $amountRaw : null;
+            $addDate = $parseDate($dateRaw);
+
+            if ($stuId <= 0 || $amount === null || $amount <= 0 || !$addDate) {
+                $errors[] = "Row {$rowNum}: Invalid Student ID / Amount / Date.";
+                continue;
+            }
+
+            $student = $this->studentModel
+                ->where('id', $stuId)
+                ->where('del_sts', 0)
+                ->first();
+
+            if (!$student) {
+                $errors[] = "Row {$rowNum}: Student not found (ID {$stuId}).";
+                continue;
+            }
+
+            $res = $this->model->save([
+                'stu_id'       => $stuId,
+                'amount'       => $amount,
+                'remark'       => 'Imported via CSV',
+                'add_date'     => $addDate,
+                'updated_by'   => auth()->user()->email,
+                'updated_date' => date('Y-m-d H:i:s'),
+            ]);
+
+            if ($res) {
+                $inserted++;
+            } else {
+                $errors[] = "Row {$rowNum}: Failed to insert payment.";
+            }
+        }
+
+        fclose($handle);
+
+        if (!empty($errors)) {
+            $db->transRollback();
+            return $this->response->setJSON([
+                'success' => 0,
+                'message' => 'Import failed. No payments were imported due to errors.',
+                'errors'  => $errors,
+            ]);
+        }
+
+        $db->transCommit();
+
+        return $this->response->setJSON([
+            'success'  => 1,
+            'inserted' => $inserted,
+            'skipped'  => $skipped,
+            'errors'   => $errors,
+        ]);
+    }
 }

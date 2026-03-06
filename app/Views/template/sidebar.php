@@ -42,12 +42,14 @@
                         <span class="hide-menu">Student</span>
                     </a>
                 </li>
-                <li class="sidebar-item">
-                    <a class="sidebar-link" href="<?php echo base_url('/student/import');?>" aria-expanded="false">
-                        <i class="ti ti-file-upload"></i>
-                        <span class="hide-menu">Import Students</span>
-                    </a>
-                </li>
+                 <?php if ($user_group == 'superadmin'){?>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="<?php echo base_url('/student/import');?>" aria-expanded="false">
+                            <i class="ti ti-file-upload"></i>
+                            <span class="hide-menu">Import</span>
+                        </a>
+                    </li>
+                <?php } ?>
                 <li class="sidebar-item">
                     <a class="sidebar-link" href="<?php echo base_url('/inquery');?>" aria-expanded="false">
                         <i class="ti ti-phone-call"></i>

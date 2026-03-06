@@ -88,6 +88,7 @@ $routes->group('payment', function ($routes){
     $routes->get('invoice/(:num)', 'Payment::invoice/$1');
     $routes->post('add', 'Payment::add');
     $routes->post('get-payhistory', 'Payment::getPayHistory');
+    $routes->post('import-csv', 'Payment::importCsv');
 });
 
 $routes->group('logs', function ($routes) {
