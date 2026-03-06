@@ -284,7 +284,7 @@ class Student extends BaseController
         while (($row = fgetcsv($handle)) !== false) {
             $rowNum++;
 
-            if (count($row) < 8) {
+            if (count($row) < 9) {
                 $errors[] = "Row {$rowNum}: Not enough columns.";
                 continue;
             }
@@ -296,6 +296,7 @@ class Student extends BaseController
             $admDateRaw  = trim($row[5] ?? '');
             $phone       = trim($row[6] ?? '');
             $altPhone    = trim($row[7] ?? '');
+            $fees        = trim($row[8] ?? '');
 
             if ($studentName === '' || $centerName === '' || $courseName === '' || $admDateRaw === '' || $phone === '') {
                 $errors[] = "Row {$rowNum}: Missing required fields.";
@@ -303,7 +304,7 @@ class Student extends BaseController
             }
 
             $center = $this->centerModel->where('center', $centerName)->first();
-            $course = $this->courseModel->where('course', $courseName)->first();
+            $course = $this->courseModel->where('course', $courseName)->where('center', $center['id'])->first();
 
             if (!$center) {
                 $errors[] = "Row {$rowNum}: Center not found.";
@@ -313,6 +314,12 @@ class Student extends BaseController
             if (!$course) {
                 $errors[] = "Row {$rowNum}: Course not found.";
                 continue;
+            }
+
+            if ($fees){
+                $fees = $fees;
+            }else{
+                $fees = $course['price'];
             }
 
             $admDate = \DateTime::createFromFormat('Y-m-d', $admDateRaw)
@@ -338,7 +345,7 @@ class Student extends BaseController
                 'lst_qulifi'  => '',
                 'per'         => '',
                 'course'      => $course['id'],
-                'fees'        => 0,
+                'fees'        => $fees,
                 'b_time'      => '',
                 'adhar'       => '',
                 'center'      => $center['id'],
