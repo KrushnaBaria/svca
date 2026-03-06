@@ -36,20 +36,6 @@
                 </div>
             </div>
         </div>
-
-        <div class="card mt-4">
-            <div class="card-header text-bg-light">
-                <h5 class="mb-0">CSV Preview (first 10 rows)</h5>
-            </div>
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table id="csv-preview-table" class="table table-bordered table-sm mb-0 d-none">
-                        <thead class="table-light"></thead>
-                        <tbody></tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
     </div>
 </div>
 

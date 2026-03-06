@@ -3342,53 +3342,6 @@
             let $spinner = $('#upload-spinner');
             let $submitBtn = $('#student-import-submit');
             let $result = $('#import-result');
-            let $previewTable = $('#csv-preview-table');
-
-            $fileInput.on('change', function () {
-                $result.addClass('d-none').empty();
-                $previewTable.addClass('d-none');
-                $previewTable.find('thead').empty();
-                $previewTable.find('tbody').empty();
-
-                let file = this.files[0];
-                if (!file) {
-                    return;
-                }
-
-                if (file.type !== 'text/csv' && !file.name.toLowerCase().endsWith('.csv')) {
-                    alert('Please select a CSV file.');
-                    $fileInput.val('');
-                    return;
-                }
-
-                let reader = new FileReader();
-                reader.onload = function (e) {
-                    let text = e.target.result || '';
-                    let lines = text.split(/\r?\n/).filter(function (l) { return l.trim() !== ''; });
-                    if (lines.length === 0) {
-                        return;
-                    }
-
-                    let maxRows = 10;
-                    let headerCells = lines[0].split(',');
-                    let theadHtml = '<tr>' + headerCells.map(function (c) {
-                        return '<th class="small">' + $('<div>').text(c).html() + '</th>';
-                    }).join('') + '</tr>';
-
-                    let tbodyHtml = '';
-                    for (let i = 1; i < Math.min(lines.length, maxRows + 1); i++) {
-                        let cols = lines[i].split(',');
-                        tbodyHtml += '<tr>' + cols.map(function (c) {
-                            return '<td class="small">' + $('<div>').text(c).html() + '</td>';
-                        }).join('') + '</tr>';
-                    }
-
-                    $previewTable.find('thead').html(theadHtml);
-                    $previewTable.find('tbody').html(tbodyHtml);
-                    $previewTable.removeClass('d-none');
-                };
-                reader.readAsText(file);
-            });
 
             $form.on('submit', function (e) {
                 e.preventDefault();
