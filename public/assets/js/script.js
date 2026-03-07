@@ -1723,6 +1723,11 @@
                     return false;
                 }
 
+                if($('#f_name').val() == ''){
+                    $('#f_name').focus();
+                    return false;
+                }
+
                 if($('#p_number').val() == ''){
                     $('#p_number').focus();
                     return false;
@@ -1746,6 +1751,7 @@
                         data: { 
                             id: $('#inqury_id').val(),
                             s_name: $('#s_name').val().toLowerCase().replace(/\b\w/g, function(l){ return l.toUpperCase(); }),
+                            f_name: $('#f_name').val().toLowerCase().replace(/\b\w/g, function(l){ return l.toUpperCase(); }),
                             p_number: $('#p_number').val(),
                             qulification: $('#lst_qulifi').val(),
                             course: $('#course').val(),
@@ -1753,7 +1759,7 @@
                         },
                         success: function(res) {
                             if (res.success == 1) {
-                                $('#s_name, #p_number, #inqury_id').val('');
+                                $('#s_name, #f_name, #p_number, #inqury_id').val('');
                                 inquiryTbl.ajax.reload();
                             } else {
                                 alert(res.message || "Error updating inquiry");
@@ -1873,6 +1879,7 @@
                 let data = inquiryTbl.rows(indexes).data().toArray();
                 if(data.length > 0) {
                     $('#s_name').val(data[0].name);
+                    $('#f_name').val(data[0].fname);
                     $('#p_number').val(data[0].pnumber);
                     $('#lst_qulifi').val(data[0].lqualifi).trigger('change');
                     $('#center').val(data[0].center).trigger('change');
@@ -1883,6 +1890,7 @@
                 }
             }).on('deselect', function(e, dt, type, indexes){
                 $('#s_name').val('');
+                $('#f_name').val('');
                 $('#p_number').val('');
                 // $('#lst_qulifi').val('').trigger('change');
                 $('#course').val('').trigger('change');

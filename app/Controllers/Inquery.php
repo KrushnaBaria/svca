@@ -58,6 +58,7 @@ class Inquery extends BaseController
         $id = $this->request->getPost('id');
         $data = [
             's_name' => $this->request->getPost('s_name'),
+            'f_name' => $this->request->getPost('f_name'),
             'p_number' => $this->request->getPost('p_number'),
             'lst_qulifi' => $this->request->getPost('qulification'),
             'course' => $this->request->getPost('course'),

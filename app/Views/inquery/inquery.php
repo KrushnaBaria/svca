@@ -54,6 +54,10 @@
                         <input type="text" id="s_name" class="form-control" placeholder="Enter Student Name">
                     </div>
                     <div class="mb-3">
+                        <label class="form-label">Father Name</label>
+                        <input type="text" id="f_name" class="form-control" placeholder="Enter Father Name">
+                    </div>
+                    <div class="mb-3">
                         <label for="p_number" class="form-label">Mobile Number</label>
                         <input type="text" class="form-control" id="p_number" placeholder="Enter Mobile Numbers" inputmode="numeric" onkeypress="return event.charCode >= 48 && event.charCode <= 57 || event.charCode == 47;" maxlength="10">
                     </div>
