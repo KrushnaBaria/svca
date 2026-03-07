@@ -88,4 +88,7 @@ CREATE TABLE `student_attendance` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_student_date` (`stu_id`, `att_date`),
   KEY `idx_att_date` (`att_date`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;  
+);
+
+[07-03-2026]
+ALTER TABLE `students` ADD `old_stu` INT NOT NULL AFTER `status`;

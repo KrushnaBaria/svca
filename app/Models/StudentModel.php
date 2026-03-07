@@ -12,7 +12,7 @@ class StudentModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['id', 'name', 'fname', 'mname', 'dob', 'gender', 'marital_sts', 'cast', 'fees', 'course', 'lqualifi', 'per', 'pnumber', 'apnumber', 'adhar', 'admi_date', 'batch_time', 'district', 'address', 'center', 'referred_by', 'add_date', 'updated_by', 'updated_date', 'del_sts', 'status'];
+    protected $allowedFields    = ['id', 'name', 'fname', 'mname', 'dob', 'gender', 'marital_sts', 'cast', 'fees', 'course', 'lqualifi', 'per', 'pnumber', 'apnumber', 'adhar', 'admi_date', 'batch_time', 'district', 'address', 'center', 'referred_by', 'add_date', 'updated_by', 'updated_date', 'del_sts', 'status', 'old_stu'];
 
     public function addStudent($data)
     {
@@ -24,7 +24,7 @@ class StudentModel extends Model
         $adm_date = \DateTime::createFromFormat('d/m/Y', $data['adm_date']);
         $adm_dateFormatted = $adm_date ? $adm_date->format('Y-m-d') : null;
 
-        $query = "INSERT INTO students (id, name, fname, mname, dob, gender, marital_sts, cast, fees, course, lqualifi, per, pnumber, apnumber, adhar, admi_date, batch_time, district, address, center, referred_by, add_date, updated_by, updated_date, del_sts, status) VALUES (NULL, '" . $data['s_name'] . "', '" . $data['f_name'] . "', '" . $data['m_name'] . "', '" . $dobFormatted . "', '" . $data['gender'] . "', '" . $data['marital_sts'] . "', '" . $data['cast'] . "', '" . $data['fees'] . "', '" . $data['course'] . "', '" . $data['lst_qulifi'] . "', '" . $data['per'] . "', '" . $data['p_number'] . "', '" . $data['ap_number'] . "', '" . $data['adhar'] . "', '". $adm_dateFormatted ."', '" . $data['b_time'] . "', '" . $data['dist'] . "', '" . $data['address'] . "', '" . $data['center'] . "', '" . $data['ref_by'] . "', '". date('Y-m-d H:i:s') ."', '" . $data['updated_by'] . "', '". date('Y-m-d H:i:s') ."', 0, 1)";
+        $query = "INSERT INTO students (id, name, fname, mname, dob, gender, marital_sts, cast, fees, course, lqualifi, per, pnumber, apnumber, adhar, admi_date, batch_time, district, address, center, referred_by, add_date, updated_by, updated_date, del_sts, status, old_stu) VALUES (NULL, '" . $data['s_name'] . "', '" . $data['f_name'] . "', '" . $data['m_name'] . "', '" . $dobFormatted . "', '" . $data['gender'] . "', '" . $data['marital_sts'] . "', '" . $data['cast'] . "', '" . $data['fees'] . "', '" . $data['course'] . "', '" . $data['lst_qulifi'] . "', '" . $data['per'] . "', '" . $data['p_number'] . "', '" . $data['ap_number'] . "', '" . $data['adhar'] . "', '". $adm_dateFormatted ."', '" . $data['b_time'] . "', '" . $data['dist'] . "', '" . $data['address'] . "', '" . $data['center'] . "', '" . $data['ref_by'] . "', '". date('Y-m-d H:i:s') ."', '" . $data['updated_by'] . "', '". date('Y-m-d H:i:s') ."', 0, 1, 0)";
         if ($this->db->query($query)) {
             $student_id = $this->db->insertID();
             if($data['discount']){
@@ -159,7 +159,8 @@ class StudentModel extends Model
                     center = '" . $data['center'] . "',
                     referred_by = '" . $data['ref_by'] . "',
                     updated_by = '" . $data['updated_by'] . "',
-                    updated_date = NOW()
+                    updated_date = NOW(),
+                    old_stu = " . ($data['old_stu']) . "
                     WHERE id = " . intval($id);
                 if ($this->db->query($query)) {
                     return true;
@@ -187,7 +188,8 @@ class StudentModel extends Model
                     center = '" . $data['center'] . "',
                     referred_by = '" . $data['ref_by'] . "',
                     updated_by = '" . $data['updated_by'] . "',
-                    updated_date = NOW()
+                    updated_date = NOW(),
+                    old_stu = " . ($data['old_stu']) . "
                     WHERE id = " . intval($id);
                 if ($this->db->query($query)) {
                     return true;
@@ -265,7 +267,7 @@ class StudentModel extends Model
     }
 
     public function add_Inquiry($data){
-        $query = "INSERT INTO students (id, name, fname, mname, dob, gender, cast, course, lqualifi, per, pnumber, apnumber, adhar, admi_date, batch_time, district, address, center, fees, referred_by, add_date, updated_by, updated_date, del_sts, status) VALUES (NULL, '" . $data['s_name'] . "', '" . $data['f_name'] . "', '', '', '', '', '" . $data['course'] . "', '" . $data['lst_qulifi'] . "', '', '" . $data['p_number'] . "', '', '', '', '', '', '', '" . $data['center'] . "', 0, '', NOW(), '". auth()->user()->email ."', NOW(), 0, 0)";
+        $query = "INSERT INTO students (id, name, fname, mname, dob, gender, cast, course, lqualifi, per, pnumber, apnumber, adhar, admi_date, batch_time, district, address, center, fees, referred_by, add_date, updated_by, updated_date, del_sts, status, old_stu) VALUES (NULL, '" . $data['s_name'] . "', '" . $data['f_name'] . "', '', '', '', '', '" . $data['course'] . "', '" . $data['lst_qulifi'] . "', '', '" . $data['p_number'] . "', '', '', '', '', '', '', '" . $data['center'] . "', 0, '', NOW(), '". auth()->user()->email ."', NOW(), 0, 0, 0)";
          if ($this->db->query($query)) {
             return true;
         } else {
