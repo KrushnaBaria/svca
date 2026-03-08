@@ -60,6 +60,7 @@ class Attendance extends BaseController
             'att_date'   => $attDateInput,
             'center_ftr' => $this->request->getPost('center_ftr') ?? '',
             'type_ftr'   => $this->request->getPost('type_ftr') ?? '',
+            'sts_ftr'    => $this->request->getPost('sts_ftr') ?? 0,
         ];
 
         $students = $this->attendanceModel->getStudentsForAttendance($data);

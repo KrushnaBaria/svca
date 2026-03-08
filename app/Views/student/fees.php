@@ -93,8 +93,10 @@
     </div>
     <div class="card-footer">
         <div class="d-flex justify-content-center">
-            <!-- <button type="button" class="btn btn-secondary me-2" onclick="window.print();">Print</button> -->
-            <a href="<?php echo base_url('payment/invoice/' . $student['id']); ?>" target="_blank" class="btn btn-primary">Print Receipt</a>
+            <?php if($student['old_stu'] == 0): ?>
+             <button type="button" class="btn btn-secondary" id="make-old-stu" data-stuid="<?php echo $student['id']; ?>">Mark As Old Student</button>
+            <?php endif; ?>
+            <a href="<?php echo base_url('payment/invoice/' . $student['id']); ?>" target="_blank" class="btn btn-primary ms-auto">Print Receipt</a>
         </div>
     </div>
 </div>

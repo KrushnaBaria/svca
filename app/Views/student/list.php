@@ -13,7 +13,7 @@
                     <?php endforeach; ?>
                 </select>
             </div>
-            <div class="col-md-3 col-10">
+            <div class="col-md-2 col-10">
                 <label class="form-label" for="user-ftr">User</label>
                 <select type="text" class="form-control" id="user-ftr">
                     <option value="">Select User</option>
@@ -22,12 +22,19 @@
                     <?php endforeach; ?>
                 </select>
             </div>
-            <div class="col-md-3 col-10">
+            <div class="col-md-2 col-10">
                 <label class="form-label" for="type-ftr">Type</label>
                 <select type="text" class="form-control" id="type-ftr">
                     <option value="">Select Type</option>
                     <option value="computer">Computer</option>
                     <option value="academy">Academy</option>
+                </select>
+            </div>
+            <div class="col-md-2 col-10">
+                <label class="form-label" for="stu-sts-ftr">Student</label>
+                <select type="text" class="form-control" id="stu-sts-ftr">
+                    <option value="0">Current</option>
+                    <option value="1">Old</option>
                 </select>
             </div>
             <div class="col-md-3 col-10">

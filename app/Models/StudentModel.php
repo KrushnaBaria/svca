@@ -159,8 +159,7 @@ class StudentModel extends Model
                     center = '" . $data['center'] . "',
                     referred_by = '" . $data['ref_by'] . "',
                     updated_by = '" . $data['updated_by'] . "',
-                    updated_date = NOW(),
-                    old_stu = " . ($data['old_stu']) . "
+                    updated_date = NOW()
                     WHERE id = " . intval($id);
                 if ($this->db->query($query)) {
                     return true;
@@ -188,8 +187,7 @@ class StudentModel extends Model
                     center = '" . $data['center'] . "',
                     referred_by = '" . $data['ref_by'] . "',
                     updated_by = '" . $data['updated_by'] . "',
-                    updated_date = NOW(),
-                    old_stu = " . ($data['old_stu']) . "
+                    updated_date = NOW()
                     WHERE id = " . intval($id);
                 if ($this->db->query($query)) {
                     return true;
@@ -245,6 +243,10 @@ class StudentModel extends Model
 
         if($data['type_ftr']){
             $query .= " AND courses.type LIKE '" . $data['type_ftr'] . "'";
+        }
+
+        if($data['sts_ftr'] != ''){
+            $query .= " AND st.old_stu = '" . $data['sts_ftr'] . "'";
         }
 
         if($start_date && $end_date){

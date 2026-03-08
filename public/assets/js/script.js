@@ -1316,22 +1316,27 @@
             var center_ftr = '', 
                 date_ftr = '',
                 user_ftr = '',
-                type_ftr = '';
+                type_ftr = '',
+                sts_ftr = 0;
+
 
             $('#student-search-btn').on('click', function(){
                 center_ftr = $('#center-ftr').val();
                 date_ftr = $('#date-ftr').val();
                 user_ftr = $('#user-ftr').val();
                 type_ftr = $('#type-ftr').val();
+                sts_ftr = $('#stu-sts-ftr').val();
                 studentTbl.ajax.reload();
             });
 
             $('#student-clear-btn').on('click', function(){
                 center_ftr = date_ftr = user_ftr = '';
+                sts_ftr = 0;
                 $('#center-ftr').val('');
                 $('#date-ftr').val('');
                 $('#user-ftr').val('');
                 $('#type-ftr').val('');
+                $('#stu-sts-ftr').val(0);
                 datePicker.clear();
                 studentTbl.ajax.reload();
             })
@@ -1354,6 +1359,7 @@
                         d.date_ftr = date_ftr;
                         d.user_ftr = user_ftr;
                         d.type_ftr = type_ftr;
+                        d.sts_ftr = sts_ftr;
                     }
                 },
                 lengthMenu: [
@@ -1504,20 +1510,38 @@
 
             var center_ftr = '',
                 type_ftr   = '',
+                sts_ftr = 0,
                 att_date   = $('#att-date').val();
 
             $('#attendance-search-btn').on('click', function(){
                 center_ftr = $('#center-ftr').val();
                 type_ftr   = $('#type-ftr').val();
                 att_date   = $('#att-date').val();
+                sts_ftr = $('#stu-sts-ftr').val();
+
+                if(sts_ftr == 1){
+                    $('#attendance-save-btn').addClass('d-none');
+                }else{
+                    $('#attendance-save-btn').removeClass('d-none');
+                }
+
                 attendanceTbl.ajax.reload();
             });
 
             $('#attendance-clear-btn').on('click', function(){
                 center_ftr = '';
                 type_ftr   = '';
+                sts_ftr = 0;
                 $('#center-ftr').val('');
                 $('#type-ftr').val('');
+                $('#stu-sts-ftr').val(0);
+
+                if(sts_ftr == 1){
+                    $('#attendance-save-btn').addClass('d-none');
+                }else{
+                    $('#attendance-save-btn').removeClass('d-none');
+                }
+
                 attendanceTbl.ajax.reload();
             });
 
@@ -1538,6 +1562,7 @@
                         d.center_ftr = center_ftr;
                         d.type_ftr   = type_ftr;
                         d.att_date   = $('#att-date').val();
+                        d.sts_ftr = sts_ftr;
                     }
                 },
                 lengthMenu: [
@@ -1775,17 +1800,16 @@
                         type: "POST",
                         dataType: "json",
                         data: {
-                            s_name: $('#s_name').val(),
+                            s_name: $('#s_name').val().toLowerCase().replace(/\b\w/g, function(l){ return l.toUpperCase(); }),
+                            f_name: $('#f_name').val().toLowerCase().replace(/\b\w/g, function(l){ return l.toUpperCase(); }),
                             p_number: $('#p_number').val(),
                             qulification: $('#lst_qulifi').val(),
                             course: $('#course').val(),
                             center: $('#center').val(),
-                            //ref_by: $('#ref_by').val() ? $('#ref_by').val() : '',
-                            //remark: $('#remark').val() ? $('#remark').val() : ''
                         },
                         success: function(res) {
                             if (res.success == 1) {
-                                $('#s_name, #p_number').val('');
+                                $('#s_name, #f_name, #p_number').val('');
                                 inquiryTbl.ajax.reload();
                             } else {
                                 alert(res.message || "Error saving inquiry");
@@ -2174,6 +2198,32 @@
                     },
                     error: function() {
                         alert("An error occurred while accepting the payment.");
+                    }
+                });
+            });
+
+            $('#make-old-stu').on('click', function(){
+                let confirmation = confirm("Are you sure you want to mark this student as old?");
+                if (!confirmation) {
+                    return;
+                }
+                let studentId = $(this).data('stuid');
+                $.ajax({
+                    url: conf.baseUrl + "/student/mark-as-old",
+                    type: "POST",
+                    dataType: "json",
+                    data: {
+                        student_id: studentId
+                    },
+                    success: function(res) {
+                        if(res.success == 1) {
+                            window.location.href = conf.baseUrl + "student/list";
+                        } else {
+                            alert("Error marking student as old.");
+                        }
+                    },
+                    error: function() {
+                        alert("An error occurred while marking the student as old.");
                     }
                 });
             });

@@ -41,6 +41,7 @@ class AttendanceModel extends Model
 
         $centerFilter = $data['center_ftr'] ?? '';
         $typeFilter   = $data['type_ftr'] ?? '';
+        $stuFilter    = $data['sts_ftr'] ?? 0;
 
         // Restrict to current user's center if not superadmin
         $center_ad = '';
@@ -55,6 +56,7 @@ class AttendanceModel extends Model
         $query = "SELECT st.id,
                          st.name,
                          st.fname,
+                         st.old_stu,
                          centers.center AS center_name,
                          courses.course AS course_name,
                          sa.status AS attendance_status
@@ -82,6 +84,10 @@ class AttendanceModel extends Model
         if (!empty($search)) {
             $like = $this->db->escapeLikeString($search);
             $query .= " AND (st.name LIKE '%{$like}%' OR st.fname LIKE '%{$like}%')";
+        }
+
+        if ($stuFilter !== '') {
+            $query .= " AND st.old_stu = " . ((int) $stuFilter);
         }
 
         $result['recordsTotal'] = $result['recordsFiltered'] = $this->db->query($query)->getNumRows();

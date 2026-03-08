@@ -50,11 +50,11 @@
             <div class="card-body">
                 <form action="">
                     <div class="mb-3">
-                        <label class="form-label">Student Name</label>
+                        <label for="s_name" class="form-label">Student Name</label>
                         <input type="text" id="s_name" class="form-control" placeholder="Enter Student Name">
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Father Name</label>
+                        <label for="f_name" class="form-label">Father Name</label>
                         <input type="text" id="f_name" class="form-control" placeholder="Enter Father Name">
                     </div>
                     <div class="mb-3">

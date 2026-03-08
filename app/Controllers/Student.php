@@ -26,9 +26,9 @@ class Student extends BaseController
     {
         // Do Not Edit This Line
         parent::initController($request, $response, $logger);
-        $this->model = model(\App\Models\StudentModel::class);
-        $this->centerModel = model(\App\Models\CenterModel::class);
-        $this->courseModel = model(\App\Models\CourseModel::class);
+        $this->model = model(StudentModel::class);
+        $this->centerModel = model(CenterModel::class);
+        $this->courseModel = model(CourseModel::class);
         $this->districtModel = model(DistrictModel::class);
         $this->userModel = model(UserModel::class);
         $this->userInfoModel = model(UserInfoModel::class);
@@ -131,6 +131,23 @@ class Student extends BaseController
         }
     }
 
+    public function markAsOld()
+    {
+        $id = $this->request->getPost('student_id');
+
+        $data = [
+            'old_stu' => 1,
+            'updated_date' => date('Y-m-d H:i:s'),
+            'updated_by' => auth()->user()->email
+        ];
+
+        if ($this->model->update($id, $data)) {
+            return json_encode(['success' => 1]);
+        } else {
+            return json_encode(['success' => 0, 'message' => 'Failed to mark student as old.']);
+        }
+    }
+
     public function view($id)
     {
         $student = $this->model->find($id);
@@ -218,7 +235,8 @@ class Student extends BaseController
             'center_ftr' => $this->request->getPost('center_ftr'),
             'user_ftr' => $this->request->getPost('user_ftr'),
             'date_ftr' => $this->request->getPost('date_ftr'),
-            'type_ftr' => $this->request->getPost('type_ftr')
+            'type_ftr' => $this->request->getPost('type_ftr'),
+            'sts_ftr' => $this->request->getPost('sts_ftr'),
         ];
 
         $students = $this->model->getStudents($data);
