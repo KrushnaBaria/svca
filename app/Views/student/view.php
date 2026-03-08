@@ -108,7 +108,7 @@ $initials = strtoupper(substr($s['name'] ?? 'S', 0, 1));
                             </div>
                             <div class="col-12 col-sm-6">
                                 <dt class="small text-muted text-uppercase fw-semibold mb-1">Date of Birth</dt>
-                                <dd class="mb-0"><?= !empty($s['dob']) ? esc(date('d M Y', strtotime($s['dob']))) : '-' ?></dd>
+                                <dd class="mb-0"><?= !empty($s['dob'] && $s['dob'] !== '0000-00-00') ? esc(date('d M Y', strtotime($s['dob']))) : '-' ?></dd>
                             </div>
                             <div class="col-12 col-sm-6">
                                 <dt class="small text-muted text-uppercase fw-semibold mb-1">Gender</dt>

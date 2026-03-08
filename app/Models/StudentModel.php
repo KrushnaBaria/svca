@@ -24,7 +24,11 @@ class StudentModel extends Model
         $adm_date = \DateTime::createFromFormat('d/m/Y', $data['adm_date']);
         $adm_dateFormatted = $adm_date ? $adm_date->format('Y-m-d') : null;
 
-        $query = "INSERT INTO students (id, name, fname, mname, dob, gender, marital_sts, cast, fees, course, lqualifi, per, pnumber, apnumber, adhar, admi_date, batch_time, district, address, center, referred_by, add_date, updated_by, updated_date, del_sts, status, old_stu) VALUES (NULL, '" . $data['s_name'] . "', '" . $data['f_name'] . "', '" . $data['m_name'] . "', '" . $dobFormatted . "', '" . $data['gender'] . "', '" . $data['marital_sts'] . "', '" . $data['cast'] . "', '" . $data['fees'] . "', '" . $data['course'] . "', '" . $data['lst_qulifi'] . "', '" . $data['per'] . "', '" . $data['p_number'] . "', '" . $data['ap_number'] . "', '" . $data['adhar'] . "', '". $adm_dateFormatted ."', '" . $data['b_time'] . "', '" . $data['dist'] . "', '" . $data['address'] . "', '" . $data['center'] . "', '" . $data['ref_by'] . "', '". date('Y-m-d H:i:s') ."', '" . $data['updated_by'] . "', '". date('Y-m-d H:i:s') ."', 0, 1, 0)";
+        $added_date = isset($data['added_date']) ? $data['added_date'] : date('Y-m-d H:i:s');
+
+        $old_stu = isset($data['old_stu']) ? $data['old_stu'] : 0;
+
+        $query = "INSERT INTO students (id, name, fname, mname, dob, gender, marital_sts, cast, fees, course, lqualifi, per, pnumber, apnumber, adhar, admi_date, batch_time, district, address, center, referred_by, add_date, updated_by, updated_date, del_sts, status, old_stu) VALUES (NULL, '" . $data['s_name'] . "', '" . $data['f_name'] . "', '" . $data['m_name'] . "', '" . $dobFormatted . "', '" . $data['gender'] . "', '" . $data['marital_sts'] . "', '" . $data['cast'] . "', '" . $data['fees'] . "', '" . $data['course'] . "', '" . $data['lst_qulifi'] . "', '" . $data['per'] . "', '" . $data['p_number'] . "', '" . $data['ap_number'] . "', '" . $data['adhar'] . "', '". $adm_dateFormatted ."', '" . $data['b_time'] . "', '" . $data['dist'] . "', '" . $data['address'] . "', '" . $data['center'] . "', '" . $data['ref_by'] . "', '". $added_date ."', '" . $data['updated_by'] . "', '". date('Y-m-d H:i:s') ."', 0, 1, " . $old_stu .")";
         if ($this->db->query($query)) {
             $student_id = $this->db->insertID();
             if($data['discount']){

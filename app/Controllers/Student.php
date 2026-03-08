@@ -292,6 +292,9 @@ class Student extends BaseController
         // 5 => Admission Date (Y-m-d or d-m-Y)
         // 6 => Phone Number
         // 7 => Alternative Number
+        // 8 => Fees (optional, if not provided will use course price)
+        // 9 => Added Date (optional, Y-m-d or d-m-Y, default now)
+        // 10 => Old Student (optional, No or Yes) default No
 
         // Skip header row
         if (($header = fgetcsv($handle)) === false) {
@@ -302,7 +305,7 @@ class Student extends BaseController
         while (($row = fgetcsv($handle)) !== false) {
             $rowNum++;
 
-            if (count($row) < 9) {
+            if (count($row) < 11) {
                 $errors[] = "Row {$rowNum}: Not enough columns.";
                 continue;
             }
@@ -315,6 +318,8 @@ class Student extends BaseController
             $phone       = trim($row[6] ?? '');
             $altPhone    = trim($row[7] ?? '');
             $fees        = trim($row[8] ?? '');
+            $addedDateRaw = trim($row[9] ?? '');
+            $stu_old_sts = trim($row[10] ?? 'No');
 
             if ($studentName === '' || $centerName === '' || $courseName === '' || $admDateRaw === '' || $phone === '') {
                 $errors[] = "Row {$rowNum}: Missing required fields.";
@@ -350,6 +355,19 @@ class Student extends BaseController
                 $admDateForModel = '';
             }
 
+            $addedDate =  \DateTime::createFromFormat('Y-m-d', $addedDateRaw) ?: \DateTime::createFromFormat('d-m-Y', $admDateRaw);
+            if($addedDate){
+                $addedDateForModel = $addedDate->format('Y-m-d H:i:s');
+            }else{
+                $addedDateForModel = date('Y-m-d H:i:s');
+            }
+
+            if ($stu_old_sts && strtolower($stu_old_sts) === 'yes') {
+                $old_stu = 1;
+            } else {
+                $old_stu = 0;
+            }
+
             $data = [
                 's_name'      => $studentName,
                 'f_name'      => $fatherName,
@@ -371,8 +389,10 @@ class Student extends BaseController
                 'address'     => '',
                 'ref_by'      => '',
                 'adm_date'    => $admDateForModel,
-                'updated_by'  => auth()->user()->email,
+                'added_date'  => $addedDateForModel,
+                'updated_by'  => 'import@svca.com',
                 'discount'    => 0,
+                'old_stu'     => $old_stu
             ];
             
             $res = $this->model->addStudent($data);
