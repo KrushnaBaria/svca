@@ -757,6 +757,7 @@
                 }
 
                 if($("#course_id").val()){
+                    $('#sbt-course').attr('disabled', 'disabled').text('Updating...');
                     $.ajax({
                         url: conf.baseUrl + "/settings/update-course",
                         type: "POST",
@@ -774,9 +775,11 @@
                                 $("#course_price").val("");
                                 $("#course_center").val("");
                                 $("#course_type").val("");
+                                $('#sbt-course').attr('disabled', false).text('Submit');
                                 courseTbl.ajax.reload(); // Reload the table data
                             } else {
                                 alert("Error updating course");
+                                $('#sbt-course').attr('disabled', false).text('Submit');
                             }
                         },
                         error: function() {
@@ -784,12 +787,13 @@
                         }
                     });
                 }else{
+                    $('#sbt-course').attr('disabled', 'disabled').text('Updating...');
                     $.ajax({
                         url: conf.baseUrl + "/settings/add-course",
                         type: "POST",
                         dataType: "json",
                         data: {
-                            course_name: $("#course_name").val(),
+                            course_name: $("#course_name").val().toUpperCase(),
                             course_price: $("#course_price").val(),
                             center: $("#course_center").val(),
                             type: $("#course_type").val()
@@ -800,13 +804,16 @@
                                 $("#course_price").val("");
                                 $("#course_center").val("");
                                 $("#course_type").val("");
+                                $('#sbt-course').attr('disabled', false).text('Submit');
                                 courseTbl.ajax.reload(); // Reload the table data
                             } else {
                                 alert("Error updating course");
+                                $('#sbt-course').attr('disabled', false).text('Submit');
                             }
                         },
                         error: function() {
                             alert("An error occurred while updating the course.");
+                            $('#sbt-course').attr('disabled', false).text('Submit');
                         }
                     });
                 }
