@@ -22,12 +22,19 @@
     </head>
     <body>
         <div class="container">
+            <div style="text-align: center; margin-bottom: 15px;">
+                <?php if($student['course_type'] == 'academy') { ?>
+                    <h1 style="margin: 0; color: #333;">Swami Vivekanand Career Academy</h1>
+                <?php } else { ?>
+                    <h1 style="margin: 0; color: #333;">Swami Vivekanand Computer Class</h1>
+                <?php } ?>
+            </div>
             <div class="header">
                 <h2>Fee Receipt</h2>
                 <div class="small">
                     <strong>Receipt No:</strong> <?php echo $invoiceNo ?? ''; ?> &nbsp; | &nbsp;
                     <strong>Date:</strong> <?php echo $generatedAt ?? date('d/m/Y H:i'); ?>
-                    <span style="float:right; top: -10px; position: absolute;">
+                    <span style="float:right; top: 40px; position: absolute;">
                         <img src="<?php echo base_url('public/assets/images/logos/favicon.svg'); ?>" alt="Logo" style="height:70px;">
                     </span>
                 </div>
