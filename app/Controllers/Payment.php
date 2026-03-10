@@ -240,9 +240,9 @@ class Payment extends BaseController
             $res = $this->model->save([
                 'stu_id'       => $stuId,
                 'amount'       => $amount,
-                'remark'       => 'Imported via CSV',
+                'remark'       => '',
                 'add_date'     => $addDate,
-                'updated_by'   => auth()->user()->email,
+                'updated_by'   => 'import@svca.com',
                 'updated_date' => date('Y-m-d H:i:s'),
             ]);
 
