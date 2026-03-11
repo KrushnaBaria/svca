@@ -90,14 +90,16 @@ class ExpenseModel extends Model
     public function getMainReportChartData()
     {
         $revenue_query = "SELECT DATE_FORMAT(add_date, '%b') AS month, MONTH(add_date) AS month_no, SUM(amount) AS revenue
-                    FROM payment
-                    GROUP BY YEAR(add_date), MONTH(add_date)
-                    ORDER BY month_no;";
+                            FROM payment
+                            WHERE YEAR(add_date) = YEAR(CURDATE())
+                            GROUP BY YEAR(add_date), MONTH(add_date)
+                            ORDER BY month_no";
         
         $expense_query = "SELECT DATE_FORMAT(add_date, '%b') AS month, MONTH(add_date) AS month_no, SUM(amount) AS expenses
                     FROM expenses
+                    WHERE YEAR(add_date) = YEAR(CURDATE())
                     GROUP BY YEAR(add_date), MONTH(add_date)
-                    ORDER BY month_no;";
+                    ORDER BY month_no";
 
         $revenue_result = $this->db->query($revenue_query)->getResultArray();
         $expense_result = $this->db->query($expense_query)->getResultArray();
