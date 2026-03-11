@@ -200,16 +200,10 @@ class ExpenseModel extends Model
         $revenue_result = count($revenue_result) > 0 ? $revenue_result : [['revenue' => 0]];
         $expense_result = count($expense_result) > 0 ? $expense_result : [['expenses' => 0]];
 
-        if($revenue_result[0]['revenue'] && $expense_result[0]['expenses']){
-            return [
-                'revenue' => $revenue_result[0]['revenue'],
-                'expenses' => $expense_result[0]['expenses'],
-                'profit' => $revenue_result[0]['revenue'] - $expense_result[0]['expenses']
-            ];
-        } else {
-            return [
-                'profit' => 0
-            ];
-        }
+        return [
+            'revenue' => $revenue_result[0]['revenue'],
+            'expenses' => $expense_result[0]['expenses'],
+            'profit' => $revenue_result[0]['revenue'] - $expense_result[0]['expenses']
+        ];
     }
 }
