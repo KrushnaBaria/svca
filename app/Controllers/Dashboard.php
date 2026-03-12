@@ -38,7 +38,8 @@ class Dashboard extends BaseController
 
     public function getMainReportChartData()
     {
-        $data = $this->expenseModel->getMainReportChartData();
+        $year = $this->request->getPost('year') ? $this->request->getPost('year') : date('Y');
+        $data = $this->expenseModel->getMainReportChartData($year);
         if($data){
             return json_encode(['success' => 1, 'data' => $data]);
         } else {

@@ -26,6 +26,7 @@
     <script src="<?php echo base_url('public/assets/js/jquery-ui.js');?>"></script>
     <script src="<?php echo base_url('public/assets/js/flatpickr.js');?>"></script>
     <script src="<?php echo base_url('public/assets/js/monthSelect.js');?>"></script>
+    <script src="<?php echo base_url('public/assets/js/yearpicker.js');?>"></script>
     <script src="<?php echo base_url('public/assets/js/script.js');?>"></script>
 </body>
 </html>

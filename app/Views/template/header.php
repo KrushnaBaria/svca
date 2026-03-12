@@ -18,6 +18,7 @@
   <link rel="stylesheet" href="<?php echo base_url('public/assets/css/datatables.min.css');?>" />
   <link rel="stylesheet" href="<?php echo base_url('public/assets/css/custom.min.css');?>" />
   <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="<?php echo base_url('public/assets/css/yearpicker.css');?>" />
   <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"> -->
 </head>
 <body>

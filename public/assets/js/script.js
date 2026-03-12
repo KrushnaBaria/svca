@@ -311,7 +311,34 @@
 
         initDashboard: function() {
             let SVCAobj = this;
-
+        
+            // Initialize chart with empty options first
+            SVCAobj.mainChart = new ApexCharts(document.querySelector("#main-report-chart"), {
+                chart: { type: 'bar', height: 350 },
+                series: [
+                    { name: 'Revenue', data: [] },
+                    { name: 'Expenses', data: [] },
+                    { name: 'Net Profit', data: [] }
+                ],
+                dataLabels: {
+                    enabled: false
+                },
+                xaxis: { categories: [] },
+                noData: {
+                    text: "No records found",
+                    align: "center",
+                    verticalAlign: "middle",
+                    style: {
+                        color: "#888",
+                        fontSize: "14px"
+                    }
+                }
+            });
+            SVCAobj.mainChart.render();
+        
+            // Load initial chart data
+            SVCAobj.loadMainCHart();
+        
             $('#date-filter').flatpickr({
                 disableMobile: true,
                 defaultDate: new Date(),
@@ -320,85 +347,55 @@
                 altInput: true,
                 plugins: [
                     new monthSelectPlugin({
-                    shorthand: true
+                        shorthand: true
                     })
                 ]
             });
-
-            $.ajax({
-                url: conf.baseUrl + "/dashboard/get-main-report-chart-data",
-                type: "POST",
-                dataType: "json",
-                success: function(res) {
-                    // Prepare the data for ApexCharts
-                    var months = res.data.map(function(item) { return item.month; });
-                    var revenue = res.data.map(function(item) { return item.revenue; });
-                    var expenses = res.data.map(function(item) { return item.expenses; });
-                    var profit = res.data.map(function(item) { return item.profit; });
-
-                    var options = {
-                        series: [{
-                            name: 'Revenue',
-                            data: revenue
-                        }, {
-                            name: 'Expenses',
-                            data: expenses
-                        }, {
-                            name: 'Net Profit',
-                            data: profit
-                        }],
-                        chart: {
-                            type: 'bar',
-                            height: 350
-                        },
-                        plotOptions: {
-                            bar: {
-                                horizontal: false,
-                                columnWidth: '55%',
-                                borderRadius: 5,
-                                borderRadiusApplication: 'end'
-                            },
-                        },
-                        dataLabels: {
-                            enabled: false
-                        },
-                        stroke: {
-                            show: true,
-                            width: 2,
-                            colors: ['transparent']
-                        },
-                        xaxis: {
-                            categories: months,
-                        },
-                        yaxis: {
-                            title: {
-                                text: '₹ (Rupees)'
-                            }
-                        },
-                        fill: {
-                            opacity: 1
-                        },
-                        tooltip: {
-                            y: {
-                                formatter: function (val) {
-                                    return "₹ " + val + " Rupees"
-                                }
-                            }
-                        }
-                    };
-              
-                      var chart = new ApexCharts(document.querySelector("#main-report-chart"), options);
-                      chart.render();
-                }
+        
+            $('#year-filter').yearpicker();
+        
+            $('#year-filter').on('change', function() {
+                SVCAobj.loadMainCHart(); // Now properly updates the chart
             });
-
-            $('#date-filter,#center-filter').on('change', function(){
+        
+            $('#date-filter, #center-filter').on('change', function() {
                 SVCAobj.getCounts();
             });
-
+        
             SVCAobj.getCounts();
             SVCAobj.todayFollowUp();
             SVCAobj.recentInquey();
+        },
+        
+        loadMainCHart: function() {
+            let SVCAobj = this;
+        
+            $.ajax({
+                url: conf.baseUrl + "/dashboard/get-main-report-chart-data",
+                type: "POST",
+                data: {
+                    year: $('#year-filter').val(),
+                },
+                dataType: "json",
+                success: function(res) {
+                    var rows = (res && Array.isArray(res.data)) ? res.data : [];
+
+                    var months   = rows.map(function(item) { return item.month; });
+                    var revenue  = rows.map(function(item) { return item.revenue; });
+                    var expenses = rows.map(function(item) { return item.expenses; });
+                    var profit   = rows.map(function(item) { return item.profit; });
+        
+                    // Update the existing chart instance instead of returning options
+                    SVCAobj.mainChart.updateOptions({
+                        series: [
+                            { name: 'Revenue',    data: revenue  },
+                            { name: 'Expenses',   data: expenses },
+                            { name: 'Net Profit', data: profit   }
+                        ],
+                        xaxis: { categories: months }
+                    });
+                }
+            });
         },
 
         initAdDashboard: function() {

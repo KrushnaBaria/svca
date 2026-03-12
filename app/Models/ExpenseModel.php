@@ -87,17 +87,17 @@ class ExpenseModel extends Model
         return $result;
     }
 
-    public function getMainReportChartData()
+    public function getMainReportChartData($year)
     {
         $revenue_query = "SELECT DATE_FORMAT(add_date, '%b') AS month, MONTH(add_date) AS month_no, SUM(amount) AS revenue
                             FROM payment
-                            WHERE YEAR(add_date) = YEAR(CURDATE())
+                            WHERE YEAR(add_date) = " . $year . "
                             GROUP BY YEAR(add_date), MONTH(add_date)
                             ORDER BY month_no";
         
         $expense_query = "SELECT DATE_FORMAT(add_date, '%b') AS month, MONTH(add_date) AS month_no, SUM(amount) AS expenses
                     FROM expenses
-                    WHERE YEAR(add_date) = YEAR(CURDATE())
+                    WHERE YEAR(add_date) = " . $year . "
                     GROUP BY YEAR(add_date), MONTH(add_date)
                     ORDER BY month_no";
 
