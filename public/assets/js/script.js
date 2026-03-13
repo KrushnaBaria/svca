@@ -3634,6 +3634,69 @@
             });
         },
 
+        initTaskList: function(){
+            let taskListTableEl = $('#task-list-tbl');
+
+            let taskListTable = new DataTable('#task-list-tbl', {
+                responsive: true,
+                scrollX: true,
+                searching: typeof taskListTableEl.data('dt-searching') === 'undefined' ? true : taskListTableEl.data('dt-searching'),
+                lengthChange: typeof taskListTableEl.data('dt-lengthchange') === 'undefined' ? true : taskListTableEl.data('dt-lengthchange'),
+                processing: true,
+                serverSide: true,
+                bSortable: true,
+                bFilter: true,
+                searching: false,
+                pagingType: "full_numbers",
+                ajax: {
+                    url: conf.baseUrl + "task/list",
+                    type: 'post',
+                },
+                lengthMenu: [
+                    [5, 10, 20, -1],
+                    [5, 10, 20, "All"]
+                ],
+                pageLength: (typeof taskListTableEl.data('dt-pagelength') === 'undefined' || taskListTableEl.data('dt-pagelength') === '-1') ? 5 : taskListTableEl.data('dt-pagelength'),
+                paging: true,
+                ordering: false,
+                columnDefs: [
+                    {
+                        width: '10%',
+                        targets: [0],
+                        orderable: false,
+                        data: function (row, type, val, meta) {
+                            return meta.row + 1;
+                        }
+                    },
+                    {
+                        targets: [1],
+                        orderable: false,
+                        data: function (row) {
+                            if (row.first_name || row.last_name) {
+                                console.log(row);
+                                return [row.first_name, row.last_name].filter(Boolean).join(' ');
+                            }
+                            return row.user_id;
+                        }
+                    },
+                    {
+                        targets: [2],
+                        orderable: false,
+                        data: function (row) {
+                            return row.task;
+                        }
+                    },
+                    {
+                        targets: [3],
+                        orderable: false,
+                        data: function (row) {
+                            return row.updated_date;
+                        }
+                    }
+                ],
+            });
+        },
+
         init: function(calltoinit) {
             if(typeof this[calltoinit] === "function"){
                 this[calltoinit]();
