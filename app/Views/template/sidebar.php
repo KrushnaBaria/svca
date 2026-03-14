@@ -50,7 +50,7 @@
                 </li>
                 <li class="sidebar-item">
                     <a class="sidebar-link" href="<?php echo base_url('/attendance');?>" aria-expanded="false">
-                        <i class="ti ti-user-check"></i>
+                        <i class="ti ti-calendar"></i>
                         <span class="hide-menu">Attendance</span>
                     </a>
                 </li>

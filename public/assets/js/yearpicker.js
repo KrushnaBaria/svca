@@ -266,8 +266,8 @@ const Yearpicker = (function () {
       $this.oldValue = defaultYear;
 
       const currentYear = new Date().getFullYear();
-      // set the defaultyear
-      year = year || defaultYear || null;
+      // set the defaultyear (fall back to current year)
+      year = year || defaultYear || currentYear;
 
       // set the startyear
       if (startYear) {
