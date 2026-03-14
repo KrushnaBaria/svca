@@ -42,24 +42,10 @@
                         <span class="hide-menu">Student</span>
                     </a>
                 </li>
-                 <?php if ($user_group == 'superadmin'){?>
-                    <li class="sidebar-item">
-                        <a class="sidebar-link" href="<?php echo base_url('/student/import');?>" aria-expanded="false">
-                            <i class="ti ti-file-upload"></i>
-                            <span class="hide-menu">Import</span>
-                        </a>
-                    </li>
-                <?php } ?>
                 <li class="sidebar-item">
                     <a class="sidebar-link" href="<?php echo base_url('/inquery');?>" aria-expanded="false">
                         <i class="ti ti-phone-call"></i>
                         <span class="hide-menu">Inquery</span>
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a class="sidebar-link" href="<?php echo base_url('/certificate');?>" aria-expanded="false">
-                        <i class="ti ti-certificate"></i>
-                        <span class="hide-menu">Certificate</span>
                     </a>
                 </li>
                 <li class="sidebar-item">
@@ -69,9 +55,9 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="<?php echo base_url('/task');?>" aria-expanded="false">
-                        <i class="ti ti-list-details"></i>
-                        <span class="hide-menu">All Tasks</span>
+                    <a class="sidebar-link" href="<?php echo base_url('/certificate');?>" aria-expanded="false">
+                        <i class="ti ti-certificate"></i>
+                        <span class="hide-menu">Certificate</span>
                     </a>
                 </li>
                 <li class="sidebar-item">
@@ -82,15 +68,27 @@
                 </li>
                 <?php if ($user_group == 'superadmin'){?>
                     <li class="sidebar-item">
-                        <a class="sidebar-link" href="<?php echo base_url('/user/admin-list');?>" aria-expanded="false">
-                            <i class="ti ti-user"></i>
-                            <span class="hide-menu"> Admin List</span>
+                        <a class="sidebar-link" href="<?php echo base_url('/task');?>" aria-expanded="false">
+                            <i class="ti ti-list-details"></i>
+                            <span class="hide-menu">All Tasks</span>
                         </a>
                     </li>
                     <li class="sidebar-item">
                         <a class="sidebar-link" href="<?php echo base_url('/logs');?>" aria-expanded="false">
                             <i class="ti ti-file-stack"></i>
                             <span class="hide-menu">Edit Logs</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="<?php echo base_url('/student/import');?>" aria-expanded="false">
+                            <i class="ti ti-file-upload"></i>
+                            <span class="hide-menu">Import</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="<?php echo base_url('/user/admin-list');?>" aria-expanded="false">
+                            <i class="ti ti-user"></i>
+                            <span class="hide-menu"> Admin List</span>
                         </a>
                     </li>
                     <li class="sidebar-item">

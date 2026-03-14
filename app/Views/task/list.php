@@ -4,7 +4,7 @@
     </div>
     <div class="card-body">
         <div class="d-flex flex-wrap justify-content-center gap-2">
-            <div class="col-md-2 col-10">
+            <div class="col-md-3 col-10">
                 <label class="form-label" for="center-ftr">Center</label>
                 <select type="text" class="form-control" id="center-ftr">
                     <option value="">Select Center</option>
@@ -13,7 +13,7 @@
                     <?php endforeach; ?>
                 </select>
             </div>
-            <div class="col-md-2 col-10">
+            <div class="col-md-3 col-10">
                 <label class="form-label" for="user-ftr">User</label>
                 <select type="text" class="form-control" id="user-ftr">
                     <option value="">Select User</option>
