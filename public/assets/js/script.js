@@ -3649,7 +3649,7 @@
                 searching: false,
                 pagingType: "full_numbers",
                 ajax: {
-                    url: conf.baseUrl + "task/list",
+                    url: conf.baseUrl + "task/all-list",
                     type: 'post',
                 },
                 lengthMenu: [
@@ -3672,11 +3672,11 @@
                         targets: [1],
                         orderable: false,
                         data: function (row) {
+                            console.log(row);
                             if (row.first_name || row.last_name) {
-                                console.log(row);
                                 return [row.first_name, row.last_name].filter(Boolean).join(' ');
                             }
-                            return row.user_id;
+                            return row.email;
                         }
                     },
                     {
