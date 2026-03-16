@@ -26,11 +26,12 @@
                 <label class="form-label" for="date-ftr">Date</label>
                 <input type="text" class="form-control" id="date-ftr" placeholder="Select Date Range">
             </div>
+            <div class="col-md-2 col-10 d-flex align-items-end gap-2">
+                <button class="btn btn-primary mt-4" id="search-btn">Search</button>
+                <button class="btn btn-secondary mt-4" id="clear-btn">Clear</button>
+            </div>
         </div>
-        <div class="col-12 d-flex justify-content-center align-items-center mt-0 mt-md-6 pt-3 gap-3">
-            <button class="btn btn-primary mx-1" id="student-search-btn">Search</button>
-            <button class="btn btn-secondary mx-1" id="student-clear-btn">Clear</button>
-        </div>
+        
     </div>
 </div>
 

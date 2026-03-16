@@ -3647,14 +3647,14 @@
                 date_ftr = '',
                 user_ftr = '';
 
-            $('#student-search-btn').on('click', function(){
+            $('#search-btn').on('click', function(){
                 center_ftr = $('#center-ftr').val();
                 date_ftr = $('#date-ftr').val();
                 user_ftr = $('#user-ftr').val();
                 taskListTable.ajax.reload();
             });
 
-            $('#student-clear-btn').on('click', function(){
+            $('#clear-btn').on('click', function(){
                 center_ftr = date_ftr = user_ftr = '';
                 $('#center-ftr').val('');
                 $('#date-ftr').val('');
