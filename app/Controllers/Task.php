@@ -67,6 +67,9 @@ class Task extends BaseController
             'start'  => $this->request->getPost('start'),
             'end'    => $this->request->getPost('length'),
             'search' => $this->request->getPost('search')['value'] ?? '',
+            'center_ftr' => $this->request->getPost('center_ftr') ?? '',
+            'date_ftr' => $this->request->getPost('date_ftr') ?? '',
+            'user_ftr' => $this->request->getPost('user_ftr') ?? '',
         ];
 
         $res = $this->model->getAllTaskList($data);
