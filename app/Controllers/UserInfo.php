@@ -77,6 +77,105 @@ class UserInfo extends BaseController
         return view('template/header', ['page_title' => 'Change Password']). view('change_password', $data).  view('template/footer', ['app_init' => 'initChangePassword']);
     }
 
+    public function edit($id)
+    {
+        // Only superadmin can edit other users; admins can edit only themselves
+        $authUser = auth()->user();
+        if (!$authUser) {
+            return redirect()->to('/');
+        }
+
+        $isSuperAdmin = Auth()->user()->inGroup('superadmin');
+        if (!$isSuperAdmin && (int) $authUser->id !== (int) $id) {
+            throw new \CodeIgniter\Exceptions\PageNotFoundException('User not found');
+        }
+
+        $userInfo = $this->model->where('user_id', $id)->first();
+        if (!$userInfo) {
+            // Allow editing even if user_info row is missing (create on save)
+            $userInfo = [
+                'user_id' => (int) $id,
+                'center' => null,
+                'first_name' => '',
+                'last_name' => '',
+                'dob' => null,
+            ];
+        }
+
+        if ($isSuperAdmin) {
+            $centers = $this->centerModel->findAll();
+        } else {
+            $cur = $this->model->curUserDetail();
+            $centers = $cur && !empty($cur['center'])
+                ? $this->centerModel->where('id', $cur['center'])->findAll()
+                : [];
+        }
+
+        $data = [
+            'user_info' => $userInfo,
+            'centers' => $centers,
+        ];
+
+        return view('template/header', ['page_title' => 'Edit User'])
+            . view('user/edit', $data)
+            . view('template/footer');
+    }
+
+    public function updateInfo()
+    {
+        $authUser = auth()->user();
+        if (!$authUser) {
+            return redirect()->to('/');
+        }
+
+        $id = (int) $this->request->getPost('user_id');
+        $isSuperAdmin = Auth()->user()->inGroup('superadmin');
+        if (!$isSuperAdmin && (int) $authUser->id !== $id) {
+            return redirect()->back()->with('error', 'You are not allowed to update this user.');
+        }
+
+        $rules = [
+            'user_id' => 'required|is_natural_no_zero',
+            'center' => 'required|is_natural_no_zero',
+            'first_name' => 'required|string|min_length[1]|max_length[100]',
+            'last_name' => 'required|string|min_length[1]|max_length[100]',
+            'dob' => 'permit_empty|valid_date[Y-m-d]',
+        ];
+
+        $payload = $this->request->getPost([
+            'user_id',
+            'center',
+            'first_name',
+            'last_name',
+            'dob',
+        ]);
+
+        if (! $this->validateData($payload, $rules)) {
+            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+        }
+
+        $data = [
+            'user_id' => $id,
+            'center' => (int) $payload['center'],
+            'first_name' => trim((string) $payload['first_name']),
+            'last_name' => trim((string) $payload['last_name']),
+            'dob' => !empty($payload['dob']) ? $payload['dob'] : null,
+        ];
+
+        $existing = $this->model->where('user_id', $id)->first();
+        if ($existing) {
+            $ok = $this->model->where('user_id', $id)->set($data)->update();
+        } else {
+            $ok = (bool) $this->model->insert($data);
+        }
+
+        if (!$ok) {
+            return redirect()->back()->withInput()->with('error', 'Failed to update user.');
+        }
+
+        return redirect()->to('/user/admin-list');
+    }
+
     public function updatePassword()
     {
         $data = [

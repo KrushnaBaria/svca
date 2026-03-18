@@ -3053,6 +3053,7 @@
                         data: function (row) {
                             return '<div class="d-flex gap-2 justify-content-center">' +
                                 (row.user_status != 'banned' ? '<button class="btn btn-success change-user-status" data-id="' + row.id + '" data-status="1">Active</button>' : '<button class="btn btn-danger change-user-status" data-id="' + row.id + '" data-status="0">Inactive</button>') +
+                                '<a href="' + conf.baseUrl + 'user/edit/' + row.id + '" class="btn btn-info btn-sm" title="Edit User"><i class="ti ti-edit fs-6"></i></a> ' +
                                 '<a href="' + conf.baseUrl + 'user/change-password/' + row.id + '" class="btn btn-warning btn-sm" title="Change Password"><i class="ti ti-key fs-6"></i></a> ' +
                                 '<button class="btn btn-danger btn-sm delete-user" data-id="' + row.id + '">Delete</button></div>';
                         }

@@ -115,6 +115,8 @@ $routes->group('user', function ($routes) {
     $routes->get('add', 'AddUserController::index');
     $routes->get('admin-list', 'UserInfo::AdminList');
     $routes->post('get-admin-list', 'UserInfo::getAdminList');
+    $routes->get('edit/(:num)', 'UserInfo::edit/$1');
+    $routes->post('update', 'UserInfo::updateInfo');
     $routes->get('change-password/(:num)', 'UserInfo::ChangePassword/$1');
     $routes->post('update-password', 'UserInfo::updatePassword');
     $routes->post('delete', 'UserInfo::deleteUser');
