@@ -24,6 +24,12 @@
                 </li>
                 <?php if ($user_group == 'superadmin'){?>
                     <li class="sidebar-item">
+                        <a class="sidebar-link" href="<?php echo base_url('/statistics');?>" aria-expanded="false">
+                            <i class="ti ti-components"></i>
+                            <span class="hide-menu">Statistics</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
                         <a class="sidebar-link" href="<?php echo base_url('/profit-share');?>" aria-expanded="false">
                             <i class="ti ti-brand-4chan"></i>
                             <span class="hide-menu">P Share</span>

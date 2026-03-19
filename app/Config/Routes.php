@@ -21,6 +21,11 @@ $routes->group('dashboard', function ($routes) {
     $routes->post('get-student-count', 'Dashboard::get_Student_Count');
 });
 
+
+$routes->group('statistics', function ($routes){
+    $routes->get('/', 'statistics::index');
+});
+
 $routes->group('profit-share', function ($routes) {
     $routes->get('/', 'ProfitShare::index');
     $routes->post('get-total-profit', 'ProfitShare::getTotalProfit');
