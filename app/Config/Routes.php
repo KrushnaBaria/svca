@@ -24,6 +24,8 @@ $routes->group('dashboard', function ($routes) {
 
 $routes->group('statistics', function ($routes){
     $routes->get('/', 'statistics::index');
+    $routes->post('get-expense', 'statistics::getExpense');
+    $routes->post('get-profit', 'statistics::getProfit');
 });
 
 $routes->group('profit-share', function ($routes) {

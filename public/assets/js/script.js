@@ -462,9 +462,9 @@
                     dashArray: [0, 8, 5]
                 },
                 legend: {
-                    tooltipHoverFormatter: function(val, opts) {
-                        return val + ' - <strong>' + opts.w.globals.series[opts.seriesIndex][opts.dataPointIndex] + '</strong>'
-                    }
+                    // tooltipHoverFormatter: function(val, opts) {
+                    //     return val + ' - <strong>' + opts.w.globals.series[opts.seriesIndex][opts.dataPointIndex] + '</strong>'
+                    // }
                 },
                 markers: {
                     size: 0,
@@ -512,6 +512,35 @@
 
             var chart = new ApexCharts(document.querySelector("#expense-chart"), options);
             chart.render();
+
+            function loadProfitChartData() {
+                $.ajax({
+                    url: conf.baseUrl + "/statistics/get-expense",
+                    type: "POST",
+                    data: {
+                        year: $('#p-year-filter').val(),
+                    },
+                    dataType: "json",
+                    success: function (res) {
+                        if (!res || !res.series || !res.months) {
+                            return;
+                        }
+                        var n = res.series.length;
+                        Profitchart.updateOptions({
+                            series: res.series,
+                            xaxis: { categories: res.months },
+                            stroke: {
+                                width: n ? Array(n).fill(3) : 3,
+                                curve: 'straight',
+                                dashArray: n ? Array(n).fill(0) : 0
+                            }
+                        });
+                    }
+                });
+            }
+
+            loadProfitChartData();
+            $('#p-year-filter').on('change', loadProfitChartData);
         },
 
         pShareChart: function(){

@@ -206,4 +206,55 @@ class ExpenseModel extends Model
             'profit' => $revenue_result[0]['revenue'] - $expense_result[0]['expenses']
         ];
     }
+
+    public function stsExpense($data)
+    {
+        $query = "SELECT center, DATE_FORMAT(add_date, '%Y-%m') AS month, SUM(amount) AS total_amount
+                    FROM expenses
+                    GROUP BY center, month
+                    ORDER BY center, month";
+
+        $result = $this->db->query($query)->getResultArray();
+
+        $series = [];
+        $months = [];
+
+        // Collect all months
+        foreach ($result as $row) {
+            $months[$row['month']] = $row['month'];
+        }
+
+        $months = array_values($months); // unique months
+
+        // Initialize center-wise data
+        $temp = [];
+
+        foreach ($result as $row) {
+            $center = $row['center'];
+            $month  = $row['month'];
+            $amount = (float)$row['total_amount'];
+
+            $temp[$center][$month] = $amount;
+        }
+
+        // Build final series
+        foreach ($temp as $center => $data) {
+            $monthlyData = [];
+
+            foreach ($months as $m) {
+                $monthlyData[] = $data[$m] ?? 0; // fill missing months with 0
+            }
+
+            $series[] = [
+                "name" => $center,
+                "data" => $monthlyData
+            ];
+        }
+
+        $result = [
+            "series" => $series,
+            "months" => $months
+        ];
+        return $result;
+    }
 }
