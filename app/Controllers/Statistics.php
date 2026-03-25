@@ -30,7 +30,6 @@ class Statistics extends BaseController
     public function getExpense()
     {
         $year = $this->request->getPost('year');
-        //$center_id = session()->get('center_id');
         $expenseData = $this->expenseModel->stsExpense($year);
         return $this->response->setJSON($expenseData);
     }

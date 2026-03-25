@@ -518,7 +518,7 @@
                     url: conf.baseUrl + "/statistics/get-expense",
                     type: "POST",
                     data: {
-                        year: $('#p-year-filter').val(),
+                        year: $('#e-year-filter').val(),
                     },
                     dataType: "json",
                     success: function (res) {
@@ -526,7 +526,7 @@
                             return;
                         }
                         var n = res.series.length;
-                        Profitchart.updateOptions({
+                        chart.updateOptions({
                             series: res.series,
                             xaxis: { categories: res.months },
                             stroke: {
@@ -540,7 +540,7 @@
             }
 
             loadProfitChartData();
-            $('#p-year-filter').on('change', loadProfitChartData);
+            $('#e-year-filter').on('change', loadProfitChartData);
         },
 
         pShareChart: function(){

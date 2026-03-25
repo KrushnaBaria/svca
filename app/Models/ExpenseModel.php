@@ -207,12 +207,14 @@ class ExpenseModel extends Model
         ];
     }
 
-    public function stsExpense($data)
+    public function stsExpense($year)
     {
-        $query = "SELECT center, DATE_FORMAT(add_date, '%Y-%m') AS month, SUM(amount) AS total_amount
-                    FROM expenses
-                    GROUP BY center, month
-                    ORDER BY center, month";
+        $query = "SELECT e.center, c.center AS center_name, DATE_FORMAT(e.add_date, '%Y-%m') AS month, SUM(e.amount) AS total_amount
+                    FROM expenses AS e
+                    LEFT JOIN centers AS c ON e.center = c.id
+                    WHERE YEAR(e.add_date) = " . $year . "
+                    GROUP BY center_name, month
+                    ORDER BY e.center, month";
 
         $result = $this->db->query($query)->getResultArray();
 
@@ -230,7 +232,7 @@ class ExpenseModel extends Model
         $temp = [];
 
         foreach ($result as $row) {
-            $center = $row['center'];
+            $center = $row['center_name'];
             $month  = $row['month'];
             $amount = (float)$row['total_amount'];
 
