@@ -259,4 +259,81 @@ class ExpenseModel extends Model
         ];
         return $result;
     }
+
+    public function stsProfit($year)
+    {
+        $Expquery = "SELECT e.center, c.center AS center_name, DATE_FORMAT(e.add_date, '%Y-%m') AS month, SUM(e.amount) AS total_amount
+                    FROM expenses AS e
+                    LEFT JOIN centers AS c ON e.center = c.id
+                    WHERE YEAR(e.add_date) = " . $year . "
+                    GROUP BY center_name, month
+                    ORDER BY e.center, month";
+
+        $Expresult = $this->db->query($Expquery)->getResultArray();
+
+        $Revquery = "SELECT stu.center, c.center AS center_name, DATE_FORMAT(p.add_date, '%Y-%m') AS month, SUM(p.amount) AS total_amount
+                    FROM payment AS p
+                    LEFT JOIN students AS stu ON p.stu_id = stu.id
+                    LEFT JOIN centers AS c ON stu.center = c.id
+                    WHERE YEAR(p.add_date) = " . $year . "
+                    GROUP BY center_name, month
+                    ORDER BY stu.center, month";
+
+        $Revresult = $this->db->query($Revquery)->getResultArray();
+
+        $expenses = [];
+        $revenues = [];
+        $months = [];
+
+        // Expenses
+        foreach ($Expresult as $row) {
+            $center = $row['center_name'];
+            $month  = $row['month'];
+            $amount = (float)$row['total_amount'];
+
+            $expenses[$center][$month] = $amount;
+            $months[$month] = $month;
+        }
+
+        // Revenue
+        foreach ($Revresult as $row) {
+            $center = $row['center_name'];
+            $month  = $row['month'];
+            $amount = (float)$row['total_amount'];
+
+            $revenues[$center][$month] = $amount;
+            $months[$month] = $month;
+        }
+
+        $months = array_values($months); // unique months
+        sort($months);
+
+        $centers = array_unique(array_merge(array_keys($expenses), array_keys($revenues)));
+
+        $series = [];
+
+        foreach ($centers as $center) {
+            $data = [];
+
+            foreach ($months as $month) {
+                $rev = $revenues[$center][$month] ?? 0;
+                $exp = $expenses[$center][$month] ?? 0;
+
+                $profit = $rev - $exp;
+
+                $data[] = $profit;
+            }
+
+            $series[] = [
+                "name" => $center,
+                "data" => $data
+            ];
+        }
+
+        $result = [
+            "series" => $series,
+            "months" => $months
+        ];
+        return $result;
+    }
 }

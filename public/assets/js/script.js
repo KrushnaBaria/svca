@@ -424,8 +424,60 @@
             SVCAobj.recentInquey();
         },
 
-        loadProfitChart: function () {
+        loadExpenseChart: function () {
+            let SVCAobj = this;
 
+            $.ajax({
+                url: conf.baseUrl + "/statistics/get-expense",
+                type: "POST",
+                data: {
+                    year: $('#e-year-filter').val(),
+                },
+                dataType: "json",
+                success: function (res) {
+                    if (!res || !res.series || !res.months) {
+                        return;
+                    }
+                    var n = res.series.length;
+                    SVCAobj.ExpenseChart.updateOptions({
+                        series: res.series,
+                        xaxis: { categories: res.months },
+                        stroke: {
+                            width: n ? Array(n).fill(3) : 3,
+                            curve: 'straight',
+                            dashArray: n ? Array(n).fill(0) : 0
+                        }
+                    });
+                }
+            });
+        },
+
+        loadProfitChart: function () {
+            let SVCAobj = this;
+
+            $.ajax({
+                url: conf.baseUrl + "/statistics/get-profit",
+                type: "POST",
+                data: {
+                    year: $('#p-year-filter').val(),
+                },
+                dataType: "json",
+                success: function (res) {
+                    if (!res || !res.series || !res.months) {
+                        return;
+                    }
+                    var n = res.series.length;
+                    SVCAobj.ProfitChart.updateOptions({
+                        series: res.series,
+                        xaxis: { categories: res.months },
+                        stroke: {
+                            width: n ? Array(n).fill(3) : 3,
+                            curve: 'straight',
+                            dashArray: n ? Array(n).fill(0) : 0
+                        }
+                    });
+                }
+            });
         },
 
         initStatistics: function () {
@@ -507,40 +559,21 @@
                 }
             };
 
-            var Profitchart = new ApexCharts(document.querySelector("#profit-chart"), options);
-            Profitchart.render();
+            SVCAobj.ProfitChart = new ApexCharts(document.querySelector("#profit-chart"), options);
+            SVCAobj.ProfitChart.render();
 
-            var chart = new ApexCharts(document.querySelector("#expense-chart"), options);
-            chart.render();
+            SVCAobj.ExpenseChart = new ApexCharts(document.querySelector("#expense-chart"), options);
+            SVCAobj.ExpenseChart.render();
 
-            function loadProfitChartData() {
-                $.ajax({
-                    url: conf.baseUrl + "/statistics/get-expense",
-                    type: "POST",
-                    data: {
-                        year: $('#e-year-filter').val(),
-                    },
-                    dataType: "json",
-                    success: function (res) {
-                        if (!res || !res.series || !res.months) {
-                            return;
-                        }
-                        var n = res.series.length;
-                        chart.updateOptions({
-                            series: res.series,
-                            xaxis: { categories: res.months },
-                            stroke: {
-                                width: n ? Array(n).fill(3) : 3,
-                                curve: 'straight',
-                                dashArray: n ? Array(n).fill(0) : 0
-                            }
-                        });
-                    }
-                });
-            }
+            SVCAobj.loadExpenseChart();
+            SVCAobj.loadProfitChart();
+            $(document).on('change', '#e-year-filter', function(){
+                SVCAobj.loadExpenseChart();
+            });
 
-            loadProfitChartData();
-            $('#e-year-filter').on('change', loadProfitChartData);
+            $(document).on('change', '#p-year-filter', function(){
+                SVCAobj.loadProfitChart();
+            });
         },
 
         pShareChart: function(){

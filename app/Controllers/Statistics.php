@@ -37,8 +37,7 @@ class Statistics extends BaseController
     public function getProfit()
     {
         $year = $this->request->getPost('year');
-        $center_id = session()->get('center_id');
-        $profitData = $this->centerModel->getMonthlyProfit($center_id, $year);
+        $profitData = $this->expenseModel->stsProfit($year);
         return $this->response->setJSON($profitData);
     }
 }
