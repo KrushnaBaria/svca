@@ -480,9 +480,37 @@
             });
         },
 
+        loadRevenueChart: function () {
+            let SVCAobj = this;
+
+            $.ajax({
+                url: conf.baseUrl + "/statistics/get-revenue",
+                type: "POST",
+                data: {
+                    year: $('#r-year-filter').val(),
+                },
+                dataType: "json",
+                success: function (res) {
+                    if (!res || !res.series || !res.months) {
+                        return;
+                    }
+                    var n = res.series.length;
+                    SVCAobj.RevenueChart.updateOptions({
+                        series: res.series,
+                        xaxis: { categories: res.months },
+                        stroke: {
+                            width: n ? Array(n).fill(3) : 3,
+                            curve: 'straight',
+                            dashArray: n ? Array(n).fill(0) : 0
+                        }
+                    });
+                }
+            });
+        },
+
         initStatistics: function () {
             let SVCAobj = this;
-            $('#p-year-filter, #e-year-filter').yearpicker();
+            $('#r-year-filter, #p-year-filter, #e-year-filter').yearpicker();
 
             var options = {
                 series: [{
@@ -559,14 +587,23 @@
                 }
             };
 
+            SVCAobj.RevenueChart = new ApexCharts(document.querySelector("#revenue-chart"), options);
+            SVCAobj.RevenueChart.render();
+
             SVCAobj.ProfitChart = new ApexCharts(document.querySelector("#profit-chart"), options);
             SVCAobj.ProfitChart.render();
 
             SVCAobj.ExpenseChart = new ApexCharts(document.querySelector("#expense-chart"), options);
             SVCAobj.ExpenseChart.render();
 
+            SVCAobj.loadRevenueChart();
             SVCAobj.loadExpenseChart();
             SVCAobj.loadProfitChart();
+
+            $(document).on('change', '#r-year-filter', function(){
+                SVCAobj.loadRevenueChart();
+            });
+
             $(document).on('change', '#e-year-filter', function(){
                 SVCAobj.loadExpenseChart();
             });

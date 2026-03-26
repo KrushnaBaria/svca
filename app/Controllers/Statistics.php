@@ -40,4 +40,11 @@ class Statistics extends BaseController
         $profitData = $this->expenseModel->stsProfit($year);
         return $this->response->setJSON($profitData);
     }
+
+    public function getRevenue()
+    {
+        $year = $this->request->getPost('year');
+        $revenueData = $this->expenseModel->stsRevenue($year);
+        return $this->response->setJSON($revenueData);
+    }
 }

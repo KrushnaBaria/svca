@@ -336,4 +336,58 @@ class ExpenseModel extends Model
         ];
         return $result;
     }
+
+    public function stsRevenue($year)
+    {
+        $query = "SELECT stu.center, c.center AS center_name, DATE_FORMAT(p.add_date, '%Y-%m') AS month, SUM(p.amount) AS total_amount
+                    FROM payment AS p
+                    LEFT JOIN students AS stu ON p.stu_id = stu.id
+                    LEFT JOIN centers AS c ON stu.center = c.id
+                    WHERE YEAR(p.add_date) = " . $year . "
+                    GROUP BY center_name, month
+                    ORDER BY stu.center, month";
+
+        $result = $this->db->query($query)->getResultArray();
+
+        $series = [];
+        $months = [];
+
+        // Collect all months
+        foreach ($result as $row) {
+            $months[$row['month']] = $row['month'];
+        }
+
+        $months = array_values($months); // unique months
+
+        // Initialize center-wise data
+        $temp = [];
+
+        foreach ($result as $row) {
+            $center = $row['center_name'];
+            $month  = $row['month'];
+            $amount = (float)$row['total_amount'];
+
+            $temp[$center][$month] = $amount;
+        }
+
+        // Build final series
+        foreach ($temp as $center => $data) {
+            $monthlyData = [];
+
+            foreach ($months as $m) {
+                $monthlyData[] = $data[$m] ?? 0; // fill missing months with 0
+            }
+
+            $series[] = [
+                "name" => $center,
+                "data" => $monthlyData
+            ];
+        }
+
+        $result = [
+            "series" => $series,
+            "months" => $months
+        ];
+        return $result;
+    }
 }
