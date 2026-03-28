@@ -369,7 +369,11 @@
         
         loadMainCHart: function() {
             let SVCAobj = this;
-        
+            var $loading = $('#chart-loading');
+            if ($loading.length) {
+                $loading.removeClass('d-none');
+            }
+
             $.ajax({
                 url: conf.baseUrl + "/dashboard/get-main-report-chart-data",
                 type: "POST",
@@ -394,6 +398,11 @@
                         ],
                         xaxis: { categories: months }
                     });
+                },
+                complete: function() {
+                    if ($loading.length) {
+                        $loading.addClass('d-none');
+                    }
                 }
             });
         },

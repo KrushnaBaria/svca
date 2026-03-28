@@ -9,7 +9,17 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <div id="main-report-chart"></div>
+                    <div class="position-relative" style="min-height: 350px;">
+                        <div id="main-report-chart"></div>
+                        <div id="chart-loading" class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center bg-white bg-opacity-75" style="z-index: 10;" aria-busy="true" aria-live="polite">
+                            <div class="text-center">
+                                <div class="spinner-border text-primary" role="status">
+                                    <span class="visually-hidden">Loading chart…</span>
+                                </div>
+                                <div class="mt-2 small text-muted">Loading chart…</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
