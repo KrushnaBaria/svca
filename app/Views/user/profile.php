@@ -80,6 +80,13 @@ $initials = $fullName ? strtoupper(substr($userInfo['first_name'] ?? '', 0, 1) .
                 </div>
             </div>
         </div>
+        
+        <div class="mt-3 text-center">
+            <a href="<?= base_url('user/edit/' . $authUser->id) ?>" class="btn btn-outline-primary">
+                <i class="ti ti-edit me-1"></i> Edit Profile
+            </a>
+        </div>
+
 
         <?php if (false): ?>
         <div class="mt-3 text-center">
