@@ -283,19 +283,6 @@ class Student extends BaseController
         $db = $this->model->db;
         $db->transBegin();
 
-        // Expected columns:
-        // 0 => No
-        // 1 => Student Name
-        // 2 => Father Name
-        // 3 => Center (name)
-        // 4 => Course (name)
-        // 5 => Admission Date (Y-m-d or d-m-Y)
-        // 6 => Phone Number
-        // 7 => Alternative Number
-        // 8 => Fees (optional, if not provided will use course price)
-        // 9 => Added Date (optional, Y-m-d or d-m-Y, default now)
-        // 10 => Old Student (optional, No or Yes) default No
-
         // Skip header row
         if (($header = fgetcsv($handle)) === false) {
             fclose($handle);
@@ -305,21 +292,32 @@ class Student extends BaseController
         while (($row = fgetcsv($handle)) !== false) {
             $rowNum++;
 
-            if (count($row) < 11) {
+            if (count($row) < 19) {
                 $errors[] = "Row {$rowNum}: Not enough columns.";
                 continue;
             }
 
-            $studentName = trim($row[1] ?? '');
-            $fatherName  = trim($row[2] ?? '');
-            $centerName  = trim($row[3] ?? '');
-            $courseName  = trim($row[4] ?? '');
-            $admDateRaw  = trim($row[5] ?? '');
-            $phone       = trim($row[6] ?? '');
-            $altPhone    = trim($row[7] ?? '');
-            $fees        = trim($row[8] ?? '');
-            $addedDateRaw = trim($row[9] ?? '');
-            $stu_old_sts = trim($row[10] ?? 'No');
+            $studentName    = trim($row[1] ?? '');
+            $fatherName     = trim($row[2] ?? '');
+            $motherName     = trim($row[3] ?? '');
+            $dobRaw         = trim($row[4] ?? '');
+            $phone          = trim($row[5] ?? '');
+            $altPhone       = trim($row[6] ?? '');
+            $gender         = trim($row[7] ?? '');
+            $maritalSts     = trim($row[8] ?? '');
+            $lst_qulifi     = trim($row[9] ?? '');
+            $percentage     = trim($row[10] ?? '');
+            $courseName     = trim($row[11] ?? '');
+            $fees           = trim($row[12] ?? '');
+            $cast           = trim($row[13] ?? '');
+            $batchTime      = trim($row[14] ?? '');
+            $adhar          = trim($row[15] ?? '');
+            $centerName     = trim($row[16] ?? '');
+            $districtRaw    = trim($row[17] ?? '');
+            $address        = trim($row[18] ?? '');
+            $admDateRaw     = trim($row[19] ?? '');
+            $addedDateRaw   = trim($row[20] ?? '');
+            $stu_old_sts    = trim($row[21] ?? 'No');
 
             if ($studentName === '' || $centerName === '' || $courseName === '' || $admDateRaw === '' || $phone === '') {
                 $errors[] = "Row {$rowNum}: Missing required fields.";
@@ -328,6 +326,7 @@ class Student extends BaseController
 
             $center = $this->centerModel->where('center', $centerName)->first();
             $course = $this->courseModel->where('course', $courseName)->where('center', $center['id'])->first();
+            $district = $this->districtModel->where('name', $districtRaw)->first();
 
             if (!$center) {
                 $errors[] = "Row {$rowNum}: Center not found.";
@@ -336,6 +335,11 @@ class Student extends BaseController
 
             if (!$course) {
                 $errors[] = "Row {$rowNum}: Course not found.";
+                continue;
+            }
+
+            if (!$district) {
+                $errors[] = "Row {$rowNum}: District not found.";
                 continue;
             }
 
@@ -362,6 +366,13 @@ class Student extends BaseController
                 $addedDateForModel = date('Y-m-d H:i:s');
             }
 
+            $dobRaw = \DateTime::createFromFormat('Y-m-d', $dobRaw) ?: \DateTime::createFromFormat('d-m-Y', $dobRaw) ?: \DateTime::createFromFormat('d/m/Y', $dobRaw);
+            if ($dobRaw) {
+                $dobForModel = $dobRaw->format('d/m/Y');
+            } else {
+                $dobForModel = '';
+            }
+
             if ($stu_old_sts && strtolower($stu_old_sts) === 'yes') {
                 $old_stu = 1;
             } else {
@@ -371,22 +382,22 @@ class Student extends BaseController
             $data = [
                 's_name'      => $studentName,
                 'f_name'      => $fatherName,
-                'm_name'      => '',
-                'dob'         => '',
+                'm_name'      => $motherName,
+                'dob'         => $dobForModel,
                 'p_number'    => $phone,
                 'ap_number'   => $altPhone,
-                'gender'      => '',
-                'marital_sts' => '',
-                'cast'        => '',
-                'lst_qulifi'  => '',
-                'per'         => '',
+                'gender'      => $gender,
+                'marital_sts' => $maritalSts,
+                'cast'        => $cast,
+                'lst_qulifi'  => $lst_qulifi,
+                'per'         => $percentage,
                 'course'      => $course['id'],
                 'fees'        => $fees,
-                'b_time'      => '',
-                'adhar'       => '',
+                'b_time'      => $batchTime,
+                'adhar'       => $adhar,
                 'center'      => $center['id'],
-                'dist'        => '',
-                'address'     => '',
+                'dist'        => $district['id'],
+                'address'     => $address,
                 'ref_by'      => '',
                 'adm_date'    => $admDateForModel,
                 'added_date'  => $addedDateForModel,
