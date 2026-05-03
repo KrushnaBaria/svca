@@ -94,7 +94,7 @@
     <div class="card-footer">
         <div class="d-flex justify-content-center">
             <?php if($student['old_stu'] == 0): ?>
-             <button type="button" class="btn btn-secondary" id="make-old-stu" data-stuid="<?php echo $student['id']; ?>">Mark As Old Student</button>
+                <button type="button" class="btn btn-secondary" id="make-old-stu" data-stuid="<?php echo $student['id']; ?>">Mark As Old Student</button>
             <?php endif; ?>
             <a href="<?php echo base_url('payment/invoice/' . $student['id']); ?>" target="_blank" class="btn btn-primary ms-auto">Print Receipt</a>
         </div>
@@ -103,26 +103,39 @@
 
 <!-- Modal for accept payment-->
 <div class="modal fade" id="paymentModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLongTitle">Accept Payment</h5>
-        </div>
-        <form id="paymentForm">
-            <div class="modal-body">
-                <div class="form-group">
-                    <label for="paymentAmount" class="form-label">Payment Amount</label>
-                    <input type="number" class="form-control" id="paymentAmount" name="paymentAmount" required>
-                    <label for="remark" class="form-label">Remark</label>
-                    <textarea type="text" class="form-control" id="remark" name="remark"></textarea>
-                </div>
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Accept Payment</h5>
             </div>
-        </form>
-        <div class="modal-footer d-flex justify-content-center align-items-center">
-            <input type="hidden" id="stu_id" value="<?php echo $student['id'];  ?>">
-            <input type="hidden" id="transaction_id" value="">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary" id="acceptPayment">Accept</button>
+            <form id="paymentForm">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <div class="mb-3 row">
+                            <div class="col-md-6">
+                                <label for="paymentAmount" class="form-label">Payment Amount</label>
+                                <input type="number" class="form-control" id="paymentAmount" name="paymentAmount" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="pay_mod" class="form-label">Payment Mode</label>
+                                <select class="form-select" id="pay_mod" name="pay_mod" required>
+                                    <option value="0">Offline</option>
+                                    <option value="1">Online</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <label for="remark" class="form-label">Remark</label>
+                        <textarea type="text" class="form-control" id="remark" name="remark"></textarea>
+                    </div>
+                </div>
+            </form>
+            <div class="modal-footer d-flex justify-content-center align-items-center">
+                <input type="hidden" id="stu_id" value="<?php echo $student['id'];  ?>">
+                <input type="hidden" id="transaction_id" value="">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="acceptPayment">Accept</button>
+            </div>
         </div>
     </div>
 </div>

@@ -2320,6 +2320,7 @@
                 let data = payhistoryTbl.rows(indexes).data().toArray();
                 if(data.length > 0) {
                     $('#paymentAmount').val(data[0].amount);
+                    $('#pay_mod').val(data[0].pay_mod);
                     $('#remark').val(data[0].remark);
                     $('#transaction_id').val(data[0].id);
                     $('#acceptPayment').text('Update');
@@ -2365,6 +2366,7 @@
                     dataType: "json",
                     data: {
                         amount: $('#paymentAmount').val(),
+                        pay_mod: $('#pay_mod').val(),
                         remark: $('#remark').val(),
                         student_id: $('#stu_id').val(),
                         transaction_id: $('#transaction_id').val()
