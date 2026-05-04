@@ -1270,7 +1270,9 @@
                 let to = $('#b_time2').val();
                 let b_time = from + ' - ' + to;
                 
-                //eturn false;
+                //Disabe btn before submit
+                $('#sbt-student').prop('disabled', true);
+
                 $.ajax({
                     url: conf.baseUrl + "student/add",
                     type: "POST",
@@ -1303,10 +1305,12 @@
                             window.location.href = conf.baseUrl + "/student/list";
                         } else {
                             alert("Error adding student");
+                            $('#sbt-student').prop('disabled', false);
                         }
                     },
                     error: function() {
                         alert("An error occurred while adding the student.");
+                        $('#sbt-student').prop('disabled', false);
                     }
                 });
             });
