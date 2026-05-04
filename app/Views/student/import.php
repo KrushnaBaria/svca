@@ -72,6 +72,42 @@
                 </div>
             </div>
         </div>
+
+        <div class="card shadow-sm mt-3">
+            <div class="card-header text-bg-primary">
+                <h4 class="mb-0 text-white">Import Expenses</h4>
+            </div>
+            <div class="card-body">
+                <p class="mb-3 text-muted">
+                    Select a <strong>.csv</strong> file with columns:
+                    <em>No, Description, Center Name, Amount, Date</em>.
+                </p>
+
+                <form id="expense-import-form" enctype="multipart/form-data" method="post" action="<?php echo base_url('expense/import-csv'); ?>">
+                    <div class="mb-3">
+                        <label for="expense_csv_file" class="form-label">CSV File</label>
+                        <input type="file" class="form-control" id="expense_csv_file" name="expense_csv_file" accept=".csv" required>
+                        <div class="form-text">Only CSV files are allowed.</div>
+                    </div>
+
+                    <div id="expense-upload-spinner" class="text-center my-3 d-none">
+                        <div class="spinner-border text-warning" role="status">
+                            <span class="visually-hidden">Uploading...</span>
+                        </div>
+                        <div class="mt-2 small text-muted">Uploading &amp; importing, please wait...</div>
+                    </div>
+
+                    <div class="d-flex justify-content-end">
+                        <button type="submit" id="expense-import-submit" class="btn btn-primary">
+                            Import Expenses
+                        </button>
+                    </div>
+                </form>
+
+                <div id="expense-import-result" class="mt-3 d-none">
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 

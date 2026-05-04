@@ -104,4 +104,114 @@ class Expense extends BaseController
             return json_encode();
         }
     }
+
+    public function importCsv()
+    {
+        $file = $this->request->getFile('expense_csv_file');
+
+        if (!$file || !$file->isValid()) {
+            return $this->response->setJSON(['success' => 0, 'message' => 'Please upload a CSV file.']);
+        }
+
+        if (strtolower($file->getClientExtension()) !== 'csv') {
+            return $this->response->setJSON(['success' => 0, 'message' => 'Only CSV files are allowed.']);
+        }
+
+        $handle = fopen($file->getTempName(), 'r');
+        if (!$handle) {
+            return $this->response->setJSON(['success' => 0, 'message' => 'Unable to read uploaded file.']);
+        }
+
+        $inserted = 0;
+        $skipped  = 0;
+        $errors   = [];
+        $rowNum   = 0;
+
+        $db = $this->model->db;
+        $db->transBegin();
+
+        $parseDate = function (string $raw) {
+            $raw = trim($raw);
+            if ($raw === '') {
+                return null;
+            }
+
+            $dt = \DateTime::createFromFormat('Y-m-d', $raw) ?: \DateTime::createFromFormat('d-m-Y', $raw) ?: \DateTime::createFromFormat('d/m/Y', $raw);
+
+            if (!$dt) {
+                return null;
+            }
+
+            return $dt->format('Y-m-d H:i:s');
+        };
+
+        if (($header = fgetcsv($handle)) === false) {
+            fclose($handle);
+            return $this->response->setJSON(['success' => 0, 'message' => 'CSV file is empty.']);
+        }
+
+        while (($row = fgetcsv($handle)) !== false) {
+            $rowNum++;
+
+            if (count($row) < 5) {
+                $errors[] = "Row {$rowNum}: Not enough columns.";
+                continue;
+            }
+
+            $expDesc   = trim($row[1] ?? '');
+            $centerRaw = trim($row[2] ?? '');
+            $amountRaw = trim($row[3] ?? '');
+            $dateRaw   = trim($row[4] ?? '');
+
+            $amount = is_numeric($amountRaw) ? (float) $amountRaw : null;
+            $addDate = $parseDate($dateRaw);
+
+            if ($expDesc === '' || $centerRaw == '' || $amount === null || $amount <= 0 || !$addDate) {
+                $errors[] = "Row {$rowNum}: Invalid Description / Center / Amount / Date";
+                continue;
+            }
+
+            $center = $this->centerModel->where('center', $centerRaw)->first();
+
+            if (!$center) {
+                $errors[] = "Row {$rowNum}: Center not found.";
+                continue;
+            }
+
+            $res = $this->model->add([
+                'exp'           => $expDesc,
+                'center'        => $center['id'],
+                'amount'        => $amount,
+                'add_date'      => $addDate,
+                'updated_by'    => 'import@svca.com',
+                'updated_date'  => $addDate,
+            ], false);
+
+            if ($res) {
+                $inserted++;
+            } else {
+                $errors[] = "Row {$rowNum}: Failed to insert expense.";
+            }
+        }
+
+        fclose($handle);
+
+        if (!empty($errors)) {
+            $db->transRollback();
+            return $this->response->setJSON([
+                'success' => 0,
+                'message' => 'Import failed. No expenses were imported due to errors.',
+                'errors'  => $errors,
+            ]);
+        }
+
+        $db->transCommit();
+
+        return $this->response->setJSON([
+            'success'  => 1,
+            'inserted' => $inserted,
+            'skipped'  => $skipped,
+            'errors'   => $errors,
+        ]);
+    }
 }

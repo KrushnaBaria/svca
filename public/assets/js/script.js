@@ -3739,10 +3739,92 @@
             });
         },
 
+        initImportExpenseCsv: function(){
+            let $expensefileInput = $('#expense_csv_file');
+            let $expenseform = $('#expense-import-form');
+            let $expensespinner = $('#expense-upload-spinner');
+            let $expensesubmitBtn = $('#expense-import-submit');
+            let $expenseresult = $('#expense-import-result');
+
+            if(!$expenseform.length){
+                return;
+            }
+
+            $expenseform.on('submit', function (e) {
+                e.preventDefault();
+
+                let file = $expensefileInput[0] ? $expensefileInput[0].files[0] : null;
+                if (!file) {
+                    alert('Please select a CSV file.');
+                    return false;
+                }
+
+                $expensespinner.removeClass('d-none');
+                $expensesubmitBtn.prop('disabled', true);
+                $expenseresult.removeClass('d-none').html('');
+
+                let formData = new FormData(this);
+
+                $.ajax({
+                    url: $expenseform.attr('action'),
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    dataType: 'json',
+                    success: function (res) {
+                        $expensespinner.addClass('d-none');
+                        $expensesubmitBtn.prop('disabled', false);
+
+                        if (res && res.success == 1) {
+                            let html = '<div class="alert alert-success mb-2">Imported <strong>' + (res.inserted || 0) + '</strong> expenses.';
+                            if (res.skipped) {
+                                html += ' Skipped <strong>' + res.skipped + '</strong> row(s).';
+                            }
+                            html += '</div>';
+
+                            if (res.errors && res.errors.length) {
+                                html += '<div class="alert alert-warning mb-0"><strong>Details:</strong><ul class="mb-0">';
+                                res.errors.slice(0, 10).forEach(function (msg) {
+                                    html += '<li class="small">' + $('<div>').text(msg).html() + '</li>';
+                                });
+                                if (res.errors.length > 10) {
+                                    html += '<li class="small">+' + (res.errors.length - 10) + ' more...</li>';
+                                }
+                                html += '</ul></div>';
+                            }
+
+                            $expenseresult.html(html).removeClass('d-none');
+                        } else {
+                            let html = '<div class="alert alert-danger mb-2">' +
+                                $('<div>').text((res && res.message) ? res.message : 'Import failed. No expenses were imported.').html() +
+                                '</div>';
+
+                            if (res && res.errors && res.errors.length) {
+                                html += '<div class="alert alert-warning mb-0"><strong>Details:</strong><ul class="mb-0">';
+                                res.errors.forEach(function (msg) {
+                                    html += '<li class="small">' + $('<div>').text(msg).html() + '</li>';
+                                });
+                                html += '</ul></div>';
+                            }
+
+                            $expenseresult.html(html).removeClass('d-none');
+                        }
+                    },
+                    error: function () {
+                        $expensespinner.addClass('d-none');
+                        $expensesubmitBtn.prop('disabled', false);
+                        $expenseresult.html('<div class="alert alert-danger mb-0">An error occurred while uploading the file.</div>').removeClass('d-none');
+                    }
+                });
+            });
+        },
+
         initImport: function(){
             let SVCAobj = this;
             SVCAobj.initImportStudentCsv();
             SVCAobj.initImportPaymentCsv();
+            SVCAobj.initImportExpenseCsv();
         },
 
         initMyTask: function(){

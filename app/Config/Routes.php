@@ -38,6 +38,7 @@ $routes->group('expense', function ($routes) {
     $routes->get('/', 'Expense::index');
     $routes->post('add', 'Expense::add');
     $routes->post('list', 'Expense::list');
+    $routes->post('import-csv', 'Expense::importCsv');
 });
 
 $routes->group('student', function ($routes) {

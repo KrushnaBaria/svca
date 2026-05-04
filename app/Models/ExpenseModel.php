@@ -16,12 +16,16 @@ class ExpenseModel extends Model
 
     public function add($data)
     {
-        $query = "INSERT INTO expenses (id, exp, center, amount, add_date, updated_by, updated_date) VALUES (NULL, '" . $data['exp'] . "', '" . $data['center'] . "', '" . $data['amount'] . "', NOW(), '" . auth()->user()->email . "', NOW())";
-         if($this->db->query($query)){
+        $add_date = isset($data['add_date']) ? $data['add_date'] : date('Y-m-d H:i:s');
+        $updated_by = isset($data['updated_by']) ? $data['updated_by'] : auth()->user()->email;
+        $updated_date = isset($data['updated_date']) ? $data['updated_date'] : date('Y-m-d H:i:s');
+
+        $query = "INSERT INTO expenses (id, exp, center, amount, add_date, updated_by, updated_date) VALUES (NULL, '" . $data['exp'] . "', '" . $data['center'] . "', '" . $data['amount'] . "', '" . $add_date . "', '" . $updated_by . "', '" . $updated_date . "')";
+        if ($this->db->query($query)) {
             return true;
         } else {
             return false;
-        };
+        }
     }
 
     public function getList($data)
