@@ -23,10 +23,10 @@ $routes->group('dashboard', function ($routes) {
 
 
 $routes->group('statistics', function ($routes){
-    $routes->get('/', 'statistics::index');
-    $routes->post('get-revenue', 'statistics::getRevenue');
-    $routes->post('get-expense', 'statistics::getExpense');
-    $routes->post('get-profit', 'statistics::getProfit');
+    $routes->get('/', 'Statistics::index');
+    $routes->post('get-revenue', 'Statistics::getRevenue');
+    $routes->post('get-expense', 'Statistics::getExpense');
+    $routes->post('get-profit', 'Statistics::getProfit');
 });
 
 $routes->group('profit-share', function ($routes) {
