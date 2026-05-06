@@ -82,7 +82,11 @@
     <div class="card-body">
         <table id="pay-historytbl" class="table table-bordered table-striped">
             <thead>
-                <th>Id</th>
+                <?php if(auth()->user()->getGroups()[0] == 'superadmin'){ ?>
+                    <th> Id </th>
+                <?php }else{ ?>
+                    <th>No</th>
+                <?php }?>
                 <th>Amount</th>
                 <th>Remark</th>
                 <th>Added By</th>

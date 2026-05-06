@@ -2288,7 +2288,11 @@
                         targets: [0],
                         orderable: false,
                         data: function (row, type, val, meta) {  
-                            return meta.row + 1;
+                            if(SvcaConfig.userGroup == 'superadmin'){
+                                return row.id;
+                            }else{
+                                return meta.row + 1;
+                            }
                         }
                     },
                     {
