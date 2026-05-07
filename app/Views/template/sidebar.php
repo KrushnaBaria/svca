@@ -7,7 +7,7 @@
         <div class="brand-logo d-flex align-items-center justify-content-between">
             <a href="" class="text-nowrap logo-img text-center">
                 <!-- <img src="<?php echo base_url('public/assets/images/logos/logo.svg');?>" alt="" /> -->
-                 <h1 class="mb-0 fs-8 fw-semibold text-primary">SVCA</h1>
+                <h1 class="mb-0 fs-8 fw-semibold text-primary">SVCA</h1>
             </a>
             <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
                 <i class="ti ti-x fs-6"></i>
@@ -48,6 +48,14 @@
                         <span class="hide-menu">Student</span>
                     </a>
                 </li>
+                <?php if ($user_group == 'superadmin'){?>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="<?php echo base_url('/payment/list');?>" aria-expanded="false">
+                            <i class="ti ti-credit-card"></i>
+                            <span class="hide-menu">Fees</span>
+                        </a>
+                    </li>
+                <?php } ?>
                 <li class="sidebar-item">
                     <a class="sidebar-link" href="<?php echo base_url('/inquery');?>" aria-expanded="false">
                         <i class="ti ti-phone-call"></i>

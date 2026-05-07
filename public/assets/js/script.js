@@ -2449,6 +2449,78 @@
             });
         },
 
+        initPayment: function(){
+
+            let paymentlist = $('#payment-list');
+            let paymentList = new DataTable('#payment-list', {
+                responsive: true,
+                scrollX: true,
+                searching: true,
+                lengthChange: true,
+                processing: true,
+                serverSide: true,
+                bSortable: true,
+                bFilter: true,
+                pagingType: "full_numbers",
+                ajax: {
+                    url: conf.baseUrl + "/payment/get-list",
+                    type: 'post',
+                    // data: function (d) {
+                    //     d.center_ftr = center_ftr;
+                    //     d.type_ftr   = type_ftr;
+                    //     d.att_date   = $('#att-date').val();
+                    //     d.sts_ftr = sts_ftr;
+                    // }
+                },
+                lengthMenu: [
+                    [5, 10, 20, -1],
+                    [5, 10, 20, "All"]
+                ],
+                pageLength: 10,
+                paging: true,
+                ordering: false,
+                columnDefs: [
+                    {
+                        targets: [0],
+                        orderable: false,
+                        data: function (row, type, val, meta) {  
+                            return meta.row + 1;
+                        }
+                    },{
+                        targets: [1],
+                        orderable: true,
+                        data: function (row) {
+                            return row.name;
+                        }
+                    },{
+                        targets: [2],
+                        orderable: true,
+                        data: function (row) {
+                            return row.amount;
+                        }
+                    },{
+                        targets: [3],
+                        orderable: true,
+                        data: function (row) {
+                            return row.remark ?? '-';
+                        }
+                    },{
+                        targets: [4],
+                        orderable: true,
+                        data: function (row) {
+                            return row.updated_by;
+                        }
+                    },{
+                        targets: [5],
+                        orderable: true,
+                        data: function (row) {
+                            return row.add_date;
+                        }
+                    },
+                ]
+            });
+        },
+
         initBirthdayBuzz: function(){
 
             // Set the birth-month dropdown to the current month by default

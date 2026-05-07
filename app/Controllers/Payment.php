@@ -36,6 +36,27 @@ class Payment extends BaseController
         return view('template/header', ['page_title' => 'Payment']) . view('student/fees', $data) . view('template/footer', ['app_init' => 'initAddPayment']);
     }
 
+    public function list()
+    {
+        return view('template/header', ['page_title' => 'Payment List']) . view('payment/list') . view('template/footer', ['app_init' => 'initPayment']);
+    }
+
+    public function getList()
+    {
+        $data = [
+            'start' => $this->request->getPost('start'),
+            'length' => $this->request->getPost('length'),
+            'search' => $this->request->getPost('search')['value'] ?? ''
+        ];
+
+        $paymentList = $this->model->getPaymentList($data);
+        if($paymentList){
+            return json_encode($paymentList);
+        } else {
+            return json_encode();
+        }
+    }
+
     public function add()
     {   
         $transaction_Id = $this->request->getPost('transaction_id');

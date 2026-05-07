@@ -23,4 +23,20 @@ class PaymentModel extends Model
         $result['data'] = $this->db->query($query)->getResultArray();
         return $result;
     }
+
+    public function getPaymentList($data)
+    {
+        $query = "SELECT p.*, s.name FROM payment p
+                    LEFT JOIN students AS s ON p.stu_id = s.id";
+        if (isset($data['search']) && !empty($data['search'])) {
+            $search = $data['search'];
+            $query .= " WHERE p.remark LIKE '%$search%' OR u.username LIKE '%$search%'";
+        }
+
+        $result['recordsTotal'] = $result['recordsFiltered'] = $this->db->query($query)->getNumRows();
+        
+        $query .= " ORDER BY p.id DESC LIMIT " . $data['start'] . ", " . $data['length'];
+        $result['data'] = $this->db->query($query)->getResultArray();
+        return $result;
+    }
 }

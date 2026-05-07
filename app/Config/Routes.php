@@ -95,11 +95,13 @@ $routes->group('course', function ($routes) {
 });
 
 $routes->group('payment', function ($routes){
+    $routes->get('list', 'Payment::list');
     $routes->get('(:num)', 'Payment::index/$1');
     $routes->get('invoice/(:num)', 'Payment::invoice/$1');
     $routes->post('add', 'Payment::add');
     $routes->post('get-payhistory', 'Payment::getPayHistory');
     $routes->post('import-csv', 'Payment::importCsv');
+    $routes->post('get-list', 'Payment::getList');
 });
 
 $routes->group('logs', function ($routes) {
