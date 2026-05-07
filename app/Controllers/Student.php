@@ -148,6 +148,23 @@ class Student extends BaseController
         }
     }
 
+    public function withdraw()
+    {
+        $id = $this->request->getPost('student_id');
+
+        $data = [
+            'status' => 2,
+            'updated_date' => date('Y-m-d H:i:s'),
+            'updated_by' => auth()->user()->email
+        ];
+
+        if ($this->model->update($id, $data)) {
+            return json_encode(['success' => 1]);
+        } else {
+            return json_encode(['success' => 0, 'message' => 'Failed to withdrawn admission.']);
+        }
+    }
+
     public function view($id)
     {
         $student = $this->model->find($id);

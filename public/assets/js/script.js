@@ -2420,6 +2420,33 @@
                     }
                 });
             });
+
+            $('#withdraw-btn').on('click', function(){
+                let confirmation = confirm("Are you sure you want withdraw this admissions?");
+                if (!confirmation) {
+                    return;
+                }
+
+                let studentId = $(this).data('stuid');
+                $.ajax({
+                    url: conf.baseUrl + "/student/withdraw",
+                    type: "POST",
+                    dataType: "json",
+                    data: {
+                        student_id: studentId
+                    },
+                    success: function(res) {
+                        if(res.success == 1) {
+                            window.location.href = conf.baseUrl + "student/list";
+                        } else {
+                            alert("Error Withdrawal failed .");
+                        }
+                    },
+                    error: function() {
+                        alert("An error occurred while Withdraw admissions.");
+                    }
+                });
+            });
         },
 
         initBirthdayBuzz: function(){

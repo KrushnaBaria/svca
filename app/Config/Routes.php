@@ -55,6 +55,7 @@ $routes->group('student', function ($routes) {
     $routes->get('birthday-buzz', 'Student::birthdayBuzz');
     $routes->post('get-stu-birthday', 'Student::getStuBirthday');
     $routes->post('mark-as-old', 'Student::markAsOld');
+    $routes->post('withdraw', 'Student::withdraw');
 });
 
 $routes->group('inquery', function ($routes) {

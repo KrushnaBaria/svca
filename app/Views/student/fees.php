@@ -68,7 +68,11 @@
     </div>
 </div>
 
-
+<div class="card" >
+    <div class="card-body">
+        <button class="btn btn-danger" id="withdraw-btn" data-stuid="<?php echo $student['id']; ?>" >Withdraw</button>
+    </div>
+</div>
 
 <div class="card">
     <div class="card-header text-bg-primary">
