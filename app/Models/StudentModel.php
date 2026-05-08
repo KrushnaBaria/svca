@@ -33,7 +33,7 @@ class StudentModel extends Model
             $student_id = $this->db->insertID();
             if($data['discount']){
                 $amt = $data['fees'] * ($data['discount'] / 100);
-                $pay_query = "INSERT INTO payment (id, stu_id, amount, remark, add_date, updated_by, updated_date) VALUES (NULL, " . intval($student_id) . ", " . floatval($amt) . ", '" . $data['discount'] . "% Discount Applied', '" . date('Y-m-d H:i:s') . "', 'auto@svca.com', '" . date('Y-m-d H:i:s') . "')";
+                $pay_query = "INSERT INTO payment (id, stu_id, amount, pay_mod, discount, remark, add_date, updated_by, updated_date) VALUES (NULL, " . intval($student_id) . ", " . floatval($amt) . ", 0, 1, '" . $data['discount'] . "% Discount Applied', '" . date('Y-m-d H:i:s') . "', 'auto@svca.com', '" . date('Y-m-d H:i:s') . "')";
                 if ($this->db->query($pay_query)) {
                     return true;
                 } else {
@@ -101,7 +101,7 @@ class StudentModel extends Model
         if($stuInfo['status'] == 0){
             if($data['discount']){
                 $amt = $data['fees'] * ($data['discount'] / 100);
-                $pay_query = "INSERT INTO payment (id, stu_id, amount, remark, add_date, updated_by, updated_date) VALUES (NULL, " . intval($id) . ", " . floatval($amt) . ", '" . $data['discount'] . "% Discount Applied', '" . date('Y-m-d H:i:s') . "', 'auto@svca.com', '" . date('Y-m-d H:i:s') . "')";
+                $pay_query = "INSERT INTO payment (id, stu_id, amount, pay_mod, discount, remark, add_date, updated_by, updated_date) VALUES (NULL, " . intval($id) . ", " . floatval($amt) . ", 0, 1, '" . $data['discount'] . "% Discount Applied', '" . date('Y-m-d H:i:s') . "', 'auto@svca.com', '" . date('Y-m-d H:i:s') . "')";
                 if ($this->db->query($pay_query)) {
                     // proceed to update student status
                 } else {
