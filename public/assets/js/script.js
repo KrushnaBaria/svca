@@ -3993,6 +3993,7 @@
                     },
                     success: function(res) {
                         if(res.success == 1) {
+                            $('#task').val('');
                             taskTable.ajax.reload();
                         }else{
                             alert("Error adding task.");

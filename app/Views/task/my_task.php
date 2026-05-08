@@ -6,7 +6,7 @@
             </div>
             <div class="card-body">
                 <label for="task" class="form-label">Task</label>
-                <input type="text" class="form-control" name="task" id="task">
+                <textarea class="form-control" name="task" id="task" rows="3"></textarea>
                 <div class="text-center mt-2">
                     <button id="add-task" class="btn btn-primary">Submit</button>
                 </div>
