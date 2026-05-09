@@ -95,7 +95,7 @@ class ExpenseModel extends Model
     {
         $revenue_query = "SELECT DATE_FORMAT(add_date, '%b') AS month, MONTH(add_date) AS month_no, SUM(amount) AS revenue
                             FROM payment
-                            WHERE YEAR(add_date) = " . $year . "
+                            WHERE YEAR(add_date) = " . $year . " AND discount = 0
                             GROUP BY YEAR(add_date), MONTH(add_date)
                             ORDER BY month_no";
         
@@ -165,7 +165,7 @@ class ExpenseModel extends Model
         $revenue_query = "SELECT SUM(amount) AS revenue
                     FROM payment
                     LEFT JOIN students AS stu ON payment.stu_id = stu.id
-                    WHERE 1=1". $whereRev . " AND DATE_FORMAT(payment.add_date, '%Y-%m') = '". $data['f_date'] ."'
+                    WHERE 1=1". $whereRev . " AND DATE_FORMAT(payment.add_date, '%Y-%m') = '". $data['f_date'] ."' AND payment.discount = 0
                     GROUP BY YEAR(payment.add_date), MONTH(payment.add_date)";
         
         $expense_query = "SELECT SUM(amount) AS expenses
@@ -190,7 +190,7 @@ class ExpenseModel extends Model
         $revenue_query = "SELECT SUM(amount) AS revenue
                     FROM payment
                     LEFT JOIN students AS stu ON payment.stu_id = stu.id
-                    WHERE 1=1 AND DATE_FORMAT(payment.add_date, '%Y-%m') = '". $date ."'
+                    WHERE 1=1 AND DATE_FORMAT(payment.add_date, '%Y-%m') = '". $date ."' AND payment.discount = 0
                     GROUP BY YEAR(payment.add_date), MONTH(payment.add_date)";
         
         $expense_query = "SELECT SUM(amount) AS expenses
@@ -279,7 +279,7 @@ class ExpenseModel extends Model
                     FROM payment AS p
                     LEFT JOIN students AS stu ON p.stu_id = stu.id
                     LEFT JOIN centers AS c ON stu.center = c.id
-                    WHERE YEAR(p.add_date) = " . $year . "
+                    WHERE YEAR(p.add_date) = " . $year . " AND p.discount = 0
                     GROUP BY center_name, month
                     ORDER BY stu.center, month";
 
@@ -347,7 +347,7 @@ class ExpenseModel extends Model
                     FROM payment AS p
                     LEFT JOIN students AS stu ON p.stu_id = stu.id
                     LEFT JOIN centers AS c ON stu.center = c.id
-                    WHERE YEAR(p.add_date) = " . $year . "
+                    WHERE YEAR(p.add_date) = " . $year . " AND p.discount = 0
                     GROUP BY center_name, month
                     ORDER BY stu.center, month";
 
