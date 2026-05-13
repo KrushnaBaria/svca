@@ -9,6 +9,8 @@ use Psr\Log\LoggerInterface;
 use App\Models\PaymentModel;
 use App\Models\StudentModel;
 use App\Models\PaymentLog;
+use App\Models\CenterModel;
+use App\Models\UserModel;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 
@@ -17,6 +19,8 @@ class Payment extends BaseController
     protected $model;
     protected $studentModel;
     protected $paymentLogModel;
+    protected $centerModel;
+    protected $userModel;
 
     public function initController(RequestInterface $request, ResponseInterface $response, LoggerInterface $logger)
     {
@@ -25,6 +29,8 @@ class Payment extends BaseController
         $this->studentModel = model(StudentModel::class);
         $this->model = model(PaymentModel::class);
         $this->paymentLogModel = model(PaymentLog::class);
+        $this->centerModel = model(CenterModel::class);
+        $this->userModel = model(UserModel::class);
     }
 
     public function index($id)
@@ -38,7 +44,10 @@ class Payment extends BaseController
 
     public function list()
     {
-        return view('template/header', ['page_title' => 'Payment List']) . view('payment/list') . view('template/footer', ['app_init' => 'initPayment']);
+        $data['centers'] = $this->centerModel->findAll();
+        $data['users'] = $this->userModel->getUsers();
+
+        return view('template/header', ['page_title' => 'Payment List']) . view('payment/list', $data) . view('template/footer', ['app_init' => 'initPayment']);
     }
 
     public function getList()
@@ -46,7 +55,10 @@ class Payment extends BaseController
         $data = [
             'start' => $this->request->getPost('start'),
             'length' => $this->request->getPost('length'),
-            'search' => $this->request->getPost('search')['value'] ?? ''
+            'search' => $this->request->getPost('search')['value'] ?? '',
+            'center_ftr' => $this->request->getPost('center_ftr') ?? '',
+            'user_ftr' => $this->request->getPost('user_ftr') ?? '',
+            'date_ftr' => $this->request->getPost('date_ftr') ?? '',
         ];
 
         $paymentList = $this->model->getPaymentList($data);

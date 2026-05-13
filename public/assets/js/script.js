@@ -2451,6 +2451,30 @@
 
         initPayment: function(){
 
+            $('#center-ftr, #user-ftr').on('change', function(){
+                paymentList.ajax.reload();
+            });
+
+            let datePicker = flatpickr("#date-ftr", {
+                mode: "range",
+                altInput: true,
+                altFormat: "d-m-Y",
+                dateFormat: "Y-m-d",
+                maxDate: new Date(),
+                onChange: function(selectedDates, dateStr, instance) {
+                    if (dateStr.includes("to")) {
+                        paymentList.ajax.reload();
+                    }
+                }
+            });
+
+            $('#payment-clear-btn').on('click', function(){
+                $('#user-ftr').val('');
+                $('#center-ftr').val('');
+                datePicker.clear();
+                paymentList.ajax.reload();
+            });
+
             let paymentlist = $('#payment-list');
             let paymentList = new DataTable('#payment-list', {
                 responsive: true,
@@ -2465,12 +2489,11 @@
                 ajax: {
                     url: conf.baseUrl + "/payment/get-list",
                     type: 'post',
-                    // data: function (d) {
-                    //     d.center_ftr = center_ftr;
-                    //     d.type_ftr   = type_ftr;
-                    //     d.att_date   = $('#att-date').val();
-                    //     d.sts_ftr = sts_ftr;
-                    // }
+                    data: function (d) {
+                        d.center_ftr = $('#center-ftr').val();
+                        d.user_ftr = $('#user-ftr').val();
+                        d.date_ftr   = $('#date-ftr').val();
+                    }
                 },
                 lengthMenu: [
                     [5, 10, 20, -1],
@@ -2508,10 +2531,16 @@
                         targets: [4],
                         orderable: true,
                         data: function (row) {
-                            return row.updated_by;
+                            return row.center_name;
                         }
                     },{
                         targets: [5],
+                        orderable: true,
+                        data: function (row) {
+                            return row.updated_by;
+                        }
+                    },{
+                        targets: [6],
                         orderable: true,
                         data: function (row) {
                             return row.add_date;
