@@ -2460,7 +2460,7 @@
                 altInput: true,
                 altFormat: "d-m-Y",
                 dateFormat: "Y-m-d",
-                maxDate: new Date(),
+                //maxDate: new Date(),
                 onChange: function(selectedDates, dateStr, instance) {
                     if (dateStr.includes("to")) {
                         paymentList.ajax.reload();
