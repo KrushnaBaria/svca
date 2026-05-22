@@ -2338,14 +2338,7 @@
                 
             }).on('xhr.dt', function (e, settings, json, xhr) {
                 // Calculate the total sum of 'amount' in data rows
-                var total = 0;
-                if (json && json.data && Array.isArray(json.data)) {
-                    total = json.data.reduce(function(acc, curr) {
-                        var amt = parseFloat(curr.amount);
-                        if (!isNaN(amt)) acc += amt;
-                        return acc;
-                    }, 0);
-                }
+                var total = json.total_paid ;
                 var totalFees = parseFloat($('#total-fees').data('total-fees'));
                 var pending = isNaN(totalFees) ? 0 : totalFees - total;
                 $('#pending-fees').text('₹' + pending.toLocaleString(undefined, { maximumFractionDigits: 0, minimumFractionDigits: 0 }));

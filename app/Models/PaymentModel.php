@@ -17,10 +17,18 @@ class PaymentModel extends Model
     public function getPayHistory($data)
     {
         $query = "SELECT * FROM payment WHERE stu_id = " . $data['student_id'];
+
+        $result['recordsTotal'] = $result['recordsFiltered'] = $this->db->query($query)->getNumRows();
+
         $query .= " ORDER BY id ASC LIMIT " . $data['start'] . ", " . $data['end'];
         
-        $result['recordsTotal'] = $result['recordsFiltered'] = $this->db->query($query)->getNumRows();
         $result['data'] = $this->db->query($query)->getResultArray();
+
+        $query_total_fee = "SELECT SUM(amount) as total_paid FROM payment WHERE stu_id = " . $data['student_id'];
+        $total_paid = $this->db->query($query_total_fee)->getRowArray();
+
+        $result['total_paid'] = $total_paid['total_paid'];
+
         return $result;
     }
 
