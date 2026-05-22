@@ -1607,7 +1607,7 @@
                         }
                     },
                     {
-                       targets: [7],
+                        targets: [7],
                         orderable: false,
                         data: function (row) {
                             return row.referred_by ? row.referred_by : '-';
@@ -2338,7 +2338,7 @@
                 
             }).on('xhr.dt', function (e, settings, json, xhr) {
                 // Calculate the total sum of 'amount' in data rows
-                var total = json.total_paid ;
+                var total = json.total_paid;
                 var totalFees = parseFloat($('#total-fees').data('total-fees'));
                 var pending = isNaN(totalFees) ? 0 : totalFees - total;
                 $('#pending-fees').text('₹' + pending.toLocaleString(undefined, { maximumFractionDigits: 0, minimumFractionDigits: 0 }));
