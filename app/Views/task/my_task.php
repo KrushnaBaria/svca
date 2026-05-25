@@ -19,10 +19,11 @@
                 <h5 class="card-title text-white mb-0">Task List</h5>
             </div>
             <div class="card-body">
-                <table  id="task-tbl" class="table" style="width:100%">
+                <table  id="task-tbl" class="table w-100">
                     <thead>
                         <th><h6 class="fs-3 fw-semibold">No</h6></th>
                         <th><h6 class="fs-3 fw-semibold">Task</h6></th>
+                        <th><h6 class="fs-3 fw-semibold"></h6></th>
                     </thead>
                     <tbody></tbody>
                 </table>

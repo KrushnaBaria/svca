@@ -12,7 +12,7 @@ class MyTaskModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['id', 'user_id', 'task', 'updated_date'];
+    protected $allowedFields    = ['id', 'user_id', 'task', 'status', 'approve', 'updated_date'];
 
     public function getList($data)
     {
@@ -51,7 +51,7 @@ class MyTaskModel extends Model
             $baseQuery .= " AND (ui.first_name LIKE '%{$data['search']}%' OR ui.last_name LIKE '%{$data['search']}%' OR u.secret LIKE '%{$data['search']}%' OR c.center LIKE '%{$data['search']}%' OR mt.task LIKE '%{$data['search']}%')";
         }
 
-         if (!empty($data['center_ftr'])) {
+        if (!empty($data['center_ftr'])) {
             $baseQuery .=" AND c.id = '{$data['center_ftr']}'";
         }
 

@@ -3982,8 +3982,8 @@
                 ordering: false,
                 columnDefs: [
                     {   
-                        width: '10%',
                         targets: [0],
+                        width: '10%',
                         orderable: false,
                         data: function (row, type, val, meta) {  
                             return meta.row + 1;
@@ -3991,12 +3991,72 @@
                     },
                     {
                         targets: [1],
+                        width: '80%',
                         orderable: false,
                         data: function (row) {
                             return row.task;
                         }
+                    },
+                    {
+                        targets: [2],
+                        orderable: false,
+                        data: function (row) {
+                            if(row.status == 0){
+                                return '<button class="btn btn-primary m-1 complete-btn" data-id="'+ row.id +'">Complete</button><button class="btn btn-danger m-1 pending-btn" data-id="'+ row.id +'">Pending</button>';
+                            }else if(row.status == 1){
+                                return '<span class="badge bg-success-subtle text-success">Complete</span>';
+                            }else{
+                                return '<span class="badge bg-danger-subtle text-danger">Pending</span>'
+                            }
+                        }
                     }
                 ],
+            });
+
+            $(document).on('click', '.complete-btn', function(e){
+                e.preventDefault();
+                $.ajax({
+                    url: conf.baseUrl + "/mytask/change-sts",
+                    type: "POST",
+                    dataType: "json",
+                    data: {
+                        id: $(this).data("id"),
+                        status: 1
+                    },
+                    success: function(res) {
+                        if(res.success == 1) {
+                            taskTable.ajax.reload();
+                        }else{
+                            alert("Error updating task.");
+                        }
+                    },
+                    error: function() {
+                        alert("An error occurred while updating the task.");
+                    }
+                });
+            });
+
+            $(document).on('click', '.pending-btn', function(e){
+                e.preventDefault();
+                $.ajax({
+                    url: conf.baseUrl + "/mytask/change-sts",
+                    type: "POST",
+                    dataType: "json",
+                    data: {
+                        id: $(this).data("id"),
+                        status: 2
+                    },
+                    success: function(res) {
+                        if(res.success == 1) {
+                            taskTable.ajax.reload();
+                        }else{
+                            alert("Error updating task.");
+                        }
+                    },
+                    error: function() {
+                        alert("An error occurred while updating the task.");
+                    }
+                });
             });
 
             $('#add-task').on('click', function(e){

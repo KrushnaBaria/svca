@@ -147,6 +147,7 @@ $routes->group('mytask', function ($routes){
     $routes->get('/', 'MyTask::index');
     $routes->post('list', 'MyTask::list');
     $routes->post('add', 'MyTask::add');
+    $routes->post('change-sts', 'MyTask::changeStatus');
 });
 
 $routes->group('task', function ($routes){
