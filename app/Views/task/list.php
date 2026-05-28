@@ -50,6 +50,8 @@
                             <th><h6 class="fs-3 fw-semibold">Center</h6></th>
                             <th><h6 class="fs-3 fw-semibold">Task</h6></th>
                             <th><h6 class="fs-3 fw-semibold">Updated Date</h6></th>
+                            <th>Status</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody></tbody>

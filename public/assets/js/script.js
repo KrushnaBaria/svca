@@ -4185,8 +4185,82 @@
                         data: function (row) {
                             return row.updated_date;
                         }
+                    },
+                    {
+                        targets: [5],
+                        orderable: false,
+                        data: function (row) {
+                        if(row.status == 0){
+                                return '<span class="badge bg-warning-subtle text-warning">In Process</span>';
+                            }else if(row.status == 1){
+                                return '<span class="badge bg-success-subtle text-success">Complete</span>';
+                            }else{
+                                return '<span class="badge bg-danger-subtle text-danger">Pending</span>'
+                            }
+                        }
+                    },
+                    {
+                        targets: [6],
+                        orderable: false,
+                        data: function (row) {
+                            if(row.status == 0){
+                                return '<span class="badge bg-warning-subtle text-warning"><i class="ti ti-clock-hour-8"></i></span>';
+                            }else{
+                                if(row.approve == 0){
+                                    return '<button class="btn btn-success m-1 approve-btn" data-id="'+ row.id +'">Approve</button><button class="btn btn-danger m-1 decline-btn" data-id="'+ row.id +'">Decline</button>';
+                                }else if(row.approve == 1){
+                                    return '<span class="badge bg-success-subtle text-success">Approve</span>';
+                                }else{
+                                    return '<span class="badge bg-danger-subtle text-danger">Decline</span>'
+                                }
+                            }
+                        }
                     }
                 ],
+            });
+
+            $(document).on('click', '.approve-btn', function(){
+                $.ajax({
+                    url: conf.baseUrl + "/task/approve-sts",
+                    type: "POST",
+                    dataType: "json",
+                    data: {
+                        id: $(this).data("id"),
+                        status: 1
+                    },
+                    success: function(res) {
+                        if(res.success == 1) {
+                            taskListTable.ajax.reload();
+                        }else{
+                            alert("Error updating task.");
+                        }
+                    },
+                    error: function() {
+                        alert("An error occurred while updating the task.");
+                    }
+                });
+            });
+
+            $(document).on('click', '.decline-btn', function(){
+                $.ajax({
+                    url: conf.baseUrl + "/task/approve-sts",
+                    type: "POST",
+                    dataType: "json",
+                    data: {
+                        id: $(this).data("id"),
+                        status: 2
+                    },
+                    success: function(res) {
+                        if(res.success == 1) {
+                            taskListTable.ajax.reload();
+                        }else{
+                            alert("Error updating task.");
+                        }
+                    },
+                    error: function() {
+                        alert("An error occurred while updating the task.");
+                    }
+                });
             });
         },
 

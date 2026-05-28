@@ -80,5 +80,20 @@ class Task extends BaseController
 
         return json_encode(['success' => 0, 'data' => []]);
     }
+
+    
+    public function approveStatus()
+    {
+        $id = $this->request->getPost('id');
+        $status = $this->request->getPost('status');
+
+        $res = $this->model->update($id, ['approve' => $status, 'approve_by' => auth()->user()->email]);
+
+        if($res){
+            return json_encode(['success' => 1, 'message' => 'Status successfully updated']);
+        } else {
+            return json_encode(['success' => 0, 'message' => 'There are some error updating status']);
+        }
+    }
 }
 

@@ -154,6 +154,7 @@ $routes->group('task', function ($routes){
     $routes->get('/', 'Task::index');
     $routes->post('list', 'Task::list');
     $routes->post('all-list', 'Task::all_list');
+    $routes->post('approve-sts', 'Task::approveStatus');
 });
 
 $routes->group('attendance', function ($routes){

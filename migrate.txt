@@ -101,3 +101,6 @@ ALTER TABLE `payment` ADD `discount` INT NOT NULL DEFAULT '0' AFTER `pay_mod`;
 
 [25-05-2026]
 ALTER TABLE `my_task` ADD `status` INT(10) NOT NULL DEFAULT '0' AFTER `task`, ADD `approve` INT(10) NOT NULL DEFAULT '0' AFTER `status`;
+
+[27-05-2026]
+ALTER TABLE `my_task` ADD `approve_by` VARCHAR(255) NOT NULL AFTER `updated_date`;

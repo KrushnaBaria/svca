@@ -12,7 +12,7 @@ class MyTaskModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['id', 'user_id', 'task', 'status', 'approve', 'updated_date'];
+    protected $allowedFields    = ['id', 'user_id', 'task', 'status', 'approve', 'updated_date', 'approve_by'];
 
     public function getList($data)
     {
@@ -41,7 +41,7 @@ class MyTaskModel extends Model
             $end_date = $parts[1];
         }
 
-        $baseQuery = "SELECT mt.id, mt.user_id, mt.task, mt.updated_date, ui.first_name, ui.last_name, u.secret AS email, c.center AS center_name
+        $baseQuery = "SELECT mt.id, mt.user_id, mt.task, mt.updated_date, ui.first_name, ui.last_name, u.secret AS email, c.center AS center_name, mt.approve, mt.approve_by, mt.status
             FROM my_task AS mt
             LEFT JOIN user_info AS ui ON ui.user_id = mt.user_id
             LEFT JOIN auth_identities AS u ON u.id = mt.user_id
