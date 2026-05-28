@@ -58,7 +58,7 @@
                 <?php } ?>
                 <li class="sidebar-item">
                     <a class="sidebar-link" href="<?php echo base_url('/inquery');?>" aria-expanded="false">
-                        <i class="ti ti-phone-call"></i>
+                        <i class="ti ti-info-square"></i>
                         <span class="hide-menu">Inquery</span>
                     </a>
                 </li>
