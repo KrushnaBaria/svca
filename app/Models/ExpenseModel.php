@@ -98,6 +98,12 @@ class ExpenseModel extends Model
                             WHERE YEAR(add_date) = " . $year . " AND discount = 0
                             GROUP BY YEAR(add_date), MONTH(add_date)
                             ORDER BY month_no";
+                            
+        $certificate_query = "SELECT DATE_FORMAT(updated_date, '%b') AS month, MONTH(updated_date) AS month_no, SUM(fees) AS certificate_revenue
+                            FROM certificates
+                            WHERE YEAR(updated_date) = " . $year . "
+                            GROUP BY YEAR(updated_date), MONTH(updated_date)
+                            ORDER BY month_no";
         
         $expense_query = "SELECT DATE_FORMAT(add_date, '%b') AS month, MONTH(add_date) AS month_no, SUM(amount) AS expenses
                     FROM expenses
@@ -106,6 +112,7 @@ class ExpenseModel extends Model
                     ORDER BY month_no";
 
         $revenue_result = $this->db->query($revenue_query)->getResultArray();
+        $certificate_result = $this->db->query($certificate_query)->getResultArray();
         $expense_result = $this->db->query($expense_query)->getResultArray();
         
         // Combine revenue and expense by month, calculate profit
@@ -119,6 +126,14 @@ class ExpenseModel extends Model
             ];
         }
 
+        $certificate_by_month = [];
+        foreach ($certificate_result as $row) {
+            $certificate_by_month[$row['month_no']] = [
+                'month' => $row['month'],
+                'certificate_revenue' => (float)$row['certificate_revenue']
+            ];
+        }
+
         $expense_by_month = [];
         foreach ($expense_result as $row) {
             $expense_by_month[$row['month_no']] = [
@@ -128,7 +143,7 @@ class ExpenseModel extends Model
         }
 
         // Get list of all months present in either
-        $months = array_unique(array_merge(array_keys($revenue_by_month), array_keys($expense_by_month)));
+        $months = array_unique(array_merge(array_keys($revenue_by_month), array_keys($expense_by_month), array_keys($certificate_by_month)));
         sort($months, SORT_NUMERIC);
 
         $result = [];
@@ -138,11 +153,12 @@ class ExpenseModel extends Model
 
             $revenue = isset($revenue_by_month[$month_no]['revenue']) ? $revenue_by_month[$month_no]['revenue'] : 0;
             $expenses = isset($expense_by_month[$month_no]['expenses']) ? $expense_by_month[$month_no]['expenses'] : 0;
-            $profit = $revenue - $expenses;
+            $certificate_revenue = isset($certificate_by_month[$month_no]['certificate_revenue']) ? $certificate_by_month[$month_no]['certificate_revenue'] : 0;
+            $profit = ($revenue + $certificate_revenue) - $expenses;
 
             $result[] = [
                 'month' => $month_name,
-                'revenue' => $revenue,
+                'revenue' => $revenue + $certificate_revenue,
                 'expenses' => $expenses,
                 'profit' => $profit
             ];
@@ -167,6 +183,10 @@ class ExpenseModel extends Model
                     LEFT JOIN students AS stu ON payment.stu_id = stu.id
                     WHERE 1=1". $whereRev . " AND DATE_FORMAT(payment.add_date, '%Y-%m') = '". $data['f_date'] ."' AND payment.discount = 0
                     GROUP BY YEAR(payment.add_date), MONTH(payment.add_date)";
+
+        $certificate_query = "SELECT SUM(fees) AS certificate_revenue
+                    FROM certificates
+                    WHERE 1=1 AND DATE_FORMAT(updated_date, '%Y-%m') = '". $data['f_date'] ."'";
         
         $expense_query = "SELECT SUM(amount) AS expenses
                     FROM expenses
@@ -174,13 +194,17 @@ class ExpenseModel extends Model
                     GROUP BY YEAR(add_date), MONTH(add_date)";
 
         $revenue_result = $this->db->query($revenue_query)->getResultArray();
+        $certificate_result = $this->db->query($certificate_query)->getResultArray();
         $expense_result = $this->db->query($expense_query)->getResultArray();
 
-        $revenue_result = count($revenue_result) > 0 ? $revenue_result : [['revenue' => 0]];
+        
+        $sum_revenue = (count($revenue_result) > 0 ? $revenue_result[0]['revenue'] : 0 ) + (count($certificate_result) > 0 ? $certificate_result[0]['certificate_revenue'] : 0);
+
+        $total_revenue = [['revenue' => $sum_revenue]];
         $expense_result = count($expense_result) > 0 ? $expense_result : [['expenses' => 0]];
 
         return [
-            $revenue_result[0],
+            $total_revenue[0],
             $expense_result[0]
         ];
     }
