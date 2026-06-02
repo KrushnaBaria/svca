@@ -91,6 +91,7 @@ class ExpenseModel extends Model
         return $result;
     }
 
+    //dashboard main chart
     public function getMainReportChartData($year)
     {
         $revenue_query = "SELECT DATE_FORMAT(add_date, '%b') AS month, MONTH(add_date) AS month_no, SUM(amount) AS revenue
@@ -166,6 +167,7 @@ class ExpenseModel extends Model
         return $result;
     }
 
+    //dashboard profit and loss info
     public function getPERinfo($data)
     {
         $whereRev = $whereExp = '';
@@ -209,6 +211,7 @@ class ExpenseModel extends Model
         ];
     }
 
+    //Profit share calculation
     public function getTotalProfit($date)
     {
         $revenue_query = "SELECT SUM(amount) AS revenue
@@ -217,21 +220,28 @@ class ExpenseModel extends Model
                     WHERE 1=1 AND DATE_FORMAT(payment.add_date, '%Y-%m') = '". $date ."' AND payment.discount = 0
                     GROUP BY YEAR(payment.add_date), MONTH(payment.add_date)";
         
+        $certificate_query = "SELECT SUM(fees) AS certificate_revenue
+                    FROM certificates
+                    WHERE 1=1 AND DATE_FORMAT(updated_date, '%Y-%m') = '". $date ."'
+                    GROUP BY YEAR(updated_date), MONTH(updated_date)";
+        
         $expense_query = "SELECT SUM(amount) AS expenses
                     FROM expenses
                     WHERE 1=1 AND DATE_FORMAT(add_date, '%Y-%m') = '". $date ."'
                     GROUP BY YEAR(add_date), MONTH(add_date)";
 
         $revenue_result = $this->db->query($revenue_query)->getResultArray();
+        $certificate_result = $this->db->query($certificate_query)->getResultArray();
         $expense_result = $this->db->query($expense_query)->getResultArray();
 
         $revenue_result = count($revenue_result) > 0 ? $revenue_result : [['revenue' => 0]];
+        $certificate_result = count($certificate_result) > 0 ? $certificate_result : [['certificate_revenue' => 0]];
         $expense_result = count($expense_result) > 0 ? $expense_result : [['expenses' => 0]];
 
         return [
             'revenue' => $revenue_result[0]['revenue'],
             'expenses' => $expense_result[0]['expenses'],
-            'profit' => $revenue_result[0]['revenue'] - $expense_result[0]['expenses']
+            'profit' => ($revenue_result[0]['revenue'] + $certificate_result[0]['certificate_revenue']) - $expense_result[0]['expenses']
         ];
     }
 
