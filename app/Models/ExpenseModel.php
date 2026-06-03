@@ -319,6 +319,16 @@ class ExpenseModel extends Model
 
         $Revresult = $this->db->query($Revquery)->getResultArray();
 
+        $certificate_query = "SELECT stu.center, c.center AS center_name, DATE_FORMAT(cert.updated_date, '%Y-%m') AS month, SUM(cert.fees) AS total_amount
+                    FROM certificates AS cert
+                    LEFT JOIN students AS stu ON cert.stu_id = stu.id
+                    LEFT JOIN centers AS c ON cert.center = c.id
+                    WHERE YEAR(cert.updated_date) = " . $year . "
+                    GROUP BY center_name, month
+                    ORDER BY stu.center, month";
+
+        $Certresult = $this->db->query($certificate_query)->getResultArray();
+
         $expenses = [];
         $revenues = [];
         $months = [];
@@ -343,10 +353,20 @@ class ExpenseModel extends Model
             $months[$month] = $month;
         }
 
+        // Certificate Revenue
+        foreach ($Certresult as $row) {
+            $center = $row['center_name'];
+            $month  = $row['month'];
+            $amount = (float)$row['total_amount'];
+
+            $certificates[$center][$month] = $amount;
+            $months[$month] = $month;
+        }
+
         $months = array_values($months); // unique months
         sort($months);
 
-        $centers = array_unique(array_merge(array_keys($expenses), array_keys($revenues)));
+        $centers = array_unique(array_merge(array_keys($expenses), array_keys($revenues), array_keys($certificates)));
 
         $series = [];
 
@@ -356,8 +376,9 @@ class ExpenseModel extends Model
             foreach ($months as $month) {
                 $rev = $revenues[$center][$month] ?? 0;
                 $exp = $expenses[$center][$month] ?? 0;
+                $cert = $certificates[$center][$month] ?? 0;
 
-                $profit = $rev - $exp;
+                $profit = ($rev + $cert) - $exp;
 
                 $data[] = $profit;
             }
@@ -387,11 +408,25 @@ class ExpenseModel extends Model
 
         $result = $this->db->query($query)->getResultArray();
 
+        $certificate_query = "SELECT stu.center, c.center AS center_name, DATE_FORMAT(cert.updated_date, '%Y-%m') AS month, SUM(cert.fees) AS total_amount
+                    FROM certificates AS cert
+                    LEFT JOIN students AS stu ON cert.stu_id = stu.id
+                    LEFT JOIN centers AS c ON cert.center = c.id
+                    WHERE YEAR(cert.updated_date) = " . $year . "
+                    GROUP BY center_name, month
+                    ORDER BY stu.center, month";
+
+        $Certresult = $this->db->query($certificate_query)->getResultArray();
+
         $series = [];
         $months = [];
 
         // Collect all months
         foreach ($result as $row) {
+            $months[$row['month']] = $row['month'];
+        }
+
+        foreach ($Certresult as $row) {
             $months[$row['month']] = $row['month'];
         }
 
@@ -406,6 +441,18 @@ class ExpenseModel extends Model
             $amount = (float)$row['total_amount'];
 
             $temp[$center][$month] = $amount;
+        }
+
+        foreach ($Certresult as $row) {
+            $center = $row['center_name'];
+            $month  = $row['month'];
+            $amount = (float)$row['total_amount'];
+
+            if (isset($temp[$center][$month])) {
+                $temp[$center][$month] += $amount; // add certificate revenue to existing revenue
+            } else {
+                $temp[$center][$month] = $amount; // initialize if not set
+            }
         }
 
         // Build final series
