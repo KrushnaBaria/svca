@@ -95,6 +95,43 @@
             });
         },
 
+        getCourseByCenter: function(selector, centerId, preSelected){
+            if(centerId){
+                $.ajax({
+                    url: conf.baseUrl + "/course/get-course-by-center",
+                    type: "POST",
+                    dataType: "json",
+                    data: {
+                        center_id: centerId
+                    },
+                    success: function(res) {
+                        console.log(res);
+                        if(res.success == 1) {
+                            var options = '<option value="">Select Course</option>';
+                            $.each(res.courses, function(index, course) {
+                                if(preSelected){
+                                    if(preSelected == course.id){
+                                        options += '<option value="' + course.id + '" selected>' + course.course + '</option>';
+                                        return;
+                                    }
+                                }
+                                options += '<option value="' + course.id + '">' + course.course + '</option>';
+                            });
+                            $(selector).html(options).trigger('change');
+                        } else {
+                            alert("Error fetching courses");
+                        }
+                    },
+                    error: function() {
+                        alert("An error occurred while fetching the courses.");
+                    }
+                });
+            }else{
+                $(selector).html('<option value="">Select Course</option>');
+            }
+            
+        },
+
         getCounts: function(){
             const fp = $('#date-filter')[0]._flatpickr;
 
@@ -2486,6 +2523,7 @@
                         d.center_ftr = $('#center-ftr').val();
                         d.user_ftr = $('#user-ftr').val();
                         d.date_ftr   = $('#date-ftr').val();
+                        d.duration_ftr = $('#duration-ftr').val();
                     }
                 },
                 lengthMenu: [
@@ -2540,6 +2578,107 @@
                         }
                     },
                 ]
+            });
+        },
+
+        initPendingPayList: function(){
+            let SVCAobj = this;
+
+            let datePicker = flatpickr("#date-ftr", {
+                mode: "range",
+                altInput: true,
+                altFormat: "d-m-Y",
+                dateFormat: "Y-m-d",
+                maxDate: new Date(),
+                onChange: function(selectedDates, dateStr, instance) {
+                    if (dateStr.includes("to")) {
+                        console.log($('#date-ftr').val());
+                        paymentPendingList.ajax.reload();
+                    }
+                }
+            });
+
+            let paymentpendinglist = $('#pending-payment-list');
+            let paymentPendingList = new DataTable('#pending-payment-list', {
+                responsive: true,
+                scrollX: true,
+                searching: true,
+                lengthChange: true,
+                processing: true,
+                serverSide: true,
+                bSortable: true,
+                bFilter: true,
+                pagingType: "full_numbers",
+                ajax: {
+                    url: conf.baseUrl + "/payment/get-pending-list",
+                    type: 'post',
+                    data: function (d) {
+                        d.center_ftr = $('#center-ftr').val();
+                        d.course_ftr = $('#course-ftr').val();
+                        d.date_ftr   = $('#date-ftr').val();
+                    }
+                },
+                lengthMenu: [
+                    [5, 10, 20, -1],
+                    [5, 10, 20, "All"]
+                ],
+                pageLength: 10,
+                paging: true,
+                ordering: false,
+                columnDefs: [
+                    {
+                        targets: [0],
+                        orderable: false,
+                        data: function (row, type, val, meta) {  
+                            return meta.row + 1;
+                        }
+                    },{
+                        targets: [1],
+                        orderable: true,
+                        data: function (row) {
+                            return row.name;
+                        }
+                    },{
+                        targets: [2],
+                        orderable: true,
+                        data: function (row) {
+                            return row.course_name;
+                        }
+                    },{
+                        targets: [3],
+                        orderable: true,
+                        data: function (row) {
+                            return row.center_name;
+                        }
+                    },{
+                        targets: [4],
+                        orderable: true,
+                        data: function (row) {
+                            return row.total_fees;
+                        }
+                    },{
+                        targets: [5],
+                        orderable: true,
+                        data: function (row) {
+                            return row.paid_amount;
+                        }
+                    },{
+                        targets: [6],
+                        orderable: true,
+                        data: function (row) {
+                            return  row.total_fees - row.paid_amount;
+                        }
+                    }
+                ]
+            });
+
+            $('#center-ftr').on('change', function(){
+                SVCAobj.getCourseByCenter('#course-ftr', $(this).val());
+                paymentPendingList.ajax.reload();
+            });
+
+            $('#course-ftr').on('change', function(){
+                paymentPendingList.ajax.reload();
             });
         },
 

@@ -69,6 +69,33 @@ class Payment extends BaseController
         }
     }
 
+    public function pendingList()
+    {
+        $data['centers'] = $this->centerModel->findAll();
+        $data['users'] = $this->userModel->getUsers();
+
+        return view('template/header', ['page_title' => 'Pending Payment List']) . view('payment/pending-list', $data) . view('template/footer', ['app_init' => 'initPendingPayList']);
+    }
+
+    public function getPendingList()
+    {
+        $data = [
+            'start' => $this->request->getPost('start'),
+            'length' => $this->request->getPost('length'),
+            'search' => $this->request->getPost('search')['value'] ?? '',
+            'center_ftr' => $this->request->getPost('center_ftr') ?? '',
+            'course_ftr' => $this->request->getPost('course_ftr') ?? '',
+            'date_ftr' => $this->request->getPost('date_ftr') ?? '',
+        ];
+
+        $paymentList = $this->model->getPendingPayList($data);
+        if($paymentList){
+            return json_encode($paymentList);
+        } else {
+            return json_encode();
+        }
+    }
+
     public function add()
     {   
         $transaction_Id = $this->request->getPost('transaction_id');

@@ -57,6 +57,12 @@
                     </li>
                 <?php } ?>
                 <li class="sidebar-item">
+                    <a class="sidebar-link" href="<?php echo base_url('/payment/pending-list');?>" aria-expanded="false">
+                        <i class="ti ti-currency-rupee"></i>
+                        <span class="hide-menu">P-Fees</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
                     <a class="sidebar-link" href="<?php echo base_url('/inquery');?>" aria-expanded="false">
                         <i class="ti ti-info-square"></i>
                         <span class="hide-menu">Inquery</span>

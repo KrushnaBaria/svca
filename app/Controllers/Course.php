@@ -47,6 +47,17 @@ class Course extends BaseController
         }
     }
 
+    public function getCourseByCenter()
+    {
+        $center_id = $this->request->getPost('center_id');
+        $courses = $this->model->where(['center' => $center_id])->findAll();
+        if($courses){
+            return json_encode(['success' => '1', 'courses' => $courses]);
+        } else {
+            return json_encode(['success' => '0', 'courses' => []]);
+        }
+    }
+
     public function getCoursesByType()
     {
         $center_id = $this->request->getPost('center_id');

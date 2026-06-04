@@ -91,17 +91,20 @@ $routes->group('course', function ($routes) {
     //$routes->post('list', 'Course::list');
     $routes->post('get-course-fee', 'Course::getCourseFee');
     $routes->post('get-course-type', 'Course::getCourseType');
+    $routes->post('get-course-by-center', 'Course::getCourseByCenter');
     $routes->post('get-courses-by-type', 'Course::getCoursesByType');
 });
 
 $routes->group('payment', function ($routes){
     $routes->get('list', 'Payment::list');
+    $routes->get('pending-list', 'Payment::pendingList');
     $routes->get('(:num)', 'Payment::index/$1');
     $routes->get('invoice/(:num)', 'Payment::invoice/$1');
     $routes->post('add', 'Payment::add');
     $routes->post('get-payhistory', 'Payment::getPayHistory');
     $routes->post('import-csv', 'Payment::importCsv');
     $routes->post('get-list', 'Payment::getList');
+    $routes->post('get-pending-list', 'Payment::getPendingList');
 });
 
 $routes->group('logs', function ($routes) {
