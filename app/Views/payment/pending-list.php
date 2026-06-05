@@ -18,17 +18,16 @@
                     <label class="form-label" for="course-ftr">Course</label>
                     <select type="text" class="form-control" id="course-ftr">
                         <option value="">Select Course</option>
-                        
                     </select>
                 </div>
                 <div class="col-md-2 col-10">
                     <label class="form-label" for="duration-ftr">Duration</label>
                     <select type="text" class="form-control" id="duration-ftr">
                         <option value="">Select Duration</option>
-                        <option value="">Last Month</option>
-                        <option value="">Last 3 Months</option>
-                        <option value="">Last 6 Months</option>
-                        <option value="">Last Year</option>
+                        <option value="1">Last Month</option>
+                        <option value="3">Last 3 Months</option>
+                        <option value="6">Last 6 Months</option>
+                        <option value="12">Last Year</option>
                     </select>
                 </div>
                 <div class="col-md-3 col-10">
@@ -49,17 +48,15 @@
     <div class="card-body">
         <table id="pending-payment-list" class="table table-bordered table-striped">
             <thead>
-                <?php if(auth()->user()->getGroups()[0] == 'superadmin'){ ?>
-                    <th> Id </th>
-                <?php }else{ ?>
-                    <th>No</th>
-                <?php }?>
+                
+                <th>No</th>
                 <th>Name</th>
                 <th>Course</th>
                 <th>Center</th>
                 <th>Total Fees</th>
                 <th>Paid Fees</th>
                 <th>Pending Fees</th>
+                <th>Admission Date</th>
             </thead>
             <tbody></tbody>
         </table>

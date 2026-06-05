@@ -105,7 +105,6 @@
                         center_id: centerId
                     },
                     success: function(res) {
-                        console.log(res);
                         if(res.success == 1) {
                             var options = '<option value="">Select Course</option>';
                             $.each(res.courses, function(index, course) {
@@ -2592,7 +2591,6 @@
                 maxDate: new Date(),
                 onChange: function(selectedDates, dateStr, instance) {
                     if (dateStr.includes("to")) {
-                        console.log($('#date-ftr').val());
                         paymentPendingList.ajax.reload();
                     }
                 }
@@ -2616,6 +2614,7 @@
                         d.center_ftr = $('#center-ftr').val();
                         d.course_ftr = $('#course-ftr').val();
                         d.date_ftr   = $('#date-ftr').val();
+                        d.duration_ftr = $('#duration-ftr').val();
                     }
                 },
                 lengthMenu: [
@@ -2668,6 +2667,12 @@
                         data: function (row) {
                             return  row.total_fees - row.paid_amount;
                         }
+                    },{
+                        targets: [7],
+                        orderable: true,
+                        data: function(row) {
+                            return row.admi_date;
+                        }
                     }
                 ]
             });
@@ -2677,7 +2682,15 @@
                 paymentPendingList.ajax.reload();
             });
 
-            $('#course-ftr').on('change', function(){
+            $('#course-ftr, #duration-ftr').on('change', function(){
+                paymentPendingList.ajax.reload();
+            });
+
+            $('#payment-clear-btn').on('click', function(){
+                $('#center-ftr').val('');
+                $('#course-ftr').val('');
+                $('#duration-ftr').val('');
+                datePicker.clear();
                 paymentPendingList.ajax.reload();
             });
         },
@@ -2729,7 +2742,6 @@
                         targets: [1],
                         orderable: true,
                         data: function (row) {
-                            console.log(row);
                             return '<a href="' + conf.baseUrl + 'student/view/' + row.id + '">' + row.name + '</a>';
                         }
                     },
@@ -4297,7 +4309,6 @@
                         targets: [1],
                         orderable: false,
                         data: function (row) {
-                            console.log(row);
                             if (row.first_name || row.last_name) {
                                 return [row.first_name, row.last_name].filter(Boolean).join(' ');
                             }

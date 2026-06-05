@@ -91,7 +91,7 @@ class PaymentModel extends Model
                     FROM students AS s
                     LEFT JOIN centers AS c ON s.center = c.id
                     LEFT JOIN courses AS co ON s.course = co.id
-                    WHERE (s.fees - (SELECT IFNULL(SUM(amount), 0) FROM payment WHERE stu_id = s.id)) > 0";
+                    WHERE (s.fees - (SELECT IFNULL(SUM(amount), 0) FROM payment WHERE stu_id = s.id)) > 0 AND s.status = '1' AND s.del_sts = '0' AND s.old_stu = '0'";
 
         if(isset($data['center_ftr']) && !empty($data['center_ftr'])) {
             $query .= " AND s.center = " . trim($data['center_ftr']) . "";
@@ -99,6 +99,10 @@ class PaymentModel extends Model
 
         if(isset($data['course_ftr']) && !empty($data['course_ftr'])) {
             $query .= " AND s.course = " . trim($data['course_ftr']) . "";
+        }
+
+        if(isset($data['duration_ftr']) && !empty($data['duration_ftr'])) {
+            $query .= " AND s.admi_date >= DATE_SUB(CURDATE(), INTERVAL " . trim($data['duration_ftr']) . " MONTH) ";
         }
 
         if($start_date && $end_date){
