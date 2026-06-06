@@ -2623,7 +2623,7 @@
                 ],
                 pageLength: 10,
                 paging: true,
-                ordering: false,
+                order: [[7 , 'asc']],
                 columnDefs: [
                     {
                         targets: [0],
@@ -2651,19 +2651,19 @@
                         }
                     },{
                         targets: [4],
-                        orderable: true,
+                        orderable: false,
                         data: function (row) {
                             return row.total_fees;
                         }
                     },{
                         targets: [5],
-                        orderable: true,
+                        orderable: false,
                         data: function (row) {
                             return row.paid_amount;
                         }
                     },{
                         targets: [6],
-                        orderable: true,
+                        orderable: false,
                         data: function (row) {
                             return  row.total_fees - row.paid_amount;
                         }

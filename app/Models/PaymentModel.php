@@ -86,6 +86,32 @@ class PaymentModel extends Model
             $end_date = $parts[1];
         }
 
+        if(isset($data['order'][0]) && !empty($data['order'][0])) {
+            $order = $data['order'][0]['column'];
+            switch ($order) {
+                case 0:
+                    $order = 's.id';
+                    break;
+                case 1:
+                    $order = 's.name';
+                    break;
+                case 2:
+                    $order = 'course_name';
+                    break;
+                case 3:
+                    $order = 'center_name';
+                    break;
+                case 7:
+                    $order = 's.admi_date';
+                    break;
+                default:
+                    $order = 'center_name';
+            }
+            $oby = " ORDER BY " . $order . " " . $data['order'][0]['dir'];
+        } else {
+            $oby = " ORDER BY s.admi_date ASC";
+        }
+
         $query = "SELECT s.id, s.name, s.admi_date, c.center as center_name, co.course as course_name, s.fees as total_fees, 
                     (SELECT IFNULL(SUM(amount), 0) FROM payment WHERE stu_id = s.id) as paid_amount
                     FROM students AS s
@@ -111,7 +137,11 @@ class PaymentModel extends Model
 
         $result['recordsTotal'] = $result['recordsFiltered'] = $this->db->query($query)->getNumRows();
         
-        $query .= " ORDER BY s.id DESC LIMIT " . $data['start'] . ", " . $data['length'];
+        if($oby) {
+            $query .= $oby;
+        }
+
+        $query .= " LIMIT " . $data['start'] . ", " . $data['length'];
         $result['data'] = $this->db->query($query)->getResultArray();
         return $result;
     }

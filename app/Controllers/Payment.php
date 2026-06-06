@@ -87,6 +87,7 @@ class Payment extends BaseController
             'course_ftr' => $this->request->getPost('course_ftr') ?? '',
             'date_ftr' => $this->request->getPost('date_ftr') ?? '',
             'duration_ftr' => $this->request->getPost('duration_ftr') ?? '',
+            'order' => $this->request->getPost('order'),
         ];
 
         $paymentList = $this->model->getPendingPayList($data);
