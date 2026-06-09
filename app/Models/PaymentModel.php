@@ -80,6 +80,15 @@ class PaymentModel extends Model
         $start_date = '';
         $end_date = '';
 
+        $center_ad = '';
+        if(!Auth()->user()->inGroup('superadmin')){
+            $query1 = "SELECT center FROM user_info WHERE user_id = ". auth()->user()->id ."";
+            $center_ad = $this->db->query($query1)->getResultArray();
+            if($center_ad){
+                $center_ad = $center_ad[0]['center'];
+            }
+        }
+
         if (!empty($date_ftr)) {
             $parts = explode('to', $date_ftr);
             $start_date = $parts[0];
@@ -133,6 +142,10 @@ class PaymentModel extends Model
 
         if($start_date && $end_date){
             $query .= " AND DATE(s.admi_date) BETWEEN '" . trim($start_date) . "' AND '" . trim($end_date) . "' ";
+        }
+
+        if($center_ad){
+            $query .= " AND s.center = " . $center_ad . "";
         }
 
         $result['recordsTotal'] = $result['recordsFiltered'] = $this->db->query($query)->getNumRows();

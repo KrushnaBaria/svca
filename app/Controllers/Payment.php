@@ -11,6 +11,7 @@ use App\Models\StudentModel;
 use App\Models\PaymentLog;
 use App\Models\CenterModel;
 use App\Models\UserModel;
+use App\Models\UserInfoModel;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 
@@ -21,6 +22,7 @@ class Payment extends BaseController
     protected $paymentLogModel;
     protected $centerModel;
     protected $userModel;
+    protected $userInfoModel;
 
     public function initController(RequestInterface $request, ResponseInterface $response, LoggerInterface $logger)
     {
@@ -31,6 +33,7 @@ class Payment extends BaseController
         $this->paymentLogModel = model(PaymentLog::class);
         $this->centerModel = model(CenterModel::class);
         $this->userModel = model(UserModel::class);
+        $this->userInfoModel = model(UserInfoModel::class);
     }
 
     public function index($id)
@@ -71,10 +74,15 @@ class Payment extends BaseController
 
     public function pendingList()
     {
-        $data['centers'] = $this->centerModel->findAll();
-        $data['users'] = $this->userModel->getUsers();
 
-        return view('template/header', ['page_title' => 'Pending Payment List']) . view('payment/pending-list', $data) . view('template/footer', ['app_init' => 'initPendingPayList']);
+        if(Auth()->user()->inGroup('superadmin')){
+            $data['centers'] = $this->centerModel->findAll();
+        }else{
+            $u_details = $this->userInfoModel->curUserDetail();
+            $data['centers'] = $this->centerModel->where('id', $u_details['center'])->findAll();
+        }
+
+        return view('template/header', ['page_title' => 'Pending Fees List']) . view('payment/pending-list', $data) . view('template/footer', ['app_init' => 'initPendingPayList']);
     }
 
     public function getPendingList()
