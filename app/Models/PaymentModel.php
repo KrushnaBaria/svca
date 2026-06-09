@@ -154,7 +154,9 @@ class PaymentModel extends Model
             $query .= $oby;
         }
 
-        $query .= " LIMIT " . $data['start'] . ", " . $data['length'];
+        if($data['length'] != -1) {
+            $query .= " LIMIT " . $data['start'] . ", " . $data['length'];
+        }
         $result['data'] = $this->db->query($query)->getResultArray();
         return $result;
     }
