@@ -16,11 +16,25 @@ class CertificateModel extends Model
 
     public function getList($data)
     {
+
+        $center_ad = '';
+        if(!Auth()->user()->inGroup('superadmin')){
+            $query1 = "SELECT center FROM user_info WHERE user_id = ". auth()->user()->id ."";
+            $center_ad = $this->db->query($query1)->getResultArray();
+            if($center_ad){
+                $center_ad = $center_ad[0]['center'];
+            }
+        }
+
         $query ="SELECT * FROM certificates
                 LEFT JOIN centers ON certificates.center = centers.id
                 WHERE 1=1";
         if($data['search'] != ''){
             $query .= " AND name LIKE '%".$data['search']."%'";
+        }
+
+        if($center_ad){
+            $query .= " AND certificates.center = " . $center_ad . "";
         }
 
         $result['recordsTotal'] = $result['recordsFiltered'] = $this->db->query($query)->getNumRows();
