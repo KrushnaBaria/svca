@@ -69,6 +69,12 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
+                    <a class="sidebar-link" href="<?php echo base_url('/esamaj/list');?>" aria-expanded="false">
+                        <i class="ti ti-award"></i>
+                        <span class="hide-menu">Esamaj</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
                     <a class="sidebar-link" href="<?php echo base_url('/attendance');?>" aria-expanded="false">
                         <i class="ti ti-calendar"></i>
                         <span class="hide-menu">Attendance</span>

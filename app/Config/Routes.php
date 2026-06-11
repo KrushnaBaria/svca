@@ -58,6 +58,10 @@ $routes->group('student', function ($routes) {
     $routes->post('withdraw', 'Student::withdraw');
 });
 
+$routes->group('esamaj', function ($routes) {
+    $routes->get('list', 'Esamaj::list');
+});
+
 $routes->group('inquery', function ($routes) {
     $routes->get('/', 'Inquery::index');
     $routes->post('add', 'Inquery::add');
