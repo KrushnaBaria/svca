@@ -104,3 +104,6 @@ ALTER TABLE `my_task` ADD `status` INT(10) NOT NULL DEFAULT '0' AFTER `task`, AD
 
 [27-05-2026]
 ALTER TABLE `my_task` ADD `approve_by` VARCHAR(255) NOT NULL AFTER `updated_date`;
+
+[12-06-2026]
+CREATE TABLE `svca`.`esmj_student` (`id` INT NOT NULL AUTO_INCREMENT , `name` VARCHAR(255) NOT NULL , `phone` VARCHAR(15) NOT NULL , `alt_phone` VARCHAR(15) NOT NULL , `reg_id` INT NOT NULL , `password` VARCHAR(255) NOT NULL , `address` LONGTEXT NOT NULL , `cheque` INT NOT NULL , PRIMARY KEY (`id`));

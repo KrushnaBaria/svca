@@ -60,6 +60,7 @@ $routes->group('student', function ($routes) {
 
 $routes->group('esamaj', function ($routes) {
     $routes->get('list', 'Esamaj::list');
+    $routes->post('get-list', 'Esamaj::get_list');
 });
 
 $routes->group('inquery', function ($routes) {
