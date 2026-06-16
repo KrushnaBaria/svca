@@ -2369,6 +2369,11 @@
                     $('#transaction_id').val(data[0].id);
                     $('#acceptPayment').text('Update');
                     $('#paymentModal').modal('show');
+                    if(data[0].discount == 1){
+                        $('#applyDiscount').prop('checked', true);
+                    } else {
+                        $('#applyDiscount').prop('checked', false);
+                    }
                 }
             }).on('deselect', function(e, dt, type, indexes){
                 
@@ -2386,6 +2391,7 @@
                 $('#remark').val('');
                 $('#transaction_id').val('');
                 $('#acceptPayment').text('Accept');
+                $('#applyDiscount').prop('checked', false);
                 payhistoryTbl.rows().deselect();
             });
 
@@ -2396,7 +2402,8 @@
                     $('#paymentAmount').focus();
                     return false;
                 }
-                
+
+                var discount = $('#applyDiscount').is(':checked') ? 1 : 0;
                 $.ajax({
                     url: conf.baseUrl + "/payment/add",
                     type: "POST",
@@ -2406,7 +2413,8 @@
                         pay_mod: $('#pay_mod').val(),
                         remark: $('#remark').val(),
                         student_id: $('#stu_id').val(),
-                        transaction_id: $('#transaction_id').val()
+                        transaction_id: $('#transaction_id').val(),
+                        discount: discount
                     },
                     success: function(res) {
                         if(res.success == 1) {

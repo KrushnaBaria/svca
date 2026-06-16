@@ -120,16 +120,22 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <div class="mb-3 row">
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <label for="paymentAmount" class="form-label">Payment Amount</label>
                                 <input type="number" class="form-control" id="paymentAmount" name="paymentAmount" required>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <label for="pay_mod" class="form-label">Payment Mode</label>
                                 <select class="form-select" id="pay_mod" name="pay_mod" required>
                                     <option value="0">Offline</option>
                                     <option value="1">Online</option>
                                 </select>
+                            </div>
+                            <div class="col-md-4 mt-md-3">
+                                <div class="form-check mt-4">
+                                    <input class="form-check-input" type="checkbox" id="applyDiscount" name="applyDiscount" value="1">
+                                    <label class="form-check-label" for="applyDiscount">Apply Discount</label>
+                                </div>
                             </div>
                         </div>
                         

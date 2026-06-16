@@ -129,7 +129,7 @@ class Payment extends BaseController
                 $res = $this->model->update($transaction_Id, [
                     'amount' => $Data['amount'],
                     'pay_mod' => $Data['pay_mod'],
-                    'discount' => 0,
+                    'discount' => $Data['discount'],
                     'remark' => $Data['remark'] ?? '',
                     'updated_by' => auth()->user()->email,
                     'updated_date' => date('Y-m-d H:i:s'),
@@ -147,7 +147,7 @@ class Payment extends BaseController
                 'stu_id' => $Data['student_id'],
                 'amount' => $Data['amount'],
                 'pay_mod' => $Data['pay_mod'],
-                'discount' => 0,
+                'discount' => $Data['discount'],
                 'remark' => $Data['remark'] ?? '',
                 'add_date' => date('Y-m-d H:i:s'),
                 'updated_by' => auth()->user()->email,
