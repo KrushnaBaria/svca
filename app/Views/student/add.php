@@ -104,7 +104,7 @@
                             <select class="form-select" name="dist" id="dist">
                                 <?php foreach($districts as $district){ ?>
                                     <option value="<?php echo $district['id'] ?>"> <?php echo $district['name'] ?> </option>
-                               <?php  } ?>
+                                <?php  } ?>
                             </select>
                         </div>
                     </div>
