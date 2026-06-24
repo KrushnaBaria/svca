@@ -68,12 +68,14 @@
                         <span class="hide-menu">Inquery</span>
                     </a>
                 </li>
+                <?php if ($user_group == 'superadmin'){?>
                 <li class="sidebar-item">
                     <a class="sidebar-link" href="<?php echo base_url('/esamaj/list');?>" aria-expanded="false">
                         <i class="ti ti-award"></i>
                         <span class="hide-menu">Esamaj</span>
                     </a>
                 </li>
+                <?php } ?>
                 <li class="sidebar-item">
                     <a class="sidebar-link" href="<?php echo base_url('/attendance');?>" aria-expanded="false">
                         <i class="ti ti-calendar"></i>
