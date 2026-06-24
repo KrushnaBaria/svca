@@ -45,4 +45,9 @@ class Esamaj extends BaseController
             return json_encode(['success' => 0, 'message' => 'No data found']);
         }
     }
+
+    public  function add()
+    {
+        return view('template/header', ['page_title' => 'Add Esamaj Student']) . view('esamaj/add') . view('template/footer', ['app_init' => 'initEsamajAdd']);
+    }
 }

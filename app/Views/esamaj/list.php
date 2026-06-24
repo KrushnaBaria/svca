@@ -1,3 +1,6 @@
+<div class="mb-3 text-end">
+    <a href="<?= base_url('esamaj/add') ?>" class="btn btn-primary">Add Student</a>
+</div>
 <div class="card">
     <div class="card-body">
         <table id="estudent-list" class="table table-bordered table-striped">
