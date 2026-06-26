@@ -3125,6 +3125,7 @@
                 }
 
                 if($('#expense-id').val()){
+                    $('#sbt-expence').prop('disabled', true);
                     $.ajax({
                         url: conf.baseUrl + "/expense/add",
                         type: "POST",
@@ -3141,16 +3142,21 @@
                                 $('#exp').val('');
                                 $('#center').val('');
                                 $('#amount').val('');
+                                $('#sbt-expence').text('Submit');
                                 expenseTbl.ajax.reload();
+                                $('#sbt-expence').prop('disabled', false);
                             } else {
+                                $('#sbt-expence').prop('disabled', false);
                                 alert("Error updating expense");
                             }
                         },
                         error: function() {
+                            $('#sbt-expence').prop('disabled', false);
                             alert("An error occurred while updating the expense.");
                         }
                     });
                 }else{
+                    $('#sbt-expence').prop('disabled', true);
                     $.ajax({
                         url: conf.baseUrl + "/expense/add",
                         type: "POST",
@@ -3166,11 +3172,14 @@
                                 $('#center').val('');
                                 $('#amount').val('');
                                 expenseTbl.ajax.reload();
+                                $('#sbt-expence').prop('disabled', false);
                             } else {
+                                $('#sbt-expence').prop('disabled', false);
                                 alert("Error adding expense");
                             }
                         },
                         error: function() {
+                            $('#sbt-expence').prop('disabled', false);
                             alert("An error occurred while adding the expense.");
                         }
                     });
