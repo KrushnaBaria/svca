@@ -41,7 +41,7 @@ class StuCertificateModel extends Model
         }
 
         if($center_ad){
-            $query .= " AND c.center = " . $center_ad . "";
+            $query .= " AND c.id = " . $center_ad . "";
         }
 
         $result['recordsTotal'] = $result['recordsFiltered'] = $this->db->query($query)->getNumRows();
