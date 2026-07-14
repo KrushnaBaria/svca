@@ -4117,11 +4117,93 @@
             });
         },
 
+        initImportEsamajCsv: function(){
+            let $fileInput = $('#esamaj_csv_file');
+            let $form = $('#esamaj-student-import-form');
+            let $spinner = $('#esamaj-upload-spinner');
+            let $submitBtn = $('#esamaj-import-submit');
+            let $result = $('#esamaj-import-result');
+
+            if(!$form.length){
+                return;
+            }
+
+            $form.on('submit', function (e) {
+                e.preventDefault();
+
+                let file = $fileInput[0] ? $fileInput[0].files[0] : null;
+                if (!file) {
+                    alert('Please select a CSV file.');
+                    return false;
+                }
+
+                $spinner.removeClass('d-none');
+                $submitBtn.prop('disabled', true);
+                $result.removeClass('d-none').html('');
+
+                let formData = new FormData(this);
+
+                $.ajax({
+                    url: $form.attr('action'),
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    dataType: 'json',
+                    success: function (res) {
+                        $spinner.addClass('d-none');
+                        $submitBtn.prop('disabled', false);
+
+                        if (res && res.success == 1) {
+                            let html = '<div class="alert alert-success mb-2">Imported <strong>' + (res.inserted || 0) + '</strong> E-Samaj students.';
+                            if (res.skipped) {
+                                html += ' Skipped <strong>' + res.skipped + '</strong> row(s).';
+                            }
+                            html += '</div>';
+
+                            if (res.errors && res.errors.length) {
+                                html += '<div class="alert alert-warning mb-0"><strong>Details:</strong><ul class="mb-0">';
+                                res.errors.slice(0, 10).forEach(function (msg) {
+                                    html += '<li class="small">' + $('<div>').text(msg).html() + '</li>';
+                                });
+                                if (res.errors.length > 10) {
+                                    html += '<li class="small">+' + (res.errors.length - 10) + ' more...</li>';
+                                }
+                                html += '</ul></div>';
+                            }
+
+                            $result.html(html).removeClass('d-none');
+                        } else {
+                            let html = '<div class="alert alert-danger mb-2">' +
+                                $('<div>').text((res && res.message) ? res.message : 'Import failed. No E-Samaj students were imported.').html() +
+                                '</div>';
+
+                            if (res && res.errors && res.errors.length) {
+                                html += '<div class="alert alert-warning mb-0"><strong>Details:</strong><ul class="mb-0">';
+                                res.errors.forEach(function (msg) {
+                                    html += '<li class="small">' + $('<div>').text(msg).html() + '</li>';
+                                });
+                                html += '</ul></div>';
+                            }
+
+                            $result.html(html).removeClass('d-none');
+                        }
+                    },
+                    error: function () {
+                        $spinner.addClass('d-none');
+                        $submitBtn.prop('disabled', false);
+                        $result.html('<div class="alert alert-danger mb-0">An error occurred while uploading the file.</div>').removeClass('d-none');
+                    }
+                });
+            });
+        },
+
         initImport: function(){
             let SVCAobj = this;
             SVCAobj.initImportStudentCsv();
             SVCAobj.initImportPaymentCsv();
             SVCAobj.initImportExpenseCsv();
+            SVCAobj.initImportEsamajCsv();
         },
 
         initMyTask: function(){

@@ -48,6 +48,7 @@ $routes->group('student', function ($routes) {
     $routes->get('export', 'Student::export');
     $routes->get('import', 'Student::importForm');
     $routes->post('import-csv', 'Student::importCsv');
+    $routes->post('import-esamaj', 'Student::importEsamaj');
     $routes->get('edit/(:num)', 'Student::edit/$1');
     $routes->get('view/(:num)', 'Student::view/$1');
     $routes->post('getStudents', 'Student::getStudents');

@@ -12,6 +12,7 @@ use App\Models\StudentModel;
 use App\Models\DistrictModel;
 use App\Models\UserModel;
 use App\Models\UserInfoModel;
+use App\Models\EsamajModel;
 
 class Student extends BaseController
 {
@@ -21,6 +22,7 @@ class Student extends BaseController
     protected $districtModel;
     protected $userModel;
     protected $userInfoModel;
+    protected $esamajModel;
 
     public function initController(RequestInterface $request, ResponseInterface $response, LoggerInterface $logger)
     {
@@ -32,6 +34,7 @@ class Student extends BaseController
         $this->districtModel = model(DistrictModel::class);
         $this->userModel = model(UserModel::class);
         $this->userInfoModel = model(UserInfoModel::class);
+        $this->esamajModel = model(EsamajModel::class);
     }
 
     public function index()
@@ -469,5 +472,116 @@ class Student extends BaseController
         } else {
             return json_encode(['success' => 0, 'message' => 'No students found']);
         }
+    }
+
+    public function importEsamaj()
+    {
+        $file = $this->request->getFile('esamaj_csv_file');
+
+        if (!$file || !$file->isValid()) {
+            return $this->response->setJSON(['success' => 0, 'message' => 'Please upload a CSV file.']);
+        }
+
+        if (strtolower($file->getClientExtension()) !== 'csv') {
+            return $this->response->setJSON(['success' => 0, 'message' => 'Only CSV files are allowed.']);
+        }
+
+        $handle = fopen($file->getTempName(), 'r');
+        if (!$handle) {
+            return $this->response->setJSON(['success' => 0, 'message' => 'Unable to read uploaded file.']);
+        }
+
+        $inserted = 0;
+        $skipped  = 0;
+        $errors   = [];
+        $rowNum   = 0;
+
+        $db = $this->esamajModel->db;
+        $db->transBegin();
+
+        $parseYesNo = function (string $raw): int {
+            return strtolower(trim($raw)) === 'yes' ? 1 : 0;
+        };
+
+        if (($header = fgetcsv($handle)) === false) {
+            fclose($handle);
+            return $this->response->setJSON(['success' => 0, 'message' => 'CSV file is empty.']);
+        }
+
+        while (($row = fgetcsv($handle)) !== false) {
+            $rowNum++;
+
+            if (count($row) < 10) {
+                $errors[] = "Row {$rowNum}: Not enough columns.";
+                continue;
+            }
+
+            $name      = trim($row[1] ?? '');
+            $regIdRaw  = trim($row[2] ?? '');
+            $password  = trim($row[3] ?? '');
+            $phone     = trim($row[4] ?? '');
+            $altPhone  = trim($row[5] ?? '');
+            $cheque    = $parseYesNo($row[6] ?? '');
+            $undertake = $parseYesNo($row[7] ?? '');
+            $address   = trim($row[8] ?? '');
+            $verify    = $parseYesNo($row[9] ?? '');
+
+            if ($name === '' || $regIdRaw === '' || $password === '' || $phone === '') {
+                $errors[] = "Row {$rowNum}: Missing required fields (Name, User ID, Password, or Phone).";
+                continue;
+            }
+
+            if (!is_numeric($regIdRaw)) {
+                $errors[] = "Row {$rowNum}: User ID must be numeric.";
+                continue;
+            }
+
+            $regId = (int) $regIdRaw;
+
+            if ($this->esamajModel->regIdExists($regId)) {
+                $errors[] = "Row {$rowNum}: User ID {$regId} already exists.";
+                continue;
+            }
+
+            $data = [
+                'name'         => $name,
+                'reg_id'       => $regId,
+                'password'     => $password,
+                'phone'        => $phone,
+                'alt_phone'    => $altPhone,
+                'cheque'       => $cheque,
+                'undertaking'  => $undertake,
+                'address'      => $address,
+                'verify'       => $verify,
+                'remark'       => '',
+            ];
+
+            $res = $this->esamajModel->importStudent($data);
+            if ($res) {
+                $inserted++;
+            } else {
+                $errors[] = "Row {$rowNum}: Failed to insert.";
+            }
+        }
+
+        fclose($handle);
+
+        if (!empty($errors)) {
+            $db->transRollback();
+            return $this->response->setJSON([
+                'success' => 0,
+                'message' => 'Import failed. No E-Samaj students were imported due to errors.',
+                'errors'  => $errors,
+            ]);
+        }
+
+        $db->transCommit();
+
+        return $this->response->setJSON([
+            'success'  => 1,
+            'inserted' => $inserted,
+            'skipped'  => $skipped,
+            'errors'   => $errors,
+        ]);
     }
 }

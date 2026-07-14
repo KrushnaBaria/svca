@@ -108,6 +108,40 @@
                 </div>
             </div>
         </div>
+
+        <div class="card shadow-sm mt-3">
+            <div class="card-header text-bg-primary">
+                <h4 class="mb-0 text-white">Import E-Samaj Students</h4>
+            </div>
+            <div class="card-body">
+                <p class="mb-3 text-muted">
+                    Select a <strong>.csv</strong> file with columns:
+                    <em>No, Name, User ID, Password, Mo Number, Alternative Number, cheque, Undertaking, Address, Verify</em>.
+                </p>
+                <form id="esamaj-student-import-form" enctype="multipart/form-data" method="post" action="<?= base_url('student/import-esamaj'); ?>">
+                    <div class="mb-3">
+                        <label for="esamaj_csv_file" class="form-label">CSV File</label>
+                        <input type="file" class="form-control" id="esamaj_csv_file" name="esamaj_csv_file" accept=".csv" required>
+                        <div class="form-text">Only CSV files are allowed.</div>
+                    </div>
+
+                    <div id="esamaj-upload-spinner" class="text-center my-3 d-none">
+                        <div class="spinner-border text-success" role="status">
+                            <span class="visually-hidden">Uploading...</span>
+                        </div>
+                        <div class="mt-2 small text-muted">Uploading &amp; importing, please wait...</div>
+                    </div>
+
+                    <div class="d-flex justify-content-end">
+                        <button type="submit" id="esamaj-import-submit" class="btn btn-primary">
+                            Import E-Samaj Students
+                        </button>
+                    </div>
+                </form>
+
+                <div id="esamaj-import-result" class="mt-3 d-none"></div>
+            </div>
+        </div>
     </div>
 </div>
 
