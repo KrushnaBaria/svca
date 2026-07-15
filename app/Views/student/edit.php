@@ -83,6 +83,9 @@
                         <div class="mb-3">
                             <label for="lst_qulifi" class="form-label">Last Qualification</label>
                             <select class="form-select" name="lst_qulifi" id="lst_qulifi">
+                                <option value="7" <?php echo ($student['lqualifi'] ?? '') === '7' ? 'selected' : '' ?>>7th</option>
+                                <option value="8" <?php echo ($student['lqualifi'] ?? '') === '8' ? 'selected' : '' ?>>8th</option>
+                                <option value="9" <?php echo ($student['lqualifi'] ?? '') === '9' ? 'selected' : '' ?>>9th</option>
                                 <option value="10" <?php echo ($student['lqualifi'] ?? '') === '10' ? 'selected' : '' ?>>10th</option>
                                 <option value="11" <?php echo ($student['lqualifi'] ?? '') === '11' ? 'selected' : '' ?>>11th</option>
                                 <option value="12" <?php echo ($student['lqualifi'] ?? '') === '12' ? 'selected' : '' ?>>12th</option>

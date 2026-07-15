@@ -80,6 +80,9 @@
                         <div class="mb-3">
                             <label for="lst_qulifi" class="form-label">Last Qualification</label>
                             <select class="form-select" name="lst_qulifi" id="lst_qulifi">
+                                <option value="7">7th</option>
+                                <option value="8">8th</option>
+                                <option value="9">9th</option>
                                 <option value="10">10th</option>
                                 <option value="11">11th</option>
                                 <option value="12">12th</option>
